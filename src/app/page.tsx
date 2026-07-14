@@ -7,6 +7,7 @@ type Product = {
   description: string;
   href: string;
   subdomain: string;
+  status: "live" | "in-development";
   icon: ReactNode;
 };
 
@@ -27,6 +28,7 @@ const products: Product[] = [
       "Plans, drafts, and publishes on-brand content across every channel — AI-generated, human-supervised.",
     href: "https://flow.cliftonai.com",
     subdomain: "flow.cliftonai.com",
+    status: "in-development",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <rect x="3" y="4" width="18" height="5" rx="1.5" />
@@ -43,6 +45,7 @@ const products: Product[] = [
       "A lightweight CRM built for how commercial teams actually sell — pipeline, follow-ups, and insight in one place.",
     href: "https://crm.cliftonai.com",
     subdomain: "crm.cliftonai.com",
+    status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <circle cx="9" cy="8" r="3" />
@@ -59,6 +62,7 @@ const products: Product[] = [
       "Turns operational data into clear next actions — an AI advisor that watches the business so your team doesn't have to.",
     href: "https://merlow.cliftonai.com",
     subdomain: "merlow.cliftonai.com",
+    status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M12 3l2.1 6.4L20.5 12l-6.4 2.1L12 20.5l-2.1-6.4L3.5 12l6.4-2.1L12 3z" />
@@ -72,6 +76,7 @@ const products: Product[] = [
       "Evidence-based performance analytics — see what's actually working, and act on it in real time.",
     href: "https://empirely.cliftonai.com",
     subdomain: "empirely.cliftonai.com",
+    status: "in-development",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 20V10M11 20V4M18 20v-7" />
@@ -269,9 +274,17 @@ export default function Home() {
                       {product.subdomain} ↗
                     </span>
                   </div>
-                  <h3 className="mt-6 font-heading text-xl font-semibold text-fg">
-                    {product.name}
-                  </h3>
+                  <div className="mt-6 flex items-center gap-2.5">
+                    <h3 className="font-heading text-xl font-semibold text-fg">
+                      {product.name}
+                    </h3>
+                    {product.status === "in-development" && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
+                        <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
+                        In development
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald-light uppercase">
                     {product.tagline}
                   </p>
