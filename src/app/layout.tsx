@@ -46,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} h-full dark`}
+      className={`${spaceGrotesk.variable} ${dmSans.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-bg text-fg font-body antialiased">
         {children}

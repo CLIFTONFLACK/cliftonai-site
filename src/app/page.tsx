@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { Reveal } from "./reveal";
 
 type Product = {
   name: string;
@@ -40,32 +41,33 @@ const products: Product[] = [
   },
   {
     name: "SLC-CRM",
-    tagline: "Sales & pipeline",
+    tagline: "Leisure & licensed property",
     description:
-      "A lightweight CRM built for how commercial teams actually sell — pipeline, follow-ups, and insight in one place.",
-    href: "https://crm.cliftonai.co",
+      "The AI-powered CRM built for UK leisure and licensed property professionals. MatchMaker scores every requirement against every listing on the detail that actually decides these deals — use class, premises licence, covers, extraction — and surfaces only the pairings worth your morning.",
+    href: "https://slc-crm.vercel.app",
     subdomain: "crm.cliftonai.co",
     status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <circle cx="9" cy="8" r="3" />
-        <path d="M3.5 19c.6-2.8 2.7-4.5 5.5-4.5s4.9 1.7 5.5 4.5" />
-        <circle cx="17" cy="7" r="2.2" />
-        <path d="M15.8 14.2c2.2.3 3.7 1.9 4.2 4.3" />
+        <path d="M4 21V9l8-5 8 5v12" />
+        <path d="M9 21v-6h6v6" />
+        <path d="M9 12h.01M15 12h.01" />
       </svg>
     ),
   },
   {
     name: "Merlow's",
-    tagline: "Decision support",
+    tagline: "Independent journalism + AI research",
     description:
-      "Turns operational data into clear next actions — an AI advisor that watches the business so your team doesn't have to.",
+      "An independent news platform covering Middle East diplomacy — the Abraham Accords, the Cyrus Accord, and the quiet work of reconciliation. Its AI research assistant draws on Merlow's own reporting and reputable sources to give readers instant context on any development.",
     href: "https://merlows.com",
     subdomain: "merlows.com",
     status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <path d="M12 3l2.1 6.4L20.5 12l-6.4 2.1L12 20.5l-2.1-6.4L3.5 12l6.4-2.1L12 3z" />
+        <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H15v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" />
+        <path d="M15 4h3.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H15" />
+        <path d="M7 8h5M7 11h5M7 14h3" />
       </svg>
     ),
   },
@@ -136,7 +138,7 @@ export default function Home() {
       <header className="fixed inset-x-4 top-4 z-50 sm:inset-x-6">
         <nav
           aria-label="Primary"
-          className="mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-border bg-bg-elevated/70 px-4 py-3 backdrop-blur-md sm:px-6"
+          className="glass-nav mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-border px-4 py-3 sm:px-6"
         >
           <a href="#top" className="flex items-center gap-2.5 cursor-pointer">
             <Image
@@ -173,7 +175,7 @@ export default function Home() {
           </div>
           <a
             href="#contact"
-            className="rounded-full bg-brand-emerald px-4 py-2 text-sm font-medium text-[#04150a] transition-colors duration-200 hover:bg-brand-emerald-light cursor-pointer"
+            className="rounded-full bg-brand-emerald-bright px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer"
           >
             Get in touch
           </a>
@@ -183,12 +185,10 @@ export default function Home() {
       <main id="top" className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pt-40 pb-28 sm:pt-48">
-          <div
-            aria-hidden="true"
-            className="glow pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2"
-          />
-          <div className="relative mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-bg-card px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
+          <div aria-hidden="true" className="blob blob-emerald animate-float h-[420px] w-[560px] -top-32 left-1/2 -translate-x-[70%]" />
+          <div aria-hidden="true" className="blob blob-forest animate-float-slow h-[380px] w-[480px] -top-10 left-1/2 translate-x-[10%]" />
+          <div className="animate-fade-in-up relative mx-auto max-w-4xl text-center">
+            <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
               AI Integrator
             </span>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
@@ -203,13 +203,13 @@ export default function Home() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
                 href="#products"
-                className="w-full rounded-full bg-brand-emerald px-6 py-3 text-sm font-semibold text-[#04150a] transition-colors duration-200 hover:bg-brand-emerald-light cursor-pointer sm:w-auto"
+                className="w-full rounded-full bg-brand-emerald-bright px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer sm:w-auto"
               >
                 Explore the tools
               </a>
               <a
                 href="#contact"
-                className="w-full rounded-full border border-border-strong px-6 py-3 text-sm font-semibold text-fg transition-colors duration-200 hover:border-brand-emerald hover:text-brand-emerald-light cursor-pointer sm:w-auto"
+                className="glass-hover glass w-full rounded-full px-6 py-3 text-sm font-semibold text-fg cursor-pointer sm:w-auto"
               >
                 Book a call
               </a>
@@ -220,7 +220,7 @@ export default function Home() {
         {/* Positioning */}
         <section className="border-t border-border px-6 py-24">
           <div className="mx-auto max-w-6xl">
-            <div className="max-w-2xl">
+            <Reveal className="max-w-2xl">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
                 Not another AI vendor. An integrator.
               </h2>
@@ -229,69 +229,70 @@ export default function Home() {
                 need AI wired directly into how they already work. That&apos;s
                 the job.
               </p>
-            </div>
+            </Reveal>
             <div className="mt-14 grid gap-6 sm:grid-cols-3">
-              {pillars.map((pillar) => (
-                <div
-                  key={pillar.title}
-                  className="rounded-2xl border border-border bg-bg-card p-6"
-                >
-                  <h3 className="font-heading text-xl font-semibold text-fg">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                    {pillar.description}
-                  </p>
-                </div>
+              {pillars.map((pillar, i) => (
+                <Reveal key={pillar.title} delay={i * 100}>
+                  <div className="glass glass-hover h-full rounded-2xl p-6">
+                    <h3 className="font-heading text-xl font-semibold text-fg">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                      {pillar.description}
+                    </p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* Products */}
-        <section id="products" className="border-t border-border px-6 py-24">
-          <div className="mx-auto max-w-6xl">
-            <div className="max-w-2xl">
+        <section id="products" className="relative overflow-hidden border-t border-border px-6 py-24">
+          <div aria-hidden="true" className="blob blob-emerald animate-float h-[360px] w-[480px] top-1/3 -left-40" />
+          <div className="relative mx-auto max-w-6xl">
+            <Reveal className="max-w-2xl">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
                 The tools we&apos;ve built
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-fg-muted">
                 Each one ships and scales independently.
               </p>
-            </div>
+            </Reveal>
             <div className="mt-14 grid gap-5 sm:grid-cols-2">
-              {products.map((product) => (
-                <a
-                  key={product.name}
-                  href={product.href}
-                  className="group relative flex flex-col rounded-2xl border border-border bg-bg-card p-7 transition-colors duration-200 hover:border-brand-emerald/60 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl text-fg">
-                      {product.icon}
-                    </div>
-                    <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald-light">
-                      {product.subdomain} ↗
-                    </span>
-                  </div>
-                  <div className="mt-6 flex items-center gap-2.5">
-                    <h3 className="font-heading text-xl font-semibold text-fg">
-                      {product.name}
-                    </h3>
-                    {product.status === "in-development" && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
-                        <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
-                        In development
+              {products.map((product, i) => (
+                <Reveal key={product.name} delay={i * 80}>
+                  <a
+                    href={product.href}
+                    className="glass glass-hover group relative flex h-full flex-col rounded-2xl p-7 cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl text-white">
+                        {product.icon}
+                      </div>
+                      <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
+                        {product.subdomain} ↗
                       </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald-light uppercase">
-                    {product.tagline}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                    {product.description}
-                  </p>
-                </a>
+                    </div>
+                    <div className="mt-6 flex items-center gap-2.5">
+                      <h3 className="font-heading text-xl font-semibold text-fg">
+                        {product.name}
+                      </h3>
+                      {product.status === "in-development" && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
+                          <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
+                          In development
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+                      {product.tagline}
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                      {product.description}
+                    </p>
+                  </a>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -300,14 +301,14 @@ export default function Home() {
         {/* How it works */}
         <section id="how-it-works" className="border-t border-border px-6 py-24">
           <div className="mx-auto max-w-6xl">
-            <div className="max-w-2xl">
+            <Reveal className="max-w-2xl">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
                 How an engagement runs
               </h2>
-            </div>
+            </Reveal>
             <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((item) => (
-                <div key={item.step}>
+              {steps.map((item, i) => (
+                <Reveal key={item.step} delay={i * 80}>
                   <span className="brand-gradient-text font-heading text-3xl font-semibold">
                     {item.step}
                   </span>
@@ -317,31 +318,34 @@ export default function Home() {
                   <p className="mt-2 text-sm leading-relaxed text-fg-muted">
                     {item.description}
                   </p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* Contact / CTA */}
-        <section id="contact" className="border-t border-border px-6 py-24">
-          <div className="mx-auto max-w-4xl rounded-3xl border border-border-strong bg-bg-card px-8 py-16 text-center sm:px-16">
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-              Ready to put AI to work in your operation?
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-fg-muted">
-              Tell us where the busywork lives. We&apos;ll show you what an
-              integration looks like.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="mailto:hello@cliftonai.co"
-                className="w-full rounded-full bg-brand-emerald px-6 py-3 text-sm font-semibold text-[#04150a] transition-colors duration-200 hover:bg-brand-emerald-light cursor-pointer sm:w-auto"
-              >
-                hello@cliftonai.co
-              </a>
+        <section id="contact" className="relative overflow-hidden border-t border-border px-6 py-24">
+          <div aria-hidden="true" className="blob blob-forest animate-float-slow h-[420px] w-[560px] -bottom-40 left-1/2 -translate-x-1/2" />
+          <Reveal className="relative mx-auto max-w-4xl">
+            <div className="glass rounded-3xl px-8 py-16 text-center sm:px-16">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+                Ready to put AI to work in your operation?
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-fg-muted">
+                Tell us where the busywork lives. We&apos;ll show you what an
+                integration looks like.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <a
+                  href="mailto:hello@cliftonai.co"
+                  className="w-full rounded-full bg-brand-emerald-bright px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer sm:w-auto"
+                >
+                  hello@cliftonai.co
+                </a>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
 
