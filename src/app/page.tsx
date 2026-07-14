@@ -102,6 +102,23 @@ const products: Product[] = [
       </svg>
     ),
   },
+  {
+    name: "DiffDoc",
+    tagline: "Document comparison",
+    description:
+      "Upload two versions of a document — .docx or .pdf — and DiffDoc reads both, scores similarity, and marks up exactly what changed. Comment, edit, and export an audit-ready annotated copy.",
+    href: "https://diffdoc.cliftonai.co",
+    subdomain: "diffdoc.cliftonai.co",
+    status: "live",
+    icon: (
+      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
+        <rect x="3" y="4" width="8" height="16" rx="1.5" />
+        <rect x="13" y="4" width="8" height="16" rx="1.5" />
+        <path d="M6.5 8h1M6.5 11h1M6.5 14h1" />
+        <path d="M16.5 8h1M16.5 11h1M16.5 14h1" />
+      </svg>
+    ),
+  },
 ];
 
 const pillars = [
