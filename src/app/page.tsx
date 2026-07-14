@@ -44,7 +44,7 @@ const products: Product[] = [
     tagline: "Leisure & licensed property",
     description:
       "The AI-powered CRM built for UK leisure and licensed property professionals. MatchMaker scores every requirement against every listing on the detail that actually decides these deals — use class, premises licence, covers, extraction — and surfaces only the pairings worth your morning.",
-    href: "https://slc-crm.vercel.app",
+    href: "https://crm.cliftonai.co",
     subdomain: "crm.cliftonai.co",
     status: "live",
     icon: (
@@ -83,6 +83,22 @@ const products: Product[] = [
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 20V10M11 20V4M18 20v-7" />
         <path d="M3 20h18" />
+      </svg>
+    ),
+  },
+  {
+    name: "GetForged",
+    tagline: "AI app marketplace",
+    description:
+      "Buy the AI tool you'd have hired a developer to build. GetForged lists pre-built apps, automations, and internal tools from AI builders — install in hours, licensed or bought outright, from £49.",
+    href: "https://getforged.cliftonai.co",
+    subdomain: "getforged.cliftonai.co",
+    status: "live",
+    icon: (
+      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
+        <path d="M4 8l1.5-4h13L20 8" />
+        <path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z" />
+        <path d="M9 12a3 3 0 0 0 6 0" />
       </svg>
     ),
   },
