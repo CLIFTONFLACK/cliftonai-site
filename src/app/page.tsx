@@ -60,8 +60,8 @@ const products: Product[] = [
     tagline: "Decision support",
     description:
       "Turns operational data into clear next actions — an AI advisor that watches the business so your team doesn't have to.",
-    href: "https://merlow.cliftonai.co",
-    subdomain: "merlow.cliftonai.co",
+    href: "https://merlows.com",
+    subdomain: "merlows.com",
     status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
@@ -256,7 +256,7 @@ export default function Home() {
                 The tools we&apos;ve built
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                Each one lives on its own subdomain and ships independently.
+                Each one ships and scales independently.
               </p>
             </div>
             <div className="mt-14 grid gap-5 sm:grid-cols-2">
