@@ -26,8 +26,8 @@ const products: Product[] = [
     tagline: "Content operations",
     description:
       "Plans, drafts, and publishes on-brand content across every channel — AI-generated, human-supervised.",
-    href: "https://flow.cliftonai.com",
-    subdomain: "flow.cliftonai.com",
+    href: "https://flow.cliftonai.co",
+    subdomain: "flow.cliftonai.co",
     status: "in-development",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
@@ -43,8 +43,8 @@ const products: Product[] = [
     tagline: "Sales & pipeline",
     description:
       "A lightweight CRM built for how commercial teams actually sell — pipeline, follow-ups, and insight in one place.",
-    href: "https://crm.cliftonai.com",
-    subdomain: "crm.cliftonai.com",
+    href: "https://crm.cliftonai.co",
+    subdomain: "crm.cliftonai.co",
     status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
@@ -60,8 +60,8 @@ const products: Product[] = [
     tagline: "Decision support",
     description:
       "Turns operational data into clear next actions — an AI advisor that watches the business so your team doesn't have to.",
-    href: "https://merlow.cliftonai.com",
-    subdomain: "merlow.cliftonai.com",
+    href: "https://merlow.cliftonai.co",
+    subdomain: "merlow.cliftonai.co",
     status: "live",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
@@ -74,8 +74,8 @@ const products: Product[] = [
     tagline: "Performance analytics",
     description:
       "Evidence-based performance analytics — see what's actually working, and act on it in real time.",
-    href: "https://empirely.cliftonai.com",
-    subdomain: "empirely.cliftonai.com",
+    href: "https://empirely.cliftonai.co",
+    subdomain: "empirely.cliftonai.co",
     status: "in-development",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
@@ -335,10 +335,10 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
-                href="mailto:hello@cliftonai.com"
+                href="mailto:hello@cliftonai.co"
                 className="w-full rounded-full bg-brand-emerald px-6 py-3 text-sm font-semibold text-[#04150a] transition-colors duration-200 hover:bg-brand-emerald-light cursor-pointer sm:w-auto"
               >
-                hello@cliftonai.com
+                hello@cliftonai.co
               </a>
             </div>
           </div>

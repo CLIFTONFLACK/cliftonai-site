@@ -14,7 +14,7 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "700"],
 });
 
-const siteUrl = "https://cliftonai.com";
+const siteUrl = "https://cliftonai.co";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

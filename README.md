@@ -1,6 +1,6 @@
 # CliftonAi — Marketing Site
 
-Single-page marketing site for **cliftonai.com**. Built with Next.js (App Router) + Tailwind CSS v4, deployed as a fully static site on Vercel.
+Single-page marketing site for **cliftonai.co**. Built with Next.js (App Router) + Tailwind CSS v4, deployed as a fully static site on Vercel.
 
 ## Stack
 
@@ -32,11 +32,11 @@ The product grid links out to four subdomains. Update `products` in `src/app/pag
 
 | Product | Subdomain |
 |---|---|
-| ContentFlowSuite | flow.cliftonai.com |
-| SLC-CRM | crm.cliftonai.com |
-| Merlow's | merlow.cliftonai.com |
-| Empirely | empirely.cliftonai.com |
+| ContentFlowSuite | flow.cliftonai.co |
+| SLC-CRM | crm.cliftonai.co |
+| Merlow's | merlow.cliftonai.co |
+| Empirely | empirely.cliftonai.co |
 
 ## Deploy
 
-Push to GitHub, import into Vercel, set the production domain to `cliftonai.com`. See project chat history / handoff notes for the full multi-subdomain architecture recommendation.
+Push to GitHub, import into Vercel, set the production domain to `cliftonai.co`. See project chat history / handoff notes for the full multi-subdomain architecture recommendation.
