@@ -146,32 +146,6 @@ const pillars = [
   },
 ];
 
-const steps = [
-  {
-    step: "01",
-    title: "Discover",
-    description:
-      "We map how your commercial team actually works today: the tools, the gaps, the busywork.",
-  },
-  {
-    step: "02",
-    title: "Integrate",
-    description:
-      "We wire AI into that workflow directly, using our existing tools or a custom build.",
-  },
-  {
-    step: "03",
-    title: "Automate",
-    description:
-      "The routine work (content, CRM hygiene, reporting) runs without a human in the loop.",
-  },
-  {
-    step: "04",
-    title: "Scale",
-    description: "We monitor, refine, and expand the system as your operation grows.",
-  },
-];
-
 export default function Home() {
   return (
     <>
@@ -205,12 +179,6 @@ export default function Home() {
               className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
             >
               Who we are
-            </a>
-            <a
-              href="#how-it-works"
-              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
-            >
-              How it works
             </a>
             <a
               href="#contact"
@@ -401,32 +369,6 @@ export default function Home() {
                       {pillar.description}
                     </p>
                   </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* How it works */}
-        <section id="how-it-works" className="border-t border-border px-6 py-24">
-          <div className="mx-auto max-w-6xl">
-            <Reveal className="max-w-2xl">
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                How an engagement runs
-              </h2>
-            </Reveal>
-            <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((item, i) => (
-                <Reveal key={item.step} delay={i * 80}>
-                  <span className="brand-gradient-text font-heading text-3xl font-semibold">
-                    {item.step}
-                  </span>
-                  <h3 className="mt-3 font-heading text-lg font-semibold text-fg">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-                    {item.description}
-                  </p>
                 </Reveal>
               ))}
             </div>
