@@ -82,6 +82,16 @@ const products: Product[] = [
     status: "live",
     screenshot: "/screenshots/risinglions.jpg",
   },
+  {
+    name: "CliftonAi-DealMaker",
+    tagline: "Deal pipeline for small business",
+    description:
+      "Your leads are scattered across five inboxes and a spreadsheet nobody trusts. CliftonAi-DealMaker sources leads, scores them against your ideal customer, drafts outreach in your voice, and reminds you before a follow-up slips. You get a pipeline built for how your business actually sells, not a bloated enterprise CRM.",
+    href: "https://dealmaker.cliftonai.co",
+    subdomain: "dealmaker.cliftonai.co",
+    status: "live",
+    screenshot: "/screenshots/dealmaker.jpg",
+  },
 ];
 
 const pillars = [
