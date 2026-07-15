@@ -19,7 +19,7 @@ const products: Product[] = [
       "Your WordPress site and your content calendar shouldn't be two different jobs. Wordpress-ContentFlow Suite is a WordPress theme and integrated plugin suite that plans, drafts, and publishes on-brand content directly inside your site. You get one content flow, not a theme, a plugin, and a separate AI tool duct-taped together.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
-    status: "in-development",
+    status: "live",
     screenshot: "/screenshots/contentflowsuite.jpg",
   },
   {
