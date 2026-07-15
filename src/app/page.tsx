@@ -1,5 +1,4 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
 import { Reveal } from "./reveal";
 
 type Product = {
@@ -10,16 +9,6 @@ type Product = {
   subdomain: string;
   status: "live" | "in-development";
   screenshot: string;
-  icon: ReactNode;
-};
-
-const iconProps = {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.5,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
 };
 
 const products: Product[] = [
@@ -27,104 +16,71 @@ const products: Product[] = [
     name: "ContentFlowSuite",
     tagline: "Content operations",
     description:
-      "Plans, drafts, and publishes on-brand content across every channel. AI-generated, human-supervised.",
+      "Your content calendar shouldn't be a part-time job. ContentFlowSuite plans, drafts, and publishes on-brand content across every channel, AI-generated and human-supervised. You get a content engine running in the background, not another tab to manage.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
     status: "in-development",
     screenshot: "/screenshots/contentflowsuite.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="5" rx="1.5" />
-        <rect x="3" y="10.5" width="12" height="5" rx="1.5" />
-        <path d="M3 19.5h18" />
-        <path d="M18 13v4M18 17l-2-2M18 17l2-2" />
-      </svg>
-    ),
   },
   {
     name: "SLC-CRM",
     tagline: "Leisure & licensed property",
     description:
-      "The AI-powered CRM built for UK leisure and licensed property professionals. MatchMaker scores every requirement against every listing on the detail that actually decides these deals: use class, premises licence, covers, extraction. It surfaces only the pairings worth your morning.",
+      "Stop losing deals to a rival agent's inbox. MatchMaker scores every requirement against every listing on the detail that actually decides leisure deals: use class, premises licence, covers, extraction. You get a ranked shortlist worth your morning, not forty near-misses to scroll through.",
     href: "https://crm.cliftonai.co",
     subdomain: "crm.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/crm.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <path d="M4 21V9l8-5 8 5v12" />
-        <path d="M9 21v-6h6v6" />
-        <path d="M9 12h.01M15 12h.01" />
-      </svg>
-    ),
   },
   {
     name: "Merlow's",
     tagline: "Independent journalism + AI research",
     description:
-      "An independent news platform covering Middle East diplomacy: the Abraham Accords, the Cyrus Accord, and the quiet work of reconciliation. Its AI research assistant draws on Merlow's own reporting and reputable sources to give readers instant context on any development.",
+      "Most Middle East coverage picks a side before it picks a story. Merlow's is independent journalism on the region's diplomacy, backed by an AI research assistant that gives instant context on any development. You get the full picture, not the headline.",
     href: "https://merlows.com",
     subdomain: "merlows.com",
     status: "live",
     screenshot: "/screenshots/merlows.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H15v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" />
-        <path d="M15 4h3.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H15" />
-        <path d="M7 8h5M7 11h5M7 14h3" />
-      </svg>
-    ),
   },
   {
     name: "Empirely",
     tagline: "Performance analytics",
     description:
-      "Evidence-based performance analytics. See what's actually working, and act on it in real time.",
+      "You're making decisions on numbers you don't fully trust. Empirely is evidence-based performance analytics that shows you what's actually working. You get a clear signal to act on in real time, not another vanity dashboard.",
     href: "https://empirely.cliftonai.co",
     subdomain: "empirely.cliftonai.co",
     status: "in-development",
     screenshot: "/screenshots/empirely.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <path d="M4 20V10M11 20V4M18 20v-7" />
-        <path d="M3 20h18" />
-      </svg>
-    ),
   },
   {
     name: "GetForged",
     tagline: "AI app marketplace",
     description:
-      "Buy the AI tool you'd have hired a developer to build. GetForged lists pre-built apps, automations, and internal tools from AI builders. Install in hours, licensed or bought outright, from £49.",
+      "Someone already built the tool you were about to pay a developer thousands for. GetForged lists pre-built apps, automations, and internal tools from AI builders, installed in hours, from £49. You get software you own, not a quote you're still waiting on.",
     href: "https://getforged.cliftonai.co",
     subdomain: "getforged.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/getforged.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <path d="M4 8l1.5-4h13L20 8" />
-        <path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z" />
-        <path d="M9 12a3 3 0 0 0 6 0" />
-      </svg>
-    ),
   },
   {
     name: "DiffDoc",
     tagline: "Document comparison",
     description:
-      "Upload two versions of a document (.docx or .pdf) and DiffDoc reads both, scores similarity, and marks up exactly what changed. Comment, edit, and export an audit-ready annotated copy.",
+      "One clause changed. Did anyone catch it? DiffDoc reads two versions of a document, marks up exactly what changed, then lets you comment, edit, and export an audit-ready copy. You get certainty on what moved, not a manual read-through.",
     href: "https://diffdoc.cliftonai.co",
     subdomain: "diffdoc.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/diffdoc.jpg",
-    icon: (
-      <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
-        <rect x="3" y="4" width="8" height="16" rx="1.5" />
-        <rect x="13" y="4" width="8" height="16" rx="1.5" />
-        <path d="M6.5 8h1M6.5 11h1M6.5 14h1" />
-        <path d="M16.5 8h1M16.5 11h1M16.5 14h1" />
-      </svg>
-    ),
+  },
+  {
+    name: "The Rising Lions",
+    tagline: "Iran trade platform",
+    description:
+      "Iran's supply chains are opening. Most buyers don't know where to start. The Rising Lions connects verified Iranian manufacturers and suppliers with global buyers, backed by deal-sourcing and trade intelligence. You get a vetted route into a market everyone's watching.",
+    href: "https://www.therisinglions.com",
+    subdomain: "therisinglions.com",
+    status: "live",
+    screenshot: "/screenshots/risinglions.jpg",
   },
 ];
 
@@ -265,15 +221,10 @@ export default function Home() {
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-7">
-                      <div className="flex items-center justify-between">
-                        <div className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl text-white">
-                          {product.icon}
-                        </div>
-                        <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
-                          {product.subdomain} ↗
-                        </span>
-                      </div>
-                      <div className="mt-6 flex items-center gap-2.5">
+                      <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
+                        {product.subdomain} ↗
+                      </span>
+                      <div className="mt-4 flex items-center gap-2.5">
                         <h3 className="font-heading text-xl font-semibold text-fg">
                           {product.name}
                         </h3>
