@@ -9,6 +9,7 @@ type Product = {
   href: string;
   subdomain: string;
   status: "live" | "in-development";
+  screenshot: string;
   icon: ReactNode;
 };
 
@@ -26,10 +27,11 @@ const products: Product[] = [
     name: "ContentFlowSuite",
     tagline: "Content operations",
     description:
-      "Plans, drafts, and publishes on-brand content across every channel — AI-generated, human-supervised.",
+      "Plans, drafts, and publishes on-brand content across every channel. AI-generated, human-supervised.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
     status: "in-development",
+    screenshot: "/screenshots/contentflowsuite.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <rect x="3" y="4" width="18" height="5" rx="1.5" />
@@ -43,10 +45,11 @@ const products: Product[] = [
     name: "SLC-CRM",
     tagline: "Leisure & licensed property",
     description:
-      "The AI-powered CRM built for UK leisure and licensed property professionals. MatchMaker scores every requirement against every listing on the detail that actually decides these deals — use class, premises licence, covers, extraction — and surfaces only the pairings worth your morning.",
+      "The AI-powered CRM built for UK leisure and licensed property professionals. MatchMaker scores every requirement against every listing on the detail that actually decides these deals: use class, premises licence, covers, extraction. It surfaces only the pairings worth your morning.",
     href: "https://crm.cliftonai.co",
     subdomain: "crm.cliftonai.co",
     status: "live",
+    screenshot: "/screenshots/crm.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 21V9l8-5 8 5v12" />
@@ -59,10 +62,11 @@ const products: Product[] = [
     name: "Merlow's",
     tagline: "Independent journalism + AI research",
     description:
-      "An independent news platform covering Middle East diplomacy — the Abraham Accords, the Cyrus Accord, and the quiet work of reconciliation. Its AI research assistant draws on Merlow's own reporting and reputable sources to give readers instant context on any development.",
+      "An independent news platform covering Middle East diplomacy: the Abraham Accords, the Cyrus Accord, and the quiet work of reconciliation. Its AI research assistant draws on Merlow's own reporting and reputable sources to give readers instant context on any development.",
     href: "https://merlows.com",
     subdomain: "merlows.com",
     status: "live",
+    screenshot: "/screenshots/merlows.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H15v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" />
@@ -75,10 +79,11 @@ const products: Product[] = [
     name: "Empirely",
     tagline: "Performance analytics",
     description:
-      "Evidence-based performance analytics — see what's actually working, and act on it in real time.",
+      "Evidence-based performance analytics. See what's actually working, and act on it in real time.",
     href: "https://empirely.cliftonai.co",
     subdomain: "empirely.cliftonai.co",
     status: "in-development",
+    screenshot: "/screenshots/empirely.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 20V10M11 20V4M18 20v-7" />
@@ -90,10 +95,11 @@ const products: Product[] = [
     name: "GetForged",
     tagline: "AI app marketplace",
     description:
-      "Buy the AI tool you'd have hired a developer to build. GetForged lists pre-built apps, automations, and internal tools from AI builders — install in hours, licensed or bought outright, from £49.",
+      "Buy the AI tool you'd have hired a developer to build. GetForged lists pre-built apps, automations, and internal tools from AI builders. Install in hours, licensed or bought outright, from £49.",
     href: "https://getforged.cliftonai.co",
     subdomain: "getforged.cliftonai.co",
     status: "live",
+    screenshot: "/screenshots/getforged.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <path d="M4 8l1.5-4h13L20 8" />
@@ -106,10 +112,11 @@ const products: Product[] = [
     name: "DiffDoc",
     tagline: "Document comparison",
     description:
-      "Upload two versions of a document — .docx or .pdf — and DiffDoc reads both, scores similarity, and marks up exactly what changed. Comment, edit, and export an audit-ready annotated copy.",
+      "Upload two versions of a document (.docx or .pdf) and DiffDoc reads both, scores similarity, and marks up exactly what changed. Comment, edit, and export an audit-ready annotated copy.",
     href: "https://diffdoc.cliftonai.co",
     subdomain: "diffdoc.cliftonai.co",
     status: "live",
+    screenshot: "/screenshots/diffdoc.jpg",
     icon: (
       <svg {...iconProps} className="h-6 w-6" aria-hidden="true">
         <rect x="3" y="4" width="8" height="16" rx="1.5" />
@@ -125,12 +132,12 @@ const pillars = [
   {
     title: "Integrate",
     description:
-      "We connect AI into the systems you already run — no rip-and-replace, no six-month migration.",
+      "We connect AI into the systems you already run. No rip-and-replace, no six-month migration.",
   },
   {
     title: "Automate",
     description:
-      "Repetitive commercial work — content, follow-ups, reporting — runs itself, supervised by your team.",
+      "Repetitive commercial work (content, follow-ups, reporting) runs itself, supervised by your team.",
   },
   {
     title: "Scale",
@@ -144,7 +151,7 @@ const steps = [
     step: "01",
     title: "Discover",
     description:
-      "We map how your commercial team actually works today — the tools, the gaps, the busywork.",
+      "We map how your commercial team actually works today: the tools, the gaps, the busywork.",
   },
   {
     step: "02",
@@ -156,7 +163,7 @@ const steps = [
     step: "03",
     title: "Automate",
     description:
-      "The routine work — content, CRM hygiene, reporting — runs without a human in the loop.",
+      "The routine work (content, CRM hygiene, reporting) runs without a human in the loop.",
   },
   {
     step: "04",
@@ -192,6 +199,12 @@ export default function Home() {
               className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
             >
               Products
+            </a>
+            <a
+              href="#who-we-are"
+              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
+            >
+              Who we are
             </a>
             <a
               href="#how-it-works"
@@ -230,7 +243,7 @@ export default function Home() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
               CliftonAi designs, integrates, and ships AI-powered software for
-              revenue teams — replacing manual busywork with systems that plan,
+              revenue teams, replacing manual busywork with systems that plan,
               act, and report on their own.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -246,36 +259,6 @@ export default function Home() {
               >
                 Book a call
               </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Positioning */}
-        <section className="border-t border-border px-6 py-24">
-          <div className="mx-auto max-w-6xl">
-            <Reveal className="max-w-2xl">
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                Not another AI vendor. An integrator.
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                Most commercial teams don&apos;t need another dashboard — they
-                need AI wired directly into how they already work. That&apos;s
-                the job.
-              </p>
-            </Reveal>
-            <div className="mt-14 grid gap-6 sm:grid-cols-3">
-              {pillars.map((pillar, i) => (
-                <Reveal key={pillar.title} delay={i * 100}>
-                  <div className="glass glass-hover h-full rounded-2xl p-6">
-                    <h3 className="font-heading text-xl font-semibold text-fg">
-                      {pillar.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                      {pillar.description}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
             </div>
           </div>
         </section>
@@ -297,34 +280,127 @@ export default function Home() {
                 <Reveal key={product.name} delay={i * 80}>
                   <a
                     href={product.href}
-                    className="glass glass-hover group relative flex h-full flex-col rounded-2xl p-7 cursor-pointer"
+                    className="glass glass-hover group relative flex h-full flex-col overflow-hidden rounded-2xl cursor-pointer"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl text-white">
-                        {product.icon}
+                    <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
+                      <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1.5 px-3 py-2">
+                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
                       </div>
-                      <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
-                        {product.subdomain} ↗
-                      </span>
+                      <Image
+                        src={product.screenshot}
+                        alt={`${product.name} product screenshot`}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      />
                     </div>
-                    <div className="mt-6 flex items-center gap-2.5">
-                      <h3 className="font-heading text-xl font-semibold text-fg">
-                        {product.name}
-                      </h3>
-                      {product.status === "in-development" && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
-                          <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
-                          In development
+                    <div className="flex flex-1 flex-col p-7">
+                      <div className="flex items-center justify-between">
+                        <div className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl text-white">
+                          {product.icon}
+                        </div>
+                        <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
+                          {product.subdomain} ↗
                         </span>
-                      )}
+                      </div>
+                      <div className="mt-6 flex items-center gap-2.5">
+                        <h3 className="font-heading text-xl font-semibold text-fg">
+                          {product.name}
+                        </h3>
+                        {product.status === "in-development" && (
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
+                            <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
+                            In development
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+                        {product.tagline}
+                      </p>
+                      <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                        {product.description}
+                      </p>
                     </div>
-                    <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
-                      {product.tagline}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                      {product.description}
-                    </p>
                   </a>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Who we are */}
+        <section id="who-we-are" className="border-t border-border px-6 py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-12 sm:grid-cols-2 sm:items-center">
+              <Reveal>
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+                  Who we are
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+                  CliftonAi is a small, focused AI integration studio founded by
+                  Clifton Flack. We don&apos;t sell generic software and walk
+                  away. Every product on this site is one we designed, shipped,
+                  and still operate ourselves.
+                </p>
+                <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+                  That means we build with the same constraints our clients
+                  live under: real data, real deadlines, real teams who need a
+                  tool to work on day one, not after a quarter of onboarding.
+                </p>
+              </Reveal>
+              <Reveal delay={100}>
+                <div className="glass rounded-2xl p-8">
+                  <h3 className="font-heading text-lg font-semibold text-fg">
+                    How we work
+                  </h3>
+                  <ul className="mt-4 space-y-3 text-sm leading-relaxed text-fg-muted">
+                    <li className="flex gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-emerald" />
+                      Small team, direct access. No account managers between
+                      you and the people building your tool.
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-emerald" />
+                      Built and battle-tested on our own products first.
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-emerald" />
+                      Integrated into your existing workflow, not a new system
+                      you have to learn.
+                    </li>
+                  </ul>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* Positioning */}
+        <section className="border-t border-border px-6 py-24">
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="max-w-2xl">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+                Not another AI vendor. An integrator.
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+                Most commercial teams don&apos;t need another dashboard. They
+                need AI wired directly into how they already work. That&apos;s
+                the job.
+              </p>
+            </Reveal>
+            <div className="mt-14 grid gap-6 sm:grid-cols-3">
+              {pillars.map((pillar, i) => (
+                <Reveal key={pillar.title} delay={i * 100}>
+                  <div className="glass glass-hover h-full rounded-2xl p-6">
+                    <h3 className="font-heading text-xl font-semibold text-fg">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                      {pillar.description}
+                    </p>
+                  </div>
                 </Reveal>
               ))}
             </div>
