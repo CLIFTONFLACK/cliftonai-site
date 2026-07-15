@@ -17,7 +17,7 @@ const products: Product[] = [
     name: "CliftonAi-WPcontentflowsuite",
     tagline: "Content operations",
     description:
-      "Your WordPress site and content calendar shouldn't be two different jobs. CliftonAi-WPcontentflowsuite is a WordPress theme and plugin suite that plans, drafts, and publishes on-brand content inside your site. You get one content flow, not a theme, a plugin, and a separate AI tool duct-taped together.",
+      "Most WordPress sites run four disconnected tools that never share context. CliftonAi-WPcontentflowsuite pairs a plain-language-editable theme with an AI content generator, RSS automation, and a feedback tool that flags and fixes issues, all in one plugin. You get one settings hub, not four logins that don't talk to each other.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
     status: "live",
@@ -94,7 +94,7 @@ const products: Product[] = [
     name: "CliftonAi-DealMaker",
     tagline: "Deal pipeline for small business",
     description:
-      "Your leads are scattered across five inboxes and a spreadsheet nobody trusts. CliftonAi-DealMaker sources leads, scores them against your ideal customer, drafts outreach in your voice, and reminds you before a follow-up slips. You get a pipeline built for how your business actually sells, not a bloated enterprise CRM.",
+      "Your leads are scattered across five inboxes and a spreadsheet nobody trusts. CliftonAi-DealMaker sources leads, drafts outreach, captures replies, books meetings, and tracks every deal to close, automatically, in a pipeline you fully customize. You get one automated flow, not five disconnected tools stitched together.",
     href: "https://dealmaker.cliftonai.co",
     subdomain: "dealmaker.cliftonai.co",
     status: "live",
