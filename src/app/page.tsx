@@ -13,17 +13,17 @@ type Product = {
 
 const products: Product[] = [
   {
-    name: "ContentFlowSuite",
+    name: "Wordpress-ContentFlow Suite",
     tagline: "Content operations",
     description:
-      "Your content calendar shouldn't be a part-time job. ContentFlowSuite plans, drafts, and publishes on-brand content across every channel, AI-generated and human-supervised. You get a content engine running in the background, not another tab to manage.",
+      "Your WordPress site and your content calendar shouldn't be two different jobs. Wordpress-ContentFlow Suite is a WordPress theme and integrated plugin suite that plans, drafts, and publishes on-brand content directly inside your site. You get one content flow, not a theme, a plugin, and a separate AI tool duct-taped together.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
     status: "in-development",
     screenshot: "/screenshots/contentflowsuite.jpg",
   },
   {
-    name: "SLC-CRM",
+    name: "CliftonAi-CRM",
     tagline: "Leisure & licensed property",
     description:
       "Stop losing deals to a rival agent's inbox. MatchMaker scores every requirement against every listing on the detail that actually decides leisure deals: use class, premises licence, covers, extraction. You get a ranked shortlist worth your morning, not forty near-misses to scroll through.",
@@ -33,20 +33,20 @@ const products: Product[] = [
     screenshot: "/screenshots/crm.jpg",
   },
   {
-    name: "Merlow's",
+    name: "Merlows News",
     tagline: "Independent journalism + AI research",
     description:
-      "Most Middle East coverage picks a side before it picks a story. Merlow's is independent journalism on the region's diplomacy, backed by an AI research assistant that gives instant context on any development. You get the full picture, not the headline.",
+      "Most Middle East coverage picks a side before it picks a story. Merlows News is independent journalism on the region's diplomacy, backed by an AI research assistant that gives instant context on any development. You get the full picture, not the headline.",
     href: "https://merlows.com",
     subdomain: "merlows.com",
     status: "live",
     screenshot: "/screenshots/merlows.jpg",
   },
   {
-    name: "Empirely",
-    tagline: "Performance analytics",
+    name: "Empirely Game",
+    tagline: "Build. Survive. Dominate.",
     description:
-      "You're making decisions on numbers you don't fully trust. Empirely is evidence-based performance analytics that shows you what's actually working. You get a clear signal to act on in real time, not another vanity dashboard.",
+      "You get 3 Action Points a day. Every business you ignore starts dying. Empirely Game is a daily mobile business-building game where real-world-style economic, political, and social events hit your portfolio and you decide what to save. You get one shot a day to build, survive, and dominate, not another idle game that plays itself.",
     href: "https://empirely.cliftonai.co",
     subdomain: "empirely.cliftonai.co",
     status: "in-development",
@@ -63,10 +63,10 @@ const products: Product[] = [
     screenshot: "/screenshots/getforged.jpg",
   },
   {
-    name: "DiffDoc",
+    name: "CliftonAi-DiffDoc",
     tagline: "Document comparison",
     description:
-      "One clause changed. Did anyone catch it? DiffDoc reads two versions of a document, marks up exactly what changed, then lets you comment, edit, and export an audit-ready copy. You get certainty on what moved, not a manual read-through.",
+      "One clause changed. Did anyone catch it? CliftonAi-DiffDoc reads two versions of a document, marks up exactly what changed, then lets you comment, edit, and export an audit-ready copy. You get certainty on what moved, not a manual read-through.",
     href: "https://diffdoc.cliftonai.co",
     subdomain: "diffdoc.cliftonai.co",
     status: "live",
