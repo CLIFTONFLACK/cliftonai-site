@@ -250,19 +250,21 @@ export default function Home() {
                     href={product.href}
                     className="glass glass-hover group relative flex h-full flex-col overflow-hidden rounded-2xl cursor-pointer"
                   >
-                    <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
-                      <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1.5 px-3 py-2">
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+                    <div className="px-5 pt-5">
+                      <div className="relative aspect-[16/9] w-full max-w-[280px] overflow-hidden rounded-lg border border-border bg-bg-card">
+                        <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1 px-2 py-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle/40" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle/40" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle/40" />
+                        </div>
+                        <Image
+                          src={product.screenshot}
+                          alt={`${product.name} product screenshot`}
+                          fill
+                          sizes="280px"
+                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
-                      <Image
-                        src={product.screenshot}
-                        alt={`${product.name} product screenshot`}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 50vw"
-                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                      />
                     </div>
                     <div className="flex flex-1 flex-col p-7">
                       <div className="flex items-center justify-between">
