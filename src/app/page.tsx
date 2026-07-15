@@ -9,18 +9,20 @@ type Product = {
   subdomain: string;
   status: "live" | "in-development";
   screenshot: string;
+  category: "self" | "client";
 };
 
 const products: Product[] = [
   {
-    name: "Wordpress-ContentFlow Suite",
+    name: "CliftonAi-WPcontentflowsuite",
     tagline: "Content operations",
     description:
-      "Your WordPress site and your content calendar shouldn't be two different jobs. Wordpress-ContentFlow Suite is a WordPress theme and integrated plugin suite that plans, drafts, and publishes on-brand content directly inside your site. You get one content flow, not a theme, a plugin, and a separate AI tool duct-taped together.",
+      "Your WordPress site and content calendar shouldn't be two different jobs. CliftonAi-WPcontentflowsuite is a WordPress theme and plugin suite that plans, drafts, and publishes on-brand content inside your site. You get one content flow, not a theme, a plugin, and a separate AI tool duct-taped together.",
     href: "https://flow.cliftonai.co",
     subdomain: "flow.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/contentflowsuite.jpg",
+    category: "self",
   },
   {
     name: "CliftonAi-CRM",
@@ -31,6 +33,7 @@ const products: Product[] = [
     subdomain: "crm.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/crm.jpg",
+    category: "self",
   },
   {
     name: "Merlows News",
@@ -41,16 +44,18 @@ const products: Product[] = [
     subdomain: "merlows.com",
     status: "live",
     screenshot: "/screenshots/merlows.jpg",
+    category: "client",
   },
   {
     name: "Empirely Game",
     tagline: "Build. Survive. Dominate.",
     description:
-      "You get 3 Action Points a day. Every business you ignore starts dying. Empirely Game is a daily mobile business-building game where real-world-style economic, political, and social events hit your portfolio and you decide what to save. You get one shot a day to build, survive, and dominate, not another idle game that plays itself.",
+      "You get 3 Action Points a day. Every business you ignore starts dying. Empirely Game is a daily mobile business game where real-world economic, political, and social events hit your portfolio. You get one shot a day to build, survive, and dominate, not an idle game that plays itself.",
     href: "https://empirely.cliftonai.co",
     subdomain: "empirely.cliftonai.co",
     status: "in-development",
     screenshot: "/screenshots/empirely.jpg",
+    category: "client",
   },
   {
     name: "GetForged",
@@ -61,6 +66,7 @@ const products: Product[] = [
     subdomain: "getforged.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/getforged.jpg",
+    category: "client",
   },
   {
     name: "CliftonAi-DiffDoc",
@@ -71,6 +77,7 @@ const products: Product[] = [
     subdomain: "diffdoc.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/diffdoc.jpg",
+    category: "self",
   },
   {
     name: "The Rising Lions",
@@ -81,6 +88,7 @@ const products: Product[] = [
     subdomain: "therisinglions.com",
     status: "live",
     screenshot: "/screenshots/risinglions.jpg",
+    category: "client",
   },
   {
     name: "CliftonAi-DealMaker",
@@ -91,8 +99,68 @@ const products: Product[] = [
     subdomain: "dealmaker.cliftonai.co",
     status: "live",
     screenshot: "/screenshots/dealmaker.jpg",
+    category: "self",
   },
 ];
+
+const productCategories = [
+  {
+    key: "self" as const,
+    title: "Tools We Built For Ourselves and Available to You",
+    intro: "CliftonAi-branded products, built for our own operation first.",
+  },
+  {
+    key: "client" as const,
+    title: "Commercial Infrastructure We Built for Clients",
+    intro: "Platforms designed and shipped for specific client businesses.",
+  },
+];
+
+function ProductCard({ product }: { product: Product }) {
+  return (
+    <a
+      href={product.href}
+      className="glass glass-hover group relative flex h-full flex-col overflow-hidden rounded-2xl cursor-pointer"
+    >
+      <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
+        <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1.5 px-3 py-2">
+          <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+          <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+          <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
+        </div>
+        <Image
+          src={product.screenshot}
+          alt={`${product.name} product screenshot`}
+          fill
+          sizes="(max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-7">
+        <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
+          {product.subdomain} ↗
+        </span>
+        <div className="mt-4 flex items-center gap-2.5">
+          <h3 className="font-heading text-xl font-semibold text-fg">
+            {product.name}
+          </h3>
+          {product.status === "in-development" && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
+              In development
+            </span>
+          )}
+        </div>
+        <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+          {product.tagline}
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+          {product.description}
+        </p>
+      </div>
+    </a>
+  );
+}
 
 const pillars = [
   {
@@ -209,53 +277,26 @@ export default function Home() {
                 Each one ships and scales independently.
               </p>
             </Reveal>
-            <div className="mt-14 grid grid-cols-2 gap-5 lg:grid-cols-3">
-              {products.map((product, i) => (
-                <Reveal key={product.name} delay={i * 80}>
-                  <a
-                    href={product.href}
-                    className="glass glass-hover group relative flex h-full flex-col overflow-hidden rounded-2xl cursor-pointer"
-                  >
-                    <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
-                      <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1.5 px-3 py-2">
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
-                        <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
-                      </div>
-                      <Image
-                        src={product.screenshot}
-                        alt={`${product.name} product screenshot`}
-                        fill
-                        sizes="(max-width: 1024px) 50vw, 33vw"
-                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-7">
-                      <span className="text-xs text-fg-subtle transition-colors duration-200 group-hover:text-brand-emerald">
-                        {product.subdomain} ↗
-                      </span>
-                      <div className="mt-4 flex items-center gap-2.5">
-                        <h3 className="font-heading text-xl font-semibold text-fg">
-                          {product.name}
-                        </h3>
-                        {product.status === "in-development" && (
-                          <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong px-2.5 py-0.5 text-[11px] font-medium tracking-wide text-fg-subtle uppercase">
-                            <span className="h-1.5 w-1.5 rounded-full bg-fg-subtle" aria-hidden="true" />
-                            In development
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
-                        {product.tagline}
-                      </p>
-                      <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                        {product.description}
-                      </p>
-                    </div>
-                  </a>
-                </Reveal>
-              ))}
-            </div>
+            {productCategories.map((category, ci) => {
+              const categoryProducts = products.filter((p) => p.category === category.key);
+              return (
+                <div key={category.key} className={ci === 0 ? "mt-14" : "mt-20"}>
+                  <Reveal>
+                    <h3 className="font-heading text-xl font-semibold text-fg sm:text-2xl">
+                      {category.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-fg-muted">{category.intro}</p>
+                  </Reveal>
+                  <div className="mt-8 grid grid-cols-2 gap-5 lg:grid-cols-3">
+                    {categoryProducts.map((product, i) => (
+                      <Reveal key={product.name} delay={i * 80}>
+                        <ProductCard product={product} />
+                      </Reveal>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
