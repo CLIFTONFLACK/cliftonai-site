@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <path d="M 83.6 26.5 A 41 41 0 1 0 83.6 73.5" stroke="#ffffff" stroke-width="9" stroke-dasharray="26 5"/>
+  <circle cx="50" cy="50" r="25" stroke="#ffffff" stroke-width="2.5"/>
+  <g stroke="#ffffff" stroke-width="3.5">
+    <line x1="50" y1="50" x2="50" y2="25"/>
+    <line x1="50" y1="50" x2="71.7" y2="37.5"/>
+    <line x1="50" y1="50" x2="71.7" y2="62.5"/>
+    <line x1="50" y1="50" x2="50" y2="75"/>
+    <line x1="50" y1="50" x2="28.3" y2="62.5"/>
+    <line x1="50" y1="50" x2="28.3" y2="37.5"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="50" cy="50" r="11"/>
+    <circle cx="50" cy="25" r="5.5"/>
+    <circle cx="71.7" cy="37.5" r="5.5"/>
+    <circle cx="71.7" cy="62.5" r="5.5"/>
+    <circle cx="50" cy="75" r="5.5"/>
+    <circle cx="28.3" cy="62.5" r="5.5"/>
+    <circle cx="28.3" cy="37.5" r="5.5"/>
+  </g>
+</svg>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "CliftonAi — AI Integrator for Commercial Operations",
   description:
-    "CliftonAi builds and integrates AI-powered tools that streamline commercial operations — ContentFlowSuite, SLC-CRM, Merlow's, and Empirely.",
+    "CliftonAi is an AI integration studio. We design, integrate, and operate AI systems for commercial teams — and build products we run ourselves: ContentFlow, CRM, DiffDoc, and DealMaker.",
   icons: {
     icon: [
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CliftonAi — AI Integrator for Commercial Operations",
     description:
-      "We build and integrate AI-powered tools that streamline commercial operations.",
+      "We design, integrate, and operate AI systems for commercial teams — and every product we sell, we run ourselves first.",
     url: siteUrl,
     siteName: "CliftonAi",
     type: "website",

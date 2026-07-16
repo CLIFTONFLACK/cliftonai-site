@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { Reveal } from "./reveal";
 import { ProductsSection } from "./products-section";
+import { HeroDiagram } from "./hero-diagram";
 import { products } from "./products-data";
+
+const WHATSAPP_HREF = "https://wa.me/447547258570";
 
 const pillars = [
   {
@@ -21,6 +24,12 @@ const pillars = [
   },
 ];
 
+const proofPoints = [
+  "4 products we run ourselves, daily",
+  "4 client platforms shipped",
+  "Founder-led, UK-based",
+];
+
 export default function Home() {
   return (
     <>
@@ -31,11 +40,10 @@ export default function Home() {
         >
           <a href="#top" className="flex items-center gap-2.5 cursor-pointer">
             <Image
-              src="/brand/logo-icon.png"
+              src="/brand/logo-mark-compact.svg"
               alt="CliftonAi"
               width={28}
-              height={30}
-              style={{ height: "auto" }}
+              height={28}
               priority
             />
             <span className="font-heading text-lg font-semibold tracking-tight text-fg">
@@ -73,21 +81,19 @@ export default function Home() {
 
       <main id="top" className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 pt-40 pb-28 sm:pt-48">
-          <div aria-hidden="true" className="blob blob-emerald animate-float h-[420px] w-[560px] -top-32 left-1/2 -translate-x-[70%]" />
-          <div aria-hidden="true" className="blob blob-forest animate-float-slow h-[380px] w-[480px] -top-10 left-1/2 translate-x-[10%]" />
+        <section className="relative overflow-hidden px-6 pt-40 pb-20 sm:pt-48">
           <div className="animate-fade-in-up relative mx-auto max-w-4xl text-center">
             <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
               AI Integrator
             </span>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-              We build AI tools that run your{" "}
-              <span className="brand-gradient-text">commercial operations</span>
+              AI that runs inside your{" "}
+              <span className="brand-gradient-text">commercial operation</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
-              CliftonAi designs, integrates, and ships AI-powered software for
-              revenue teams, replacing manual busywork with systems that plan,
-              act, and report on their own.
+              CliftonAi designs, integrates, and operates AI-powered software
+              for revenue teams — and every product we sell, we run ourselves
+              first.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
@@ -102,6 +108,50 @@ export default function Home() {
               >
                 Book a call
               </a>
+            </div>
+            <ul className="mt-10 flex flex-col items-center justify-center gap-2 text-xs font-medium tracking-wide text-fg-subtle uppercase sm:flex-row sm:gap-0">
+              {proofPoints.map((point, i) => (
+                <li key={point} className="flex items-center">
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="mx-4 hidden h-1 w-1 rounded-full bg-brand-emerald sm:block"
+                    />
+                  )}
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <HeroDiagram />
+        </section>
+
+        {/* Positioning — the frame before the evidence */}
+        <section className="border-t border-border px-6 py-24">
+          <div className="mx-auto max-w-6xl">
+            <Reveal className="max-w-2xl">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+                Not another AI vendor. An integrator.
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+                Most commercial teams don&apos;t need another dashboard. They
+                need AI wired directly into how they already work. That&apos;s
+                the job.
+              </p>
+            </Reveal>
+            <div className="mt-14 grid gap-6 sm:grid-cols-3">
+              {pillars.map((pillar, i) => (
+                <Reveal key={pillar.title} delay={i * 100}>
+                  <div className="glass glass-hover h-full rounded-2xl p-6">
+                    <h3 className="font-heading text-xl font-semibold text-fg">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                      {pillar.description}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
@@ -155,36 +205,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Positioning */}
-        <section className="border-t border-border px-6 py-24">
-          <div className="mx-auto max-w-6xl">
-            <Reveal className="max-w-2xl">
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                Not another AI vendor. An integrator.
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                Most commercial teams don&apos;t need another dashboard. They
-                need AI wired directly into how they already work. That&apos;s
-                the job.
-              </p>
-            </Reveal>
-            <div className="mt-14 grid gap-6 sm:grid-cols-3">
-              {pillars.map((pillar, i) => (
-                <Reveal key={pillar.title} delay={i * 100}>
-                  <div className="glass glass-hover h-full rounded-2xl p-6">
-                    <h3 className="font-heading text-xl font-semibold text-fg">
-                      {pillar.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                      {pillar.description}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Contact / CTA */}
         <section id="contact" className="relative overflow-hidden border-t border-border px-6 py-24">
           <div aria-hidden="true" className="blob blob-forest animate-float-slow h-[420px] w-[560px] -bottom-40 left-1/2 -translate-x-1/2" />
@@ -204,6 +224,14 @@ export default function Home() {
                 >
                   hello@cliftonai.co
                 </a>
+                <a
+                  href={WHATSAPP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass glass-hover w-full rounded-full px-6 py-3 text-sm font-semibold text-brand-emerald cursor-pointer sm:w-auto"
+                >
+                  Message us on WhatsApp
+                </a>
               </div>
             </div>
           </Reveal>
@@ -214,11 +242,10 @@ export default function Home() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-2.5">
             <Image
-              src="/brand/logo-icon.png"
+              src="/brand/logo-mark-compact.svg"
               alt=""
               width={20}
-              height={22}
-              style={{ height: "auto" }}
+              height={20}
               aria-hidden="true"
             />
             <span className="font-heading text-sm font-semibold text-fg">
@@ -232,7 +259,7 @@ export default function Home() {
                 href={product.href}
                 className="transition-colors duration-200 hover:text-fg cursor-pointer"
               >
-                {product.name}
+                {product.shortName ?? product.name}
               </a>
             ))}
           </div>

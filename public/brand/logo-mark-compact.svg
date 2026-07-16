@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Solid C ring (small-size variant: no segments, no gradient) -->
+  <path d="M 82.5 27 A 40 40 0 1 0 82.5 73" stroke="#0b3d1e" stroke-width="12"/>
+  <!-- Three spokes -->
+  <g stroke="#0b3d1e" stroke-width="5">
+    <line x1="50" y1="50" x2="50" y2="24"/>
+    <line x1="50" y1="50" x2="72.5" y2="63"/>
+    <line x1="50" y1="50" x2="27.5" y2="63"/>
+  </g>
+  <!-- Hub + nodes -->
+  <g fill="#0b3d1e">
+    <circle cx="50" cy="50" r="13"/>
+    <circle cx="50" cy="24" r="7"/>
+    <circle cx="72.5" cy="63" r="7"/>
+    <circle cx="27.5" cy="63" r="7"/>
+  </g>
+</svg>

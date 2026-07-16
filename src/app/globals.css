@@ -2,6 +2,7 @@
 
 :root {
   --bg: #fbfdfc;
+  --bg-panel: #f2f7f3;
   --bg-elevated: rgba(255, 255, 255, 0.72);
   --bg-card: rgba(255, 255, 255, 0.6);
   --border: rgba(14, 40, 26, 0.08);
@@ -18,6 +19,7 @@
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-bg-panel: var(--bg-panel);
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-card: var(--bg-card);
   --color-border: var(--border);
@@ -138,6 +140,65 @@ body {
 
 .animate-fade-in-up {
   animation: fade-in-up 700ms ease both;
+}
+
+/* Hero integration diagram — lines draw in once, then pulses travel
+   node → hub forever. Under prefers-reduced-motion the global block below
+   collapses the draw to its final state and hides the pulses. */
+.diagram-path {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: draw-line 1.2s ease-out both;
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.diagram-pulse {
+  offset-rotate: 0deg;
+  opacity: 0;
+  animation: pulse-travel 3.8s ease-in-out infinite;
+}
+
+@keyframes pulse-travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.diagram-hub-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hub-pulse 4s ease-out infinite;
+}
+
+@keyframes hub-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
 
 .reveal {
