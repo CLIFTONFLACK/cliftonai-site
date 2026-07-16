@@ -1,0 +1,32 @@
+<!--
+  CliftonAi "Built by" endorsement badge.
+  Framework-agnostic, self-contained (inline SVG compact mark, inline styles).
+  Drop into any client-site footer. Keep it SMALLER than the client's own logo.
+  Adjust the two colors for the host site's background if needed:
+    - mark + "CliftonAi" strong: #0b3d1e (forest)  → use #6fcf87 on dark grounds
+    - label text:                #647568 (muted)   → use #9fb3a5 on dark grounds
+-->
+<a href="https://cliftonai.co" target="_blank" rel="noopener"
+   aria-label="Built by CliftonAi — opens cliftonai.co"
+   style="display:inline-flex;align-items:center;gap:7px;
+          font:500 12px/1 system-ui,-apple-system,'Segoe UI',sans-serif;
+          color:#647568;text-decoration:none;letter-spacing:.02em;
+          opacity:.85;transition:opacity .2s ease;"
+   onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.85">
+  <svg width="15" height="15" viewBox="0 0 100 100" fill="none" aria-hidden="true"
+       style="display:block;flex:none;">
+    <path d="M 82.5 27 A 40 40 0 1 0 82.5 73" stroke="#0b3d1e" stroke-width="12"/>
+    <g stroke="#0b3d1e" stroke-width="5">
+      <line x1="50" y1="50" x2="50" y2="24"/>
+      <line x1="50" y1="50" x2="72.5" y2="63"/>
+      <line x1="50" y1="50" x2="27.5" y2="63"/>
+    </g>
+    <g fill="#0b3d1e">
+      <circle cx="50" cy="50" r="13"/>
+      <circle cx="50" cy="24" r="7"/>
+      <circle cx="72.5" cy="63" r="7"/>
+      <circle cx="27.5" cy="63" r="7"/>
+    </g>
+  </svg>
+  <span>Built by <strong style="color:#0b3d1e;font-weight:600;">CliftonAi</strong></span>
+</a>
