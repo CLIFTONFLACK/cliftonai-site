@@ -177,6 +177,24 @@ export default function Home() {
                   live under: real data, real deadlines, real teams who need a
                   tool to work on day one, not after a quarter of onboarding.
                 </p>
+                <div className="mt-8 flex items-center gap-4">
+                  {/* Founder portrait — swap this monogram for
+                      <Image src="/brand/clifton.jpg" width={56} height={56}
+                      alt="Clifton Flack" className="h-14 w-14 rounded-full object-cover" />
+                      once the photo is available. */}
+                  <span
+                    aria-hidden="true"
+                    className="brand-gradient flex h-14 w-14 shrink-0 items-center justify-center rounded-full font-heading text-lg font-semibold text-white"
+                  >
+                    CF
+                  </span>
+                  <div>
+                    <p className="font-heading text-base font-semibold text-fg">
+                      Clifton Flack
+                    </p>
+                    <p className="text-sm text-fg-muted">Founder, CliftonAi</p>
+                  </div>
+                </div>
               </Reveal>
               <Reveal delay={100}>
                 <div className="glass rounded-2xl p-8">

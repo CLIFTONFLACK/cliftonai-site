@@ -90,6 +90,15 @@ body {
   border-color: rgba(47, 122, 59, 0.35);
 }
 
+/* Branded keyboard-focus ring for the clickable (role="button") cards —
+   the default UA outline is invisible against the glass surfaces. */
+.card-focus:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--brand-emerald-bright);
+}
+
 /* Soft blurred blobs behind glass panels — gives the frosted glass something
    colorful to refract, otherwise glassmorphism on a plain white bg just
    reads as a bordered card. */

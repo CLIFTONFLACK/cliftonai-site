@@ -95,7 +95,7 @@ function ProductCard({
         if (e.key === "Enter" || e.key === " ") onOpen(product);
       }}
       style={product.accent ? { borderTopColor: product.accent } : undefined}
-      className="glass glass-hover group relative flex h-full flex-col overflow-hidden rounded-2xl border-t-[3px] cursor-pointer"
+      className="glass glass-hover card-focus group relative flex h-full flex-col overflow-hidden rounded-2xl border-t-[3px] cursor-pointer"
     >
       <Screenshot product={product} sizes="(max-width: 640px) 100vw, 50vw" />
       <div className="flex flex-1 flex-col p-6 sm:p-7">
@@ -154,7 +154,7 @@ function ClientRow({
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") onOpen(product);
       }}
-      className="glass glass-hover group flex flex-col overflow-hidden rounded-2xl cursor-pointer sm:flex-row"
+      className="glass glass-hover card-focus group flex flex-col overflow-hidden rounded-2xl cursor-pointer sm:flex-row"
     >
       <div className="sm:w-72 sm:shrink-0 sm:border-r sm:border-border">
         <Screenshot product={product} sizes="(max-width: 640px) 100vw, 288px" />

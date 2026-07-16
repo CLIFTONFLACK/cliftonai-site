@@ -24,7 +24,7 @@ export function HeroDiagram() {
       aria-hidden="true"
       viewBox="0 0 900 230"
       fill="none"
-      className="mx-auto mt-16 w-full max-w-3xl"
+      className="mx-auto mt-16 hidden w-full max-w-3xl md:block"
     >
       {/* Connections */}
       {paths.map((p) => (
