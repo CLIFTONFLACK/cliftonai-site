@@ -82,48 +82,52 @@ export default function Home() {
       <main id="top" className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden px-6 pt-40 pb-20 sm:pt-48">
-          <div className="animate-fade-in-up relative mx-auto max-w-4xl text-center">
-            <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
-              AI Integrator
-            </span>
-            <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-              AI that runs inside your{" "}
-              <span className="brand-gradient-text">commercial operation</span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
-              CliftonAi designs, integrates, and operates AI-powered software
-              for revenue teams — and every product we sell, we run ourselves
-              first.
-            </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="#products"
-                className="w-full rounded-full bg-brand-emerald-bright px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer sm:w-auto"
-              >
-                Explore the tools
-              </a>
-              <a
-                href="#contact"
-                className="glass-hover glass w-full rounded-full px-6 py-3 text-sm font-semibold text-fg cursor-pointer sm:w-auto"
-              >
-                Book a call
-              </a>
+          <div className="animate-fade-in-up relative mx-auto grid max-w-6xl items-center gap-y-16 lg:grid-cols-2 lg:gap-x-12">
+            <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+              <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
+                AI Integrator
+              </span>
+              <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
+                AI that runs inside your{" "}
+                <span className="brand-gradient-text">
+                  commercial operation
+                </span>
+              </h1>
+              <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
+                CliftonAi designs, integrates, and operates AI-powered
+                software for revenue teams — and every product we sell, we
+                run ourselves first.
+              </p>
+              <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row lg:w-auto lg:justify-start">
+                <a
+                  href="#products"
+                  className="w-full rounded-full bg-brand-emerald-bright px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer sm:w-auto"
+                >
+                  Explore the tools
+                </a>
+                <a
+                  href="#contact"
+                  className="glass-hover glass w-full rounded-full px-6 py-3 text-sm font-semibold text-fg cursor-pointer sm:w-auto"
+                >
+                  Book a call
+                </a>
+              </div>
+              <ul className="mt-10 flex flex-col items-center justify-center gap-2 text-xs font-medium tracking-wide text-fg-subtle uppercase sm:flex-row sm:gap-0 lg:justify-start">
+                {proofPoints.map((point, i) => (
+                  <li key={point} className="flex items-center">
+                    {i > 0 && (
+                      <span
+                        aria-hidden="true"
+                        className="mx-4 hidden h-1 w-1 rounded-full bg-brand-emerald sm:block"
+                      />
+                    )}
+                    {point}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="mt-10 flex flex-col items-center justify-center gap-2 text-xs font-medium tracking-wide text-fg-subtle uppercase sm:flex-row sm:gap-0">
-              {proofPoints.map((point, i) => (
-                <li key={point} className="flex items-center">
-                  {i > 0 && (
-                    <span
-                      aria-hidden="true"
-                      className="mx-4 hidden h-1 w-1 rounded-full bg-brand-emerald sm:block"
-                    />
-                  )}
-                  {point}
-                </li>
-              ))}
-            </ul>
+            <HeroDiagram />
           </div>
-          <HeroDiagram />
         </section>
 
         {/* Positioning — the frame before the evidence */}

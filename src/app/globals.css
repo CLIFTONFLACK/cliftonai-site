@@ -207,6 +207,13 @@ body {
   }
 }
 
+/* Faint dot-grid texture behind the hero diagram, for depth without
+   competing with the node colors. */
+.hero-visual-panel {
+  background-image: radial-gradient(rgba(14, 40, 26, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
 .diagram-hub-pulse {
   transform-box: fill-box;
   transform-origin: center;
