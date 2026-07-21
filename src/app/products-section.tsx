@@ -203,7 +203,7 @@ function ProductModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="glass relative w-full max-w-2xl overflow-hidden rounded-3xl"
+        className="glass relative grid w-full max-w-4xl overflow-hidden rounded-3xl md:grid-cols-[2fr_3fr]"
       >
         <button
           onClick={onClose}
@@ -212,16 +212,16 @@ function ProductModal({
         >
           ✕
         </button>
-        <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
+        <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card md:aspect-auto md:h-full md:border-r md:border-b-0">
           <Image
             src={product.screenshot}
             alt={`${product.name} product screenshot`}
             fill
-            sizes="(max-width: 768px) 100vw, 672px"
+            sizes="(max-width: 768px) 100vw, 360px"
             className="object-cover object-top"
           />
         </div>
-        <div className="max-h-[50vh] overflow-y-auto p-8">
+        <div className="max-h-[60vh] overflow-y-auto p-8 md:max-h-[85vh]">
           <div className="flex flex-wrap items-center gap-2.5">
             <ProductLockup product={product} size="lg" />
             {product.status === "in-development" && <StatusBadge />}
