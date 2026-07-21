@@ -166,26 +166,44 @@ body {
   }
 }
 
-.diagram-pulse {
+.diagram-pulse,
+.diagram-pulse-halo {
   offset-rotate: 0deg;
+  transform-box: fill-box;
+  transform-origin: center;
   opacity: 0;
-  animation: pulse-travel 3.8s ease-in-out infinite;
+  animation: pulse-travel 3.6s ease-in-out infinite;
+}
+
+.diagram-pulse {
+  filter: drop-shadow(0 0 3px rgba(67, 160, 71, 0.9));
+}
+
+.diagram-pulse-halo {
+  filter: blur(3px);
 }
 
 @keyframes pulse-travel {
   0% {
     offset-distance: 0%;
     opacity: 0;
+    transform: scale(0.5);
   }
-  12% {
+  10% {
     opacity: 1;
+    transform: scale(1);
   }
-  78% {
+  50% {
+    transform: scale(1.25);
+  }
+  85% {
     opacity: 1;
+    transform: scale(1);
   }
   100% {
     offset-distance: 100%;
     opacity: 0;
+    transform: scale(0.5);
   }
 }
 
