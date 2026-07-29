@@ -153,7 +153,7 @@ reversed plate reads correctly on navy.
 
 ## Not done (needs user action / assets)
 
-- getbrian.xyz DNS, hosting, and `hello@getbrian.xyz` mailbox — domain not yet live
+- `hello@getbrian.xyz` mailbox — unverified. (getbrian.xyz itself is live: www.getbrian.xyz and www.cliftonai.co both serve this repo, auto-deployed on push to main.)
 - Re-shoot `public/screenshots/*.jpg` — still show pre-rebrand CliftonAi product UIs
 - Retrofit sub-site repos (DealMaker, DiffDoc, CRM, ContentFlow) with the new "Built by
   Brian" badge — those live in other repos, some without push access (see prior memory)
