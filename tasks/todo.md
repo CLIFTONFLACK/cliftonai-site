@@ -77,6 +77,7 @@ structure and copy untouched).
       45° jogs, hollow gold terminal rings, solid studs, gold pulses, real mark as hub.
 - [x] Metadata: title/OG title → "GetBrian — …", `siteName` → GetBrian.
 - [x] Nav CTA touch target 36px → 44px (was below the WCAG minimum).
+- [x] `docs/brand-book.html` brought up to the real identity — see below.
 
 ### Findings worth keeping
 
@@ -119,6 +120,37 @@ Note: browser-pane screenshots time out again this session (third time running),
 hero was verified by pulling the SSR'd SVG off the dev server and rasterising it with
 sharp — see the render helper approach in this session's transcript.
 
+### Brand book (same pass)
+
+`docs/brand-book.html` documented the placeholder identity throughout, so it was updated
+rather than left to rot:
+
+- **Logo plates are now generated.** `gen-icons.mjs` rewrites them between
+  `<!-- LOGO-PLATES:START/END -->` markers from `public/brand/*.svg`, namespacing each
+  inlined gradient id so six marks on one page can't collide. Hand-inlining is exactly
+  how a brand book goes stale, and the book has to stay self-contained (embedded fonts,
+  no external requests) because it gets published as a standalone artifact. Verified
+  idempotent — byte-identical across three consecutive runs.
+- Palette expanded from 2 brand values to 7, each with its measured contrast and the one
+  job it's allowed to do, plus a "why gold has four values" panel. The old margin note
+  ("never gold text on white") was too blunt to be followed correctly.
+- New rule panel: **the traces are structural** — includes the "3" failure and the three
+  cuts (display / compact / solo) with the size that selects each.
+- The brian→brain wordplay is kept as *name origin* but explicitly reframed as verbal-
+  only, with a note saying the logo no longer renders it, so the retired treatment
+  doesn't get reintroduced by someone reading the story chapter.
+- Animated-wordmark prompt rewritten — it previously scripted the ia→ai letter-swap.
+- Hex values in the image/video prompt library updated (they hard-coded the old pair).
+- **Added the missing `<meta name="viewport">`.** The document already had 860px and
+  720px breakpoints, but without that tag phones lay it out at ~980px and zoom out, so
+  the responsive CSS was dead code. Confirmed at 375px: single-column grid, spine
+  collapses to a horizontal strip, no page overflow.
+
+Verified by serving the book through the dev server (the browser pane cannot open
+`file://`), checking computed styles and layout at 375 and 1280, then removing the
+temporary copy from `public/`. All six plates render at their intended sizes; the
+reversed plate reads correctly on navy.
+
 ## Not done (needs user action / assets)
 
 - getbrian.xyz DNS, hosting, and `hello@getbrian.xyz` mailbox — domain not yet live
@@ -126,8 +158,9 @@ sharp — see the render helper approach in this session's transcript.
 - Retrofit sub-site repos (DealMaker, DiffDoc, CRM, ContentFlow) with the new "Built by
   Brian" badge — those live in other repos, some without push access (see prior memory)
 - Founder photo for the "Who's Brian" section (still a CF monogram placeholder)
-- **`docs/brand-book.html` is now stale** — it documents the v1/v2 placeholder identity
-  (squircle B, lowercase wordmark, old hex values). 131KB, worth its own pass.
+- **Re-publish the brand book Artifact.** The file is current, but the previously
+  published copy at the Artifact URL in the `brian-rebrand` memory still shows the v2
+  placeholder identity until it's re-uploaded.
 - **Dead CliftonAi logo assets** still in `public/brand/` (`logo-*.png|svg`, ~5.3MB
   including a 5MB PNG), unreferenced but still deployed.
 - OG image supporting text renders in Segoe UI, not Space Grotesk — the brand faces are
