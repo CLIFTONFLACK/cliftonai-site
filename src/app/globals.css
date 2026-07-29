@@ -1,20 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fbfdfc;
-  --bg-panel: #f2f7f3;
-  --bg-elevated: rgba(255, 255, 255, 0.72);
-  --bg-card: rgba(255, 255, 255, 0.6);
-  --border: rgba(14, 40, 26, 0.08);
-  --border-strong: rgba(14, 40, 26, 0.15);
-  --fg: #0e1f16;
-  --fg-muted: #46564c;
-  --fg-subtle: #647568;
+  --bg: #ffffff;
+  --bg-panel: #f3f4f6;
+  --bg-elevated: rgba(255, 255, 255, 0.8);
+  --bg-card: rgba(255, 255, 255, 0.72);
+  --border: rgba(20, 23, 43, 0.1);
+  --border-strong: rgba(20, 23, 43, 0.18);
+  --fg: #14172b;
+  --fg-muted: #454a64;
+  --fg-subtle: #6b7089;
 
-  --brand-forest: #0b3d1e;
-  --brand-mid: #1f6b3a;
-  --brand-emerald: #2f7a3b;
-  --brand-emerald-bright: #43a047;
+  /* ---------------------------------------------------------------------
+     Brand ramp. Both anchors are sampled straight out of the supplied logo
+     (docs/GetBrian_Logo.png) rather than eyeballed — see scripts/trace-logo.mjs.
+     Contrast figures are against --bg (#ffffff) unless noted.
+     --------------------------------------------------------------------- */
+
+  /* Navy — masterbrand, gradients, links, focus rings */
+  --brand-navy: #0a1d3b;        /* logo navy, 15.9:1 */
+  --brand-navy-mid: #14305c;    /* gradient ramp */
+  --brand-navy-soft: #24497f;   /* body-safe navy text, 9.0:1 */
+  --brand-navy-bright: #35629f; /* links, focus rings, accents, 6.2:1 */
+
+  /* Gold — logo gold is 3.1:1 on white, so it is a display/fill colour only.
+     Small gold text must use --brand-gold-deep, and the CTA hover state uses
+     --brand-gold-hover, which still clears 4.5:1 against --fg ink. */
+  --brand-gold: #ba8b32;        /* logo gold: CTA fills, display wordmark */
+  --brand-gold-hover: #a87b2a;  /* CTA hover fill, 4.7:1 vs --fg */
+  --brand-gold-deep: #8a6520;   /* small gold text, 5.3:1 */
+  --brand-gold-light: #e0b84f;  /* gold on navy grounds only */
 }
 
 @theme inline {
@@ -28,10 +43,14 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-subtle: var(--fg-subtle);
 
-  --color-brand-forest: var(--brand-forest);
-  --color-brand-mid: var(--brand-mid);
-  --color-brand-emerald: var(--brand-emerald);
-  --color-brand-emerald-bright: var(--brand-emerald-bright);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-mid: var(--brand-navy-mid);
+  --color-brand-navy-soft: var(--brand-navy-soft);
+  --color-brand-navy-bright: var(--brand-navy-bright);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-hover: var(--brand-gold-hover);
+  --color-brand-gold-deep: var(--brand-gold-deep);
+  --color-brand-gold-light: var(--brand-gold-light);
 
   --font-heading: var(--font-heading);
   --font-body: var(--font-body);
@@ -50,14 +69,14 @@ body {
 .brand-gradient {
   background: linear-gradient(
     135deg,
-    var(--brand-forest) 0%,
-    var(--brand-mid) 50%,
-    var(--brand-emerald-bright) 100%
+    var(--brand-navy) 0%,
+    var(--brand-navy-mid) 50%,
+    var(--brand-navy-bright) 100%
   );
 }
 
 .brand-gradient-text {
-  background: linear-gradient(100deg, var(--brand-mid) 0%, var(--brand-emerald) 70%);
+  background: linear-gradient(100deg, var(--brand-navy-mid) 0%, var(--brand-navy-soft) 70%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -68,7 +87,7 @@ body {
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
   border: 1px solid var(--border);
-  box-shadow: 0 4px 28px rgba(14, 40, 26, 0.06);
+  box-shadow: 0 4px 28px rgba(20, 23, 43, 0.06);
 }
 
 .glass-nav {
@@ -86,8 +105,8 @@ body {
 
 .glass-hover:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 40px rgba(14, 40, 26, 0.1);
-  border-color: rgba(47, 122, 59, 0.35);
+  box-shadow: 0 16px 40px rgba(20, 23, 43, 0.1);
+  border-color: rgba(53, 98, 159, 0.35);
 }
 
 /* Branded keyboard-focus ring for the clickable (role="button") cards —
@@ -96,7 +115,7 @@ body {
   outline: none;
   box-shadow:
     0 0 0 2px var(--bg),
-    0 0 0 4px var(--brand-emerald-bright);
+    0 0 0 4px var(--brand-navy-bright);
 }
 
 /* Soft blurred blobs behind glass panels — gives the frosted glass something
@@ -110,12 +129,16 @@ body {
   opacity: 0.5;
 }
 
-.blob-emerald {
-  background: radial-gradient(circle at 30% 30%, rgba(67, 160, 71, 0.55), transparent 70%);
+.blob-navy {
+  background: radial-gradient(circle at 30% 30%, rgba(53, 98, 159, 0.5), transparent 70%);
 }
 
-.blob-forest {
-  background: radial-gradient(circle at 60% 40%, rgba(11, 61, 30, 0.4), transparent 70%);
+.blob-gold {
+  background: radial-gradient(circle at 60% 40%, rgba(186, 139, 50, 0.34), transparent 70%);
+}
+
+.blob-deep {
+  background: radial-gradient(circle at 60% 40%, rgba(10, 29, 59, 0.38), transparent 70%);
 }
 
 @keyframes float {
@@ -151,16 +174,26 @@ body {
   animation: fade-in-up 700ms ease both;
 }
 
-/* Hero integration diagram — lines draw in once, then pulses travel
+/* Hero circuit diagram — traces draw in once, then pulses travel
    node → hub forever. Under prefers-reduced-motion the global block below
-   collapses the draw to its final state and hides the pulses. */
+   collapses the draw to its final state and hides the pulses.
+   Every trace carries pathLength="1", so one dash length normalises the
+   draw-in across paths of different real lengths. */
 .diagram-path {
-  stroke-dasharray: 420;
-  stroke-dashoffset: 420;
-  animation: draw-line 1.2s ease-out both;
+  stroke-dasharray: 1;
+  /* Resting state is DRAWN, with the hidden state supplied by the keyframe's
+     `from` and held during the delay by `backwards`. Written this way round so
+     the traces fail visible: if the animation never runs — reduced motion, a
+     UA that mishandles pathLength-scaled dash units, animations disabled — the
+     hero still shows its connections instead of silently losing them. */
+  stroke-dashoffset: 0;
+  animation: draw-line 1.2s ease-out backwards;
 }
 
 @keyframes draw-line {
+  from {
+    stroke-dashoffset: 1;
+  }
   to {
     stroke-dashoffset: 0;
   }
@@ -176,7 +209,7 @@ body {
 }
 
 .diagram-pulse {
-  filter: drop-shadow(0 0 3px rgba(67, 160, 71, 0.9));
+  filter: drop-shadow(0 0 3px rgba(186, 139, 50, 0.9));
 }
 
 .diagram-pulse-halo {
@@ -210,7 +243,7 @@ body {
 /* Faint dot-grid texture behind the hero diagram, for depth without
    competing with the node colors. */
 .hero-visual-panel {
-  background-image: radial-gradient(rgba(14, 40, 26, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(20, 23, 43, 0.09) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 

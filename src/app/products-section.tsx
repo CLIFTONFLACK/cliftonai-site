@@ -32,10 +32,10 @@ function ProductLockup({
         size === "lg" ? "text-2xl" : "text-lg"
       }`}
     >
-      CliftonAi
+      Brian
       <span
         aria-hidden="true"
-        className="mx-2.5 inline-block h-[1em] w-0.5 self-center bg-brand-emerald-bright"
+        className="mx-2.5 inline-block h-[1em] w-0.5 self-center bg-brand-navy-bright"
       />
       <span className="font-medium tracking-tight text-fg-muted">
         {product.shortName}
@@ -103,14 +103,14 @@ function ProductCard({
           <ProductLockup product={product} />
           {product.status === "in-development" && <StatusBadge />}
         </div>
-        <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+        <p className="mt-1 text-xs font-medium tracking-wide text-brand-navy-soft uppercase">
           {product.tagline}
         </p>
         <p className="mt-3 text-base leading-relaxed text-fg">{product.hook}</p>
         <ul className="mt-4 space-y-1.5 text-sm leading-relaxed text-fg-muted">
           {product.bullets.map((bullet) => (
             <li key={bullet} className="flex gap-2">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-brand-emerald" />
+              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-brand-navy-soft" />
               {bullet}
             </li>
           ))}
@@ -119,7 +119,7 @@ function ProductCard({
           <a
             href={product.href}
             onClick={(e) => e.stopPropagation()}
-            className="glass glass-hover flex-1 rounded-full px-4 py-2.5 text-center text-sm font-semibold text-brand-emerald cursor-pointer"
+            className="glass glass-hover flex-1 rounded-full px-4 py-2.5 text-center text-sm font-semibold text-brand-navy-soft cursor-pointer"
           >
             Visit {product.shortName ?? product.name}
           </a>
@@ -166,7 +166,7 @@ function ClientRow({
           </h3>
           {product.status === "in-development" && <StatusBadge />}
         </div>
-        <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+        <p className="mt-1 text-xs font-medium tracking-wide text-brand-navy-soft uppercase">
           {product.tagline}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-fg-muted">
@@ -174,12 +174,12 @@ function ClientRow({
         </p>
         <div className="mt-4 flex flex-1 flex-wrap items-end justify-between gap-3">
           <span className="text-xs text-fg-subtle">
-            Built by <span className="font-semibold text-fg-muted">CliftonAi</span>
+            Built by <span className="font-semibold text-fg-muted">Brian</span>
           </span>
           <a
             href={product.href}
             onClick={(e) => e.stopPropagation()}
-            className="glass glass-hover rounded-full px-4 py-2 text-center text-xs font-semibold text-brand-emerald cursor-pointer"
+            className="glass glass-hover rounded-full px-4 py-2 text-center text-xs font-semibold text-brand-navy-soft cursor-pointer"
           >
             Visit site
           </a>
@@ -226,7 +226,7 @@ function ProductModal({
             <ProductLockup product={product} size="lg" />
             {product.status === "in-development" && <StatusBadge />}
           </div>
-          <p className="mt-1 text-xs font-medium tracking-wide text-brand-emerald uppercase">
+          <p className="mt-1 text-xs font-medium tracking-wide text-brand-navy-soft uppercase">
             {product.tagline}
           </p>
           <p className="mt-4 text-base leading-relaxed text-fg-muted">
@@ -235,7 +235,7 @@ function ProductModal({
           <ul className="mt-4 space-y-2 text-sm leading-relaxed text-fg-muted">
             {product.bullets.map((bullet) => (
               <li key={bullet} className="flex gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-emerald" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-navy-soft" />
                 {bullet}
               </li>
             ))}
@@ -243,7 +243,7 @@ function ProductModal({
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
               href={product.href}
-              className="flex-1 rounded-full bg-brand-emerald-bright px-5 py-3 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-mid cursor-pointer"
+              className="flex-1 rounded-full bg-brand-navy-bright px-5 py-3 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-navy-mid cursor-pointer"
             >
               Visit {product.shortName ?? "site"}
             </a>
@@ -259,9 +259,9 @@ function ProductModal({
               href={WHATSAPP_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass glass-hover flex-1 rounded-full px-5 py-3 text-center text-sm font-semibold text-brand-emerald cursor-pointer"
+              className="glass glass-hover flex-1 rounded-full px-5 py-3 text-center text-sm font-semibold text-brand-navy-soft cursor-pointer"
             >
-              Message us on WhatsApp
+              Message Brian on WhatsApp
             </a>
           </div>
         </div>

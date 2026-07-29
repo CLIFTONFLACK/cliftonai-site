@@ -14,13 +14,13 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "700"],
 });
 
-const siteUrl = "https://cliftonai.co";
+const siteUrl = "https://getbrian.xyz";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "CliftonAi — AI Integrator for Commercial Operations",
+  title: "GetBrian — AI & Automation for UK Small Business",
   description:
-    "CliftonAi is an AI integration studio. We design, integrate, and operate AI systems for commercial teams — and build products we run ourselves: ContentFlow, CRM, DiffDoc, and DealMaker.",
+    "Brian builds AI-powered apps and workflows that replace the CRM, project management, supply chain, and marketing software you're renting — for £1,000 plus half your current subscription cost. If you see Brian, get him.",
   icons: {
     icon: [
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -29,12 +29,13 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   openGraph: {
-    title: "CliftonAi — AI Integrator for Commercial Operations",
+    title: "GetBrian — AI & Automation for UK Small Business",
     description:
-      "We design, integrate, and operate AI systems for commercial teams — and every product we sell, we run ourselves first.",
+      "If you see Brian, get him. He replaces the software you rent with software you own — for £1,000 plus half of what you're already paying.",
     url: siteUrl,
-    siteName: "CliftonAi",
+    siteName: "GetBrian",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "GetBrian — If you see Brian, get him." }],
   },
 };
 

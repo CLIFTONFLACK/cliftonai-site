@@ -1,6 +1,6 @@
 export type Product = {
   name: string;
-  /** Product word alone (lockup suffix) — only for CliftonAi sub-brands. */
+  /** Product word alone (lockup suffix) — only for Brian's own tools. */
   shortName?: string;
   /** Functional accent used as the card keyline — sub-brands only. */
   accent?: string;
@@ -19,7 +19,7 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    name: "CliftonAi ContentFlow",
+    name: "ContentFlow",
     shortName: "ContentFlow",
     accent: "#1565c0",
     tagline: "Content operations for WordPress",
@@ -38,7 +38,7 @@ export const products: Product[] = [
     category: "self",
   },
   {
-    name: "CliftonAi CRM",
+    name: "CRM",
     shortName: "CRM",
     accent: "#00695c",
     tagline: "Leisure & licensed property",
@@ -57,7 +57,7 @@ export const products: Product[] = [
     category: "self",
   },
   {
-    name: "CliftonAi DiffDoc",
+    name: "DiffDoc",
     shortName: "DiffDoc",
     accent: "#6a1b9a",
     tagline: "Document comparison",
@@ -76,7 +76,7 @@ export const products: Product[] = [
     category: "self",
   },
   {
-    name: "CliftonAi DealMaker",
+    name: "DealMaker",
     shortName: "DealMaker",
     accent: "#b3541e",
     tagline: "Deal pipeline for small business",
@@ -167,13 +167,13 @@ export const products: Product[] = [
 export const productCategories = [
   {
     key: "self" as const,
-    title: "Our products",
+    title: "Built and run by Brian",
     intro:
-      "Built for our own operation first. Battle-tested daily, available to you.",
+      "Proof, not promises. Brian uses these tools himself, every day, before he ever pitched one to you.",
   },
   {
     key: "client" as const,
     title: "Built for clients",
-    intro: "Their brand, their market — our engineering.",
+    intro: "Their brand, their market — Brian's engineering.",
   },
 ];

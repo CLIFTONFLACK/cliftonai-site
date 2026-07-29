@@ -1,203 +1,264 @@
-type Node = {
+type Lane = {
   key: string;
   label: string;
   color: string;
-  cx: number;
-  cy: number;
+  /** Vertical centre of the label chip and its terminal ring. */
+  y: number;
+  /** Trace from the terminal ring into the hub, in the logo's routing grammar. */
   path: string;
+  /** Endpoint, for the solid tip stud. */
+  end: [number, number];
+  /**
+   * True when the trace stops inside the B's open counter rather than landing
+   * on its stroke — those ends need a stud so they read as terminated rather
+   * than clipped. The B only has left-hand ink across two bands (roughly y
+   * 137-176 and y 251-304); everything between is open counter, which is
+   * precisely where the logo runs its own traces.
+   */
+  tip: boolean;
   drawDelay: number;
   pulseDelay: number;
 };
 
-const hub = { cx: 220, cy: 220, r: 46 };
+const VIEW = 440;
 
-// Four capability streams CliftonAi develops, converging on the hub in a
-// pinwheel arrangement. Colors echo the real product accents (ContentFlow,
-// CRM, DiffDoc, DealMaker) from products-data.ts without hard-coupling to
-// product names, so the visual stays evergreen as the lineup grows.
-const nodes: Node[] = [
+/** Where the Brian mark sits. Aspect matches brian-mark-solo.svg's viewBox. */
+const MARK_ASPECT = 530.3 / 518;
+const HUB_W = 178;
+const hub = {
+  x: 244,
+  w: HUB_W,
+  h: HUB_W / MARK_ASPECT,
+  get y() {
+    return (VIEW - this.h) / 2;
+  },
+};
+
+const CHIP_X = 16;
+const CHIP_W = 108;
+const CHIP_H = 30;
+/** Terminal ring centre — the hollow gold circles the logo's traces start from. */
+const RING_X = 142;
+const RING_R = 9;
+
+/**
+ * Four capability streams feeding the hub, laid out the way the logo lays out
+ * its circuit traces: entering from the left, running orthogonally, jogging at
+ * 45 degrees to change lane, converging right. Colours are the real product
+ * accents from products-data.ts, kept off the brand ramp so the diagram reads
+ * as four distinct inputs rather than four shades of navy.
+ */
+const lanes: Lane[] = [
   {
     key: "content",
     label: "CONTENT",
     color: "#1565c0",
-    cx: 220,
-    cy: 72,
-    path: "M 220 89 Q 260 130 220 174",
+    y: 90,
+    path: "M 153 90 H 182 L 250 158 H 264",
+    end: [264, 158],
+    tip: false,
     drawDelay: 0,
-    pulseDelay: 1.6,
+    pulseDelay: 1.4,
   },
   {
     key: "crm",
     label: "CRM",
     color: "#00695c",
-    cx: 368,
-    cy: 220,
-    path: "M 314 220 Q 288 180 266 220",
-    drawDelay: 0.15,
-    pulseDelay: 2.5,
+    y: 170,
+    path: "M 153 170 H 232 L 254 192 H 352",
+    end: [352, 192],
+    tip: true,
+    drawDelay: 0.12,
+    pulseDelay: 2.3,
   },
   {
     key: "docs",
     label: "DOCS",
     color: "#6a1b9a",
-    cx: 220,
-    cy: 368,
-    path: "M 220 351 Q 182 310 220 266",
-    drawDelay: 0.3,
-    pulseDelay: 3.4,
+    y: 270,
+    path: "M 153 270 H 214 L 262 222 H 320",
+    end: [320, 222],
+    tip: true,
+    drawDelay: 0.24,
+    pulseDelay: 3.2,
   },
   {
     key: "deals",
     label: "DEALS",
     color: "#b3541e",
-    cx: 72,
-    cy: 220,
-    path: "M 126 220 Q 150 260 174 220",
-    drawDelay: 0.45,
-    pulseDelay: 4.3,
+    y: 350,
+    path: "M 153 350 H 182 L 250 282 H 264",
+    end: [264, 282],
+    tip: false,
+    drawDelay: 0.36,
+    pulseDelay: 4.1,
   },
 ];
 
-const NODE_WIDTH = 114;
-const NODE_HEIGHT = 34;
-
-function HubMark() {
-  const scale = hub.r / 55;
-  return (
-    <>
-      <circle
-        cx={hub.cx}
-        cy={hub.cy}
-        r={hub.r}
-        stroke="rgba(67, 160, 71, 0.4)"
-        strokeWidth="1.25"
-        className="diagram-hub-pulse"
-      />
-      <circle
-        cx={hub.cx}
-        cy={hub.cy}
-        r={hub.r}
-        fill="rgba(251, 253, 252, 0.92)"
-        stroke="rgba(14, 40, 26, 0.12)"
-      />
-      <g
-        transform={`translate(${hub.cx} ${hub.cy}) scale(${scale}) translate(-50 -50)`}
-      >
-        <path
-          d="M 82.5 27 A 40 40 0 1 0 82.5 73"
-          stroke="#0b3d1e"
-          strokeWidth="12"
-        />
-        <g stroke="#0b3d1e" strokeWidth="5">
-          <line x1="50" y1="50" x2="50" y2="24" />
-          <line x1="50" y1="50" x2="72.5" y2="63" />
-          <line x1="50" y1="50" x2="27.5" y2="63" />
-        </g>
-        <g fill="#0b3d1e">
-          <circle cx="50" cy="50" r="13" />
-          <circle cx="50" cy="24" r="7" />
-          <circle cx="72.5" cy="63" r="7" />
-          <circle cx="27.5" cy="63" r="7" />
-        </g>
-      </g>
-    </>
-  );
-}
+/** Free-floating solid nodes — the logo scatters a few of these between traces. */
+const studs = [
+  { cx: 198, cy: 132, r: 5.5 },
+  { cx: 206, cy: 226, r: 4.5 },
+  { cx: 192, cy: 312, r: 5 },
+];
 
 /**
- * Hero set-piece: the four capabilities CliftonAi develops (content, CRM,
- * docs, deals) wiring into the CliftonAi hub, each in its product's accent
- * color, converging to a single brand-green core. Radially symmetric, so
- * one SVG works at every breakpoint (right column on lg+, stacked below the
- * hero copy on mobile). Pure CSS/SVG — draws in on load, then colored
- * pulses travel the connections. Degrades to the final connected state
- * under prefers-reduced-motion.
+ * Hero set-piece: the four capabilities Brian works across wired into the Brian
+ * mark, drawn in the logo's own circuit-trace vocabulary — orthogonal routing
+ * with 45-degree jogs, hollow gold terminal rings, solid gold studs.
+ *
+ * Pure CSS/SVG. Traces draw in on load, then gold pulses travel lane -> hub.
+ * Radially balanced enough that one SVG works at every breakpoint (right column
+ * on lg+, stacked under the hero copy on mobile). Degrades to the final
+ * connected state under prefers-reduced-motion.
  */
 export function HeroDiagram() {
   return (
     <div className="relative mx-auto aspect-square w-full max-w-md lg:mx-0 lg:max-w-lg">
       <div
         aria-hidden="true"
-        className="blob blob-emerald animate-float absolute -top-12 -left-10 h-56 w-56"
+        className="blob blob-navy animate-float absolute -top-12 -left-10 h-56 w-56"
       />
       <div
         aria-hidden="true"
-        className="blob blob-forest animate-float-slow absolute -right-10 -bottom-14 h-64 w-64"
+        className="blob blob-gold animate-float-slow absolute -right-10 -bottom-14 h-64 w-64"
       />
       <div className="hero-visual-panel glass relative h-full w-full overflow-hidden rounded-[2rem] p-6 sm:p-8">
-        <svg aria-hidden="true" viewBox="0 0 440 440" fill="none" className="h-full w-full">
+        <svg
+          aria-hidden="true"
+          viewBox={`0 0 ${VIEW} ${VIEW}`}
+          fill="none"
+          className="h-full w-full"
+        >
           <defs>
             <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(67, 160, 71, 0.22)" />
-              <stop offset="100%" stopColor="rgba(67, 160, 71, 0)" />
+              <stop offset="0%" stopColor="rgba(186, 139, 50, 0.20)" />
+              <stop offset="100%" stopColor="rgba(186, 139, 50, 0)" />
             </radialGradient>
           </defs>
 
-          <circle cx={hub.cx} cy={hub.cy} r="150" fill="url(#hubGlow)" />
+          <circle
+            cx={hub.x + hub.w / 2}
+            cy={VIEW / 2}
+            r="140"
+            fill="url(#hubGlow)"
+          />
 
-          {nodes.map((n) => (
+          {/* Traces */}
+          {lanes.map((l) => (
             <path
-              key={n.key}
-              d={n.path}
-              stroke="rgba(47, 122, 59, 0.28)"
-              strokeWidth="1.5"
+              key={l.key}
+              d={l.path}
+              pathLength={1}
+              stroke="var(--brand-gold)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="diagram-path"
-              style={{ animationDelay: `${n.drawDelay + 0.3}s` }}
+              style={{ animationDelay: `${l.drawDelay + 0.3}s` }}
             />
           ))}
 
-          {nodes.map((n) => (
-            <g key={n.key}>
+          {/* Hollow terminal rings, as the logo draws them */}
+          {lanes.map((l) => (
+            <circle
+              key={l.key}
+              cx={RING_X}
+              cy={l.y}
+              r={RING_R}
+              fill="var(--bg)"
+              stroke="var(--brand-gold)"
+              strokeWidth="3"
+            />
+          ))}
+
+          {studs.map((s) => (
+            <circle
+              key={`${s.cx}-${s.cy}`}
+              cx={s.cx}
+              cy={s.cy}
+              r={s.r}
+              fill="var(--brand-gold)"
+              opacity="0.75"
+            />
+          ))}
+
+          {/* Solid tips on the traces that stop in open counter */}
+          {lanes
+            .filter((l) => l.tip)
+            .map((l) => (
               <circle
-                r="7.5"
-                fill={n.color}
+                key={l.key}
+                cx={l.end[0]}
+                cy={l.end[1]}
+                r="6"
+                fill="var(--brand-gold)"
+              />
+            ))}
+
+          {/* Travelling pulses */}
+          {lanes.map((l) => (
+            <g key={l.key}>
+              <circle
+                r="7"
+                fill={l.color}
                 className="diagram-pulse-halo"
                 style={{
-                  offsetPath: `path('${n.path}')`,
-                  animationDelay: `${n.pulseDelay}s`,
+                  offsetPath: `path('${l.path}')`,
+                  animationDelay: `${l.pulseDelay}s`,
                 }}
               />
               <circle
-                r="4"
-                fill={n.color}
+                r="3.75"
+                fill={l.color}
                 className="diagram-pulse"
                 style={{
-                  offsetPath: `path('${n.path}')`,
-                  animationDelay: `${n.pulseDelay}s`,
-                  filter: `drop-shadow(0 0 4px ${n.color}CC)`,
+                  offsetPath: `path('${l.path}')`,
+                  animationDelay: `${l.pulseDelay}s`,
+                  filter: `drop-shadow(0 0 4px ${l.color}CC)`,
                 }}
               />
             </g>
           ))}
 
-          {nodes.map((n) => (
-            <g key={n.key}>
+          {/* Label chips */}
+          {lanes.map((l) => (
+            <g key={l.key}>
               <rect
-                x={n.cx - NODE_WIDTH / 2}
-                y={n.cy - NODE_HEIGHT / 2}
-                width={NODE_WIDTH}
-                height={NODE_HEIGHT}
-                rx="10"
-                fill="rgba(255, 255, 255, 0.82)"
-                stroke={`${n.color}4d`}
+                x={CHIP_X}
+                y={l.y - CHIP_H / 2}
+                width={CHIP_W}
+                height={CHIP_H}
+                rx="9"
+                fill="rgba(255, 255, 255, 0.86)"
+                stroke={`${l.color}4d`}
               />
-              <circle cx={n.cx - NODE_WIDTH / 2 + 16} cy={n.cy} r="3.5" fill={n.color} />
+              <circle cx={CHIP_X + 15} cy={l.y} r="3.5" fill={l.color} />
               <text
-                x={n.cx + 6}
-                y={n.cy + 4}
+                x={CHIP_X + CHIP_W / 2 + 7}
+                y={l.y + 4}
                 textAnchor="middle"
-                fill="#324035"
+                fill="#14172b"
                 style={{
-                  font: "700 15px ui-monospace, monospace",
+                  font: "700 14px ui-monospace, monospace",
                   letterSpacing: "0.06em",
                 }}
               >
-                {n.label}
+                {l.label}
               </text>
             </g>
           ))}
 
-          <HubMark />
+          {/* Hub — the real traced mark. The solo cut (no built-in circuit
+              traces) because the four lanes above already play that role; the
+              display cut would read as a second, unconnected set of traces. */}
+          <image
+            href="/brand/brian-mark-solo.svg"
+            x={hub.x}
+            y={hub.y}
+            width={hub.w}
+            height={hub.h}
+          />
         </svg>
       </div>
     </div>
