@@ -14,10 +14,21 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "700"],
 });
 
-const siteUrl = "https://getbrian.xyz";
+/**
+ * The host that actually serves: the apex 308-redirects to `www`, so pointing
+ * canonical/OG at the apex would aim them at a redirect. Exported because
+ * robots.ts and sitemap.ts must agree with it — a sitemap listing a URL that
+ * disagrees with the page's own canonical is worse than no sitemap.
+ */
+export const siteUrl = "https://www.getbrian.xyz";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  // cliftonai.co still serves this exact site with no redirect between the two
+  // domains, so both hosts emit this tag and it names getbrian.xyz as the
+  // authoritative copy. Without it the two domains compete as duplicates and
+  // the one being retired keeps ranking.
+  alternates: { canonical: "/" },
   title: "GetBrian — AI & Automation for UK Small Business",
   description:
     "Brian builds AI-powered apps and workflows that replace the CRM, project management, supply chain, and marketing software you're renting — for £1,000 plus half your current subscription cost. If you see Brian, get him.",
