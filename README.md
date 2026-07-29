@@ -41,7 +41,11 @@ Open http://localhost:3000.
   - `brian-mark-solo.svg` — mark without its circuit traces, for contexts that draw their own (the hero diagram)
   - `brian-mark-compact.svg` / `-white.svg` — small-size cut with thickened traces (nav, favicons). The traces are **not** decorative: without them the B reads as a "3", so the compact cut thickens rather than drops them.
   - `brian-wordmark.svg` — "GetBrian" only
-  - legacy CliftonAi `logo-*.svg|png` kept for now — unreferenced by this site
+  - `logo-icon.png` — **legacy CliftonAi green mark. Do not delete.** Nothing in this
+    repo uses it, but `flow.cliftonai.co` (ContentFlow) hotlinks it absolutely as
+    `https://cliftonai.co/brand/logo-icon.png` in its hero and footer. Removing it
+    breaks two live images on a site in another repo. It can go once ContentFlow is
+    retrofitted to serve its own mark.
   - Brian is never depicted as a person — no mascot or illustrated character.
 - `public/screenshots/` — product card imagery (still shows the pre-rebrand CliftonAi product UIs — pending re-shoot)
 - `assets/` — original source logo file (not shipped to production)
