@@ -9,11 +9,13 @@
  *   src/app/favicon.ico   (16/32/48 multi-size)
  *   public/og-image.png   (1200x630)
  *
- * Why the icons sit on a navy tile rather than being the bare mark: the mark is
- * wide (roughly 3:2) and detailed, so dropped into a square frame at 16-32px it
- * ends up both tiny and low-contrast. A filled tile lets the mark run to the
- * edges of the square and gives it contrast mass. apple-touch-icon needs an
- * opaque square anyway.
+ * Icons are the navy mark on a light tile, matching the Brian Alert System
+ * dashboard (brianalerts.vercel.app). They sit on a tile rather than being a
+ * bare transparent mark for two reasons: the mark is wide (roughly 5:4) so a
+ * filled square lets it run to the edges instead of floating small in the
+ * frame, and an opaque ground is the only thing that keeps a navy mark legible
+ * on the dark surfaces these get shown on. apple-touch-icon needs an opaque
+ * square regardless — iOS composites transparency onto black.
  */
 
 import sharp from "sharp";
@@ -37,22 +39,34 @@ const MUTED = "#454A64";
  */
 const UI_FONT = "Segoe UI, DejaVu Sans, Arial, sans-serif";
 
+/** Icon ground. Matches the Brian Alert System dashboard's icons, which show the
+ *  navy mark on light rather than reversing it out of a navy tile. */
+const ICON_GROUND = "#FFFFFF";
+
 const tile = (size) => {
-  const r = Math.round(size * 0.22);
+  const r = Math.round(size * 0.18);
   return Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">` +
-      `<rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="${NAVY}"/></svg>`
+      `<rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="${ICON_GROUND}"/></svg>`
   );
 };
 
 /**
- * Navy tile + the reversed mark, inset so the traces stay clear of the corner
- * radius. Below ~64px it switches to the compact cut, whose thickened traces
- * survive the resample — the display cut smears to a gold blur at 16px.
+ * The navy mark on a light ground, matching the dashboard at brianalerts.
+ *
+ * The ground is opaque on purpose. The dashboard's own icons are transparent,
+ * and a transparent navy mark is close to invisible everywhere it gets shown on
+ * something dark — Chrome's dark tab strip, and Vercel's project list, which is
+ * black. Checked by compositing the real file over #ffffff / #35363a / #000000:
+ * only the white ground survives all three. Same artwork, same colours, just not
+ * relying on the host surface being light.
+ *
+ * Below ~64px it switches to the compact cut, whose thickened traces survive the
+ * resample — the display cut smears to a gold blur at 16px.
  */
 async function icon(size) {
-  const inner = Math.round(size * 0.82);
-  const src = size <= 64 ? "brian-mark-compact-white.svg" : "brian-mark-white.svg";
+  const inner = Math.round(size * 0.86);
+  const src = size <= 64 ? "brian-mark-compact.svg" : "brian-mark.svg";
   const mark = await sharp(path.join(BRAND, src))
     .resize({ width: inner, height: inner, fit: "inside" })
     .png()
