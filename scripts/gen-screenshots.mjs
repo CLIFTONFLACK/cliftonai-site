@@ -40,6 +40,20 @@ const SHOT_W = 1400;
 const SHOT_H = 788;
 const OUT_W = 1000;
 const OUT_H = 563;
+
+/**
+ * Per-site capture height, for sites whose hero ends above the default.
+ *
+ * CRM's hero stops at y=745, so the default 788 frame caught 43px of the grey
+ * band beneath it — a dead strip along the bottom of the card. Capturing
+ * shorter and letting the cover-resize scale up to 16/9 trades a sliver of
+ * width for filling that gap, which is the right way round.
+ *
+ * Keyed on the subdomain. Anything absent uses SHOT_H.
+ */
+const CAPTURE_HEIGHT = {
+  crm: 735,
+};
 const SCALE = 2; // capture at 2x, downsample — much crisper text than a 1x grab
 
 const CHROME_CANDIDATES = [
@@ -113,6 +127,8 @@ const results = [];
 
 try {
   for (const t of targets) {
+    const sub = new URL(t.href).hostname.split(".")[0];
+    const shotH = CAPTURE_HEIGHT[sub] ?? SHOT_H;
     const raw = path.join(work, `${path.basename(t.screenshot, ".jpg")}.png`);
     execFileSync(
       chrome,
@@ -124,7 +140,7 @@ try {
         "--no-default-browser-check",
         "--disable-extensions",
         `--force-device-scale-factor=${SCALE}`,
-        `--window-size=${SHOT_W},${SHOT_H}`,
+        `--window-size=${SHOT_W},${shotH}`,
         `--user-data-dir=${path.join(work, "profile")}`,
         `--screenshot=${raw}`,
         t.href,

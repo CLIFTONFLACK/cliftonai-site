@@ -157,7 +157,7 @@ const mid = OG_W / 2;
 const text = Buffer.from(
   `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_W}" height="${OG_H}">` +
     `<text x="${mid}" y="${taglineY}" text-anchor="middle" font-family="${UI_FONT}" font-size="44" font-weight="700" fill="${INK}">If you see Brian, get him.</text>` +
-    `<text x="${mid}" y="${taglineY + 50}" text-anchor="middle" font-family="${UI_FONT}" font-size="26" font-weight="400" fill="${MUTED}">He replaces the software you rent with software you own.</text>` +
+    `<text x="${mid}" y="${taglineY + 50}" text-anchor="middle" font-family="${UI_FONT}" font-size="26" font-weight="400" fill="${MUTED}">Brian puts AI in Brain.</text>` +
     `<text x="${mid}" y="${OG_H - 40}" text-anchor="middle" font-family="${UI_FONT}" font-size="24" font-weight="600" fill="${NAVY}">getbrian.xyz</text>` +
     `</svg>`
 );

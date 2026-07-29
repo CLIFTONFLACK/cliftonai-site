@@ -11,7 +11,7 @@ const pillars = [
   {
     title: "Replace",
     description:
-      "Swap your CRM, project management, supply-chain, or marketing stack for a system you own outright. No rip-and-replace migration drama.",
+      "Swap your CRM, project management, supply-chain, or marketing stack for a system built around you — and yours outright after three years. No rip-and-replace migration drama.",
   },
   {
     title: "Personalise",
@@ -21,7 +21,7 @@ const pillars = [
   {
     title: "Save",
     description:
-      "You stop paying full subscription price the day it ships. Half of what you paid before, forever.",
+      "You stop paying full subscription price the day it ships. Half of what you paid before — and after three years the system is yours.",
   },
 ];
 
@@ -147,17 +147,23 @@ export default function Home() {
               <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-fg-muted uppercase">
                 If you see Brian, get him
               </span>
-              <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-                The AI bloke who{" "}
+              <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-5xl">
+                The helpful AI bloke who{" "}
                 <span className="brand-gradient-text">
-                  replaces your software stack
+                  replaces your software pain with simplicity and logic
                 </span>
               </h1>
-              <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
+              {/* The name's origin, kept verbal — the logo does not spell this
+                  out typographically. See the brand book's visual identity
+                  chapter. */}
+              <p className="mt-5 font-heading text-lg font-semibold tracking-tight text-brand-navy-soft">
+                Brian puts AI in Brain.
+              </p>
+              <p className="mt-5 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
                 Brian builds the CRM, project tracker, marketing engine, and
-                supply-chain tools your business rents every month — then
-                charges £1,000 to build it, and half of what you&apos;re
-                already paying, forever.
+                supply-chain tools your business rents every month — for a very
+                low build fee, then half of what you&apos;re already paying.
+                Stay three years and it&apos;s yours outright.
               </p>
               <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row lg:w-auto lg:justify-start">
                 <a
@@ -201,8 +207,8 @@ export default function Home() {
               <p className="mt-4 text-lg leading-relaxed text-fg-muted">
                 Most small businesses don&apos;t need another login. They
                 need the CRM, the project board, the marketing engine built
-                around how they actually work — and owned outright, not
-                rented.
+                around how they actually work — on a path to owning it, not
+                renting it forever.
               </p>
             </Reveal>
             <div className="mt-14 grid gap-6 sm:grid-cols-3">

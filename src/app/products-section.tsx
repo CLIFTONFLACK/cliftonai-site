@@ -66,7 +66,10 @@ function Screenshot({ product, sizes }: { product: Product; sizes: string }) {
   );
 }
 
-/** The one call to action per card. Gold so it carries against the white block. */
+/**
+ * The one call to action per card. Back to the glass treatment — the tinted
+ * copy block behind it now supplies the separation the gold fill was doing.
+ */
 function VisitButton({
   href,
   children,
@@ -79,7 +82,7 @@ function VisitButton({
   return (
     <a
       href={href}
-      className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-brand-gold px-5 text-sm font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover cursor-pointer ${className}`}
+      className={`glass glass-hover inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-bg px-5 text-sm font-semibold text-brand-navy-soft cursor-pointer ${className}`}
     >
       {children}
       <svg
@@ -110,7 +113,7 @@ function ProductCard({ product }: { product: Product }) {
       className="glass group relative flex h-full flex-col overflow-hidden rounded-2xl border-t-[3px]"
     >
       <Screenshot product={product} sizes="(max-width: 640px) 100vw, 50vw" />
-      <div className="flex flex-1 flex-col bg-bg p-6 sm:p-7">
+      <div className="flex flex-1 flex-col bg-bg-tint p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2.5">
           <ProductLockup product={product} />
           {product.status === "in-development" && <StatusBadge />}
@@ -144,7 +147,7 @@ function ClientRow({ product }: { product: Product }) {
       <div className="sm:w-72 sm:shrink-0 sm:border-r sm:border-border">
         <Screenshot product={product} sizes="(max-width: 640px) 100vw, 288px" />
       </div>
-      <div className="flex flex-1 flex-col bg-bg p-6 sm:p-7">
+      <div className="flex flex-1 flex-col bg-bg-tint p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2.5">
           <h3 className="font-heading text-lg font-semibold text-fg">
             {product.name}

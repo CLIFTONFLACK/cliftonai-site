@@ -1,18 +1,22 @@
 import { Reveal } from "./reveal";
 
 /**
- * How Brian charges: a fixed build fee, then half of whatever the client
- * was already paying for the software being replaced — plus an optional
- * profit-share track for launch/growth work. Numbers in the worked example
- * are illustrative and intentionally round.
+ * How Brian charges: a deliberately low build fee, then half of whatever the
+ * client was already paying for the software being replaced, with ownership
+ * transferring after three years. Plus an optional profit-share track for
+ * launch/growth work.
+ *
+ * The build fee is stated as a range rather than a number on purpose — it is
+ * quoted per build. The worked example therefore leaves it out of the
+ * arithmetic and shows only the recurring saving, which does not depend on it.
  */
 const pricingCards = [
   {
     title: "The build",
-    price: "£1,000",
-    note: "fixed, one-off",
+    price: "Very low",
+    note: "one-off, quoted up front",
     description:
-      "Brian designs, builds, and ships the system that replaces your CRM, project board, marketing stack, or supply-chain tool. You own it outright.",
+      "Brian designs, builds, and ships the system that replaces your CRM, project board, marketing stack, or supply-chain tool. Kept deliberately low — the build isn't where Brian makes his money.",
   },
   {
     title: "Ongoing",
@@ -20,6 +24,13 @@ const pricingCards = [
     note: "of what you paid before",
     description:
       "Take whatever your old subscriptions cost. Brian charges half of that, billed monthly, for as long as you use the system. Never more.",
+  },
+  {
+    title: "Ownership",
+    price: "After 3 years",
+    note: "agreed handover",
+    description:
+      "Stay three years and the system becomes yours outright, transferred through an agreed handover — code, data, and the documentation to run it without Brian.",
   },
   {
     title: "Profit share",
@@ -32,10 +43,10 @@ const pricingCards = [
 
 const exampleRows = [
   { label: "Current software spend", value: "£900/month" },
-  { label: "Brian's build fee", value: "£1,000 once" },
+  { label: "Brian's build fee", value: "Very low, one-off" },
   { label: "Brian's ongoing fee", value: "£450/month" },
-  { label: "Saved in year one", value: "£4,400" },
-  { label: "Saved every year after", value: "£5,400" },
+  { label: "Saved every year", value: "£5,400" },
+  { label: "System becomes yours", value: "After 3 years" },
 ];
 
 export function PricingSection() {
@@ -47,13 +58,13 @@ export function PricingSection() {
             How Brian charges
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-            One fixed fee to build it. Then half of what you were already
-            paying — forever. No day-rate surprises, no seat licences that
-            creep up every renewal.
+            A very low fee to build it. Then half of what you were already
+            paying. Stay three years and the system is yours outright. No
+            day-rate surprises, no seat licences that creep up every renewal.
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {pricingCards.map((card, i) => (
             <Reveal key={card.title} delay={i * 100}>
               <div className="glass glass-hover flex h-full flex-col rounded-2xl p-6">
