@@ -52,7 +52,13 @@ Open http://localhost:3000.
     for now only because that sweep can prove the portfolio, not a hotlink from
     somewhere outside it — an old email signature, a client's page, a deck.
   - Brian is never depicted as a person — no mascot or illustrated character.
-- `public/screenshots/` — product card imagery (still shows the pre-rebrand CliftonAi product UIs — pending re-shoot)
+- `scripts/gen-screenshots.mjs` — re-shoots the product cards; run `npm run screenshots`
+- `public/screenshots/` — product card imagery, 1000×625 JPEG (16:10, matching the card's
+  `aspect-[16/10]`). The four own-product shots are **generated** — captured from the live
+  `*.getbrian.xyz` sites via headless Chrome, targets read out of `products-data.ts` so a
+  capture always lands on the path its card renders. Re-run after any product redesign.
+  The four client shots are hand-placed and deliberately left alone: those are other
+  people's brands on their own release cycles.
 - `assets/` — original source logo file (not shipped to production)
 - `docs/GetBrian_Logo.png` — **the** brand source of truth; every SVG, favicon and OG image is generated from it
 

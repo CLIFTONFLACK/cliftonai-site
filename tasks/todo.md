@@ -154,7 +154,17 @@ reversed plate reads correctly on navy.
 ## Not done (needs user action / assets)
 
 - `hello@getbrian.xyz` mailbox — unverified. (getbrian.xyz itself is live: www.getbrian.xyz and www.cliftonai.co both serve this repo, auto-deployed on push to main.)
-- Re-shoot `public/screenshots/*.jpg` — still show pre-rebrand CliftonAi product UIs
+- ~~Re-shoot `public/screenshots/*.jpg`~~ — **done 29 Jul 2026.** The four own-product
+  shots (ContentFlow, CRM, DiffDoc, DealMaker) are re-captured from the live
+  `*.getbrian.xyz` sites and now show the GetBrian lockup instead of CliftonAi.
+  Automated as `scripts/gen-screenshots.mjs` / `npm run screenshots`: headless Chrome
+  (the installed one — no bundled-Chromium dependency for an occasional chore) at
+  1400×875 @2x, downsampled to 1000×625 JPEG. Targets are parsed out of
+  `products-data.ts` rather than restated, so a capture can't land on a path its card
+  doesn't render; the script hard-fails if it doesn't parse exactly 4 self-category
+  products. The four **client** screenshots are intentionally not automated — those are
+  other people's brands on their own release cycles, and re-shooting them on our
+  schedule would silently republish their site as it looked today.
 - Retrofit sub-site repos (DealMaker, DiffDoc, CRM, ContentFlow) with the new "Built by
   Brian" badge — those live in other repos, some without push access (see prior memory)
 - Founder photo for the "Who's Brian" section (still a CF monogram placeholder)

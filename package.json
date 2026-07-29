@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "brand": "node scripts/trace-logo.mjs && node scripts/gen-icons.mjs"
+    "brand": "node scripts/trace-logo.mjs && node scripts/gen-icons.mjs",
+    "screenshots": "node scripts/gen-screenshots.mjs"
   },
   "dependencies": {
     "next": "16.2.10",
