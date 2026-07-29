@@ -41,13 +41,16 @@ Open http://localhost:3000.
   - `brian-mark-solo.svg` — mark without its circuit traces, for contexts that draw their own (the hero diagram)
   - `brian-mark-compact.svg` / `-white.svg` — small-size cut with thickened traces (nav, favicons). The traces are **not** decorative: without them the B reads as a "3", so the compact cut thickens rather than drops them.
   - `brian-wordmark.svg` — "GetBrian" only
-  - `logo-icon.png` — **legacy CliftonAi green mark. Do not delete.** Nothing in this
-    repo uses it, but ContentFlow — now at `flow.getbrian.xyz` — still hotlinks it
-    absolutely as `https://cliftonai.co/brand/logo-icon.png` in its hero and footer.
-    So a live `getbrian.xyz` product depends on the `cliftonai.co` domain still
-    answering. Deleting this file, or switching that domain off rather than
-    redirecting it, breaks two images on a site in another repo whose own checks stay
-    green. Fix ContentFlow to serve its own mark first; then this can go.
+  - `logo-icon.png` — legacy CliftonAi green mark, now unused. ContentFlow used to
+    hotlink it absolutely as `https://cliftonai.co/brand/logo-icon.png` in its hero
+    and footer, which made a `getbrian.xyz` product quietly depend on `cliftonai.co`
+    still answering. **That hotlink is gone as of 29 July 2026** — re-verified by
+    fetching all eight portfolio sites (`flow`, `crm`, `diffdoc`, `dealmaker`,
+    `empirely`, `getforged` on getbrian.xyz, plus merlows.com and therisinglions.com):
+    none of them requests a `cliftonai.co` asset, and nothing in this repo's `src/` or
+    `scripts/` references the file either. So it is unblocked for deletion. It is kept
+    for now only because that sweep can prove the portfolio, not a hotlink from
+    somewhere outside it — an old email signature, a client's page, a deck.
   - Brian is never depicted as a person — no mascot or illustrated character.
 - `public/screenshots/` — product card imagery (still shows the pre-rebrand CliftonAi product UIs — pending re-shoot)
 - `assets/` — original source logo file (not shipped to production)
