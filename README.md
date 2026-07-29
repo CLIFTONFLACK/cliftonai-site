@@ -42,10 +42,12 @@ Open http://localhost:3000.
   - `brian-mark-compact.svg` / `-white.svg` — small-size cut with thickened traces (nav, favicons). The traces are **not** decorative: without them the B reads as a "3", so the compact cut thickens rather than drops them.
   - `brian-wordmark.svg` — "GetBrian" only
   - `logo-icon.png` — **legacy CliftonAi green mark. Do not delete.** Nothing in this
-    repo uses it, but `flow.cliftonai.co` (ContentFlow) hotlinks it absolutely as
-    `https://cliftonai.co/brand/logo-icon.png` in its hero and footer. Removing it
-    breaks two live images on a site in another repo. It can go once ContentFlow is
-    retrofitted to serve its own mark.
+    repo uses it, but ContentFlow — now at `flow.getbrian.xyz` — still hotlinks it
+    absolutely as `https://cliftonai.co/brand/logo-icon.png` in its hero and footer.
+    So a live `getbrian.xyz` product depends on the `cliftonai.co` domain still
+    answering. Deleting this file, or switching that domain off rather than
+    redirecting it, breaks two images on a site in another repo whose own checks stay
+    green. Fix ContentFlow to serve its own mark first; then this can go.
   - Brian is never depicted as a person — no mascot or illustrated character.
 - `public/screenshots/` — product card imagery (still shows the pre-rebrand CliftonAi product UIs — pending re-shoot)
 - `assets/` — original source logo file (not shipped to production)
@@ -65,17 +67,23 @@ Brian is a services business, not a product house — the portfolio in
 
 ## Product links
 
-Update `products` in `src/app/products-data.ts` if a subdomain or description changes. Note: these still live on `*.cliftonai.co` — the legacy domain remains live for the tools themselves even though the marketing site has moved to getbrian.xyz.
+Update `products` in `src/app/products-data.ts` if a subdomain or description changes.
+
+Every own-product and hosted-client tool moved from `*.cliftonai.co` to
+`*.getbrian.xyz` on 29 July 2026. The old subdomains are being switched off one at a
+time rather than all at once, so a link left pointing at `cliftonai.co` will keep
+working right up until it silently 404s — `crm` and `flow` had already gone dark before
+this file was updated. Use `*.getbrian.xyz`.
 
 | Product | Category | URL |
 |---|---|---|
-| ContentFlow | self | flow.cliftonai.co |
-| CRM | self | crm.cliftonai.co |
-| DiffDoc | self | diffdoc.cliftonai.co |
-| DealMaker | self | dealmaker.cliftonai.co |
+| ContentFlow | self | flow.getbrian.xyz |
+| CRM | self | crm.getbrian.xyz |
+| DiffDoc | self | diffdoc.getbrian.xyz |
+| DealMaker | self | dealmaker.getbrian.xyz |
 | Merlows News | client | merlows.com |
-| Empirely Game | client | empirely.cliftonai.co |
-| GetForged | client | getforged.cliftonai.co |
+| Empirely Game | client | empirely.getbrian.xyz |
+| GetForged | client | getforged.getbrian.xyz |
 | The Rising Lions | client | therisinglions.com |
 
 ## Deploy
