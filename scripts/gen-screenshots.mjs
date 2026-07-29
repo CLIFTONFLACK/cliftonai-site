@@ -26,11 +26,20 @@ import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Card aspect is 16/10 (`aspect-[16/10]` in products-section.tsx). */
+/**
+ * Card aspect is 16/9 (`aspect-[16/9]` in products-section.tsx) — keep the two
+ * in step or the card will crop what was captured.
+ *
+ * 16/9 is chosen to land just past each site's hero and before the section
+ * under it. Measured at 1400px wide, the band below the hero starts at y=812
+ * (ContentFlow), 745 (CRM) and 874 (DiffDoc); DealMaker's runs past 1100. At
+ * 788 all four show a complete header and hero — the earlier 16/10 crop sliced
+ * the following section's headings in half.
+ */
 const SHOT_W = 1400;
-const SHOT_H = 875;
+const SHOT_H = 788;
 const OUT_W = 1000;
-const OUT_H = 625;
+const OUT_H = 563;
 const SCALE = 2; // capture at 2x, downsample — much crisper text than a 1x grab
 
 const CHROME_CANDIDATES = [

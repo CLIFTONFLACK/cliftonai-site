@@ -60,6 +60,39 @@ function Wordmark({ height, className }: { height: number; className?: string })
   );
 }
 
+/**
+ * The estate endorsement badge, as ContentFlow renders it (`.built-by` at
+ * flow.getbrian.xyz): bordered pill, 20px mark, muted label with the name in
+ * display semibold navy, both border and text going navy on hover.
+ *
+ * Same artwork and proportions here, with one adaptation — on the masterbrand's
+ * own footer the badge links to `#top` rather than out to getbrian.xyz, because
+ * on this domain that would be a self-link that just reloads the page.
+ *
+ * The canonical copy-paste version for sites outside this repo stays
+ * `public/brand/built-by-badge.html`, which is generated and self-contained.
+ */
+function BuiltByBadge() {
+  return (
+    <a
+      href="#top"
+      className="group inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-sm text-fg-muted transition-colors duration-200 hover:border-brand-navy hover:text-brand-navy cursor-pointer"
+    >
+      <Image
+        src="/brand/brian-mark-compact.svg"
+        alt=""
+        aria-hidden="true"
+        width={Math.round(20 * MARK_ASPECT)}
+        height={20}
+      />
+      <span>
+        Built by{" "}
+        <b className="font-heading font-semibold text-brand-navy">GetBrian</b>
+      </span>
+    </a>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -308,10 +341,11 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <p className="text-xs text-fg-subtle">
-            © {new Date().getFullYear()} Brian. All rights reserved.
-          </p>
+          <BuiltByBadge />
         </div>
+        <p className="mx-auto mt-8 max-w-6xl text-center text-xs text-fg-subtle sm:text-right">
+          © {new Date().getFullYear()} Brian. All rights reserved.
+        </p>
       </footer>
     </>
   );

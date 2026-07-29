@@ -151,6 +151,45 @@ Verified by serving the book through the dev server (the browser pane cannot ope
 temporary copy from `public/`. All six plates render at their intended sizes; the
 reversed plate reads correctly on navy.
 
+## v4 — product cards + footer badge (29 July 2026)
+
+- [x] **Footer carries the estate badge.** Ported ContentFlow's `.built-by` pill (mark +
+      "Built by **GetBrian**", muted going navy on hover) into the site footer as a
+      `BuiltByBadge` component. One adaptation: it links to `#top`, not out to
+      getbrian.xyz, which on this domain would be a self-link that reloads the page. The
+      copy-paste version for other repos remains the generated
+      `public/brand/built-by-badge.html`.
+- [x] **Product cards are no longer clickable and the modal is gone.** Removed the
+      card-level `onClick`/`role="button"`/`tabIndex`/`onKeyDown` and the whole
+      `ProductModal`. One explicit link per card now navigates — no nested interactives,
+      no keyboard trap. `products-section.tsx` dropped `"use client"` and is a server
+      component again.
+- [x] Also removed `glass-hover` from the cards and the image hover-zoom. With the card
+      no longer clickable, a hover lift is a false affordance — the visual should match
+      the behaviour. `.card-focus` deleted from globals.css; it existed only for the
+      clickable cards.
+- [x] **Single gold CTA per card**, renamed "See Brian's ContentFlow" / "…CRM" etc., with
+      an arrow glyph. Gold so it carries against the white text block; 44px min height.
+      Client rows share the same button ("Visit <name>").
+- [x] **Contrast between plate and text block.** The screenshot now sits under a tinted
+      chrome bar carrying the traffic-light dots (they previously floated loose over the
+      image, reading as an artefact) with a 2px bottom rule against the white text block.
+- [x] **Screenshots re-cropped to header + hero.** The 16/10 crop sliced the following
+      section's headings in half. Measured where each hero ends at 1400px wide —
+      ContentFlow 812, CRM 745, DiffDoc 874, DealMaker past 1100 — and moved to **16/9**
+      (1400×788 → 1000×563), the one ratio where all four show a complete header and hero.
+      `SHOT_H`/`OUT_H` in `gen-screenshots.mjs` and `aspect-[16/9]` in the card must stay
+      in step.
+
+**Left orphaned:** `Product.description` in `products-data.ts` was only ever rendered by
+the modal, so it is now unused. Kept rather than deleted — it is written copy — but
+nothing on the site displays it. Either surface it or drop the field.
+
+Verified at 390px and 1400px: no horizontal scroll, zero `role="button"` cards, zero
+modals, all four CTAs 44px. Client screenshots are still the older 16/10 assets rendered
+into the 16/9 plate, which crops ~11% off their bottom; they read fine and were left
+alone deliberately.
+
 ## Not done (needs user action / assets)
 
 - `hello@getbrian.xyz` mailbox — unverified. (getbrian.xyz itself is live: www.getbrian.xyz and www.cliftonai.co both serve this repo, auto-deployed on push to main.)

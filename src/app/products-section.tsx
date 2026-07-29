@@ -1,37 +1,16 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 import { Reveal } from "./reveal";
 import { products, productCategories, type Product } from "./products-data";
 
-const WHATSAPP_HREF = "https://wa.me/447547258570";
-
 /** Wordmark + divider + product suffix — the one lockup grammar for sub-brands. */
-function ProductLockup({
-  product,
-  size = "base",
-}: {
-  product: Product;
-  size?: "base" | "lg";
-}) {
+function ProductLockup({ product }: { product: Product }) {
   if (!product.shortName) {
     return (
-      <h3
-        className={`font-heading font-semibold text-fg ${
-          size === "lg" ? "text-2xl" : "text-lg"
-        }`}
-      >
-        {product.name}
-      </h3>
+      <h3 className="font-heading text-lg font-semibold text-fg">{product.name}</h3>
     );
   }
   return (
-    <h3
-      className={`flex items-baseline font-heading font-semibold text-fg ${
-        size === "lg" ? "text-2xl" : "text-lg"
-      }`}
-    >
+    <h3 className="flex items-baseline font-heading text-lg font-semibold text-fg">
       Brian
       <span
         aria-hidden="true"
@@ -53,52 +32,85 @@ function StatusBadge() {
   );
 }
 
-function Screenshot({
-  product,
-  sizes,
-}: {
-  product: Product;
-  sizes: string;
-}) {
+/**
+ * Screenshot plate. Aspect is locked to 16/9 to match what
+ * scripts/gen-screenshots.mjs captures (header + hero, nothing of the section
+ * below) — change one and you must change the other.
+ *
+ * The plate sits on the panel tint with its own inner border, so the captured
+ * page reads as a separate object rather than bleeding into the card's own
+ * white text block underneath.
+ */
+function Screenshot({ product, sizes }: { product: Product; sizes: string }) {
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card">
-      <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-1.5 px-3 py-2">
+    <div className="border-b-2 border-border-strong bg-bg-panel">
+      {/* Chrome bar. The dots used to float loose over the screenshot, reading
+          as an artefact; sitting them on a tinted strip makes the plate a
+          window and gives the white text block below something to break
+          against. */}
+      <div className="flex items-center gap-1.5 border-b border-border px-3 py-2">
         <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
         <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
         <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
       </div>
-      <Image
-        src={product.screenshot}
-        alt={`${product.name} product screenshot`}
-        fill
-        sizes={sizes}
-        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-      />
+      <div className="relative aspect-[16/9] w-full overflow-hidden">
+        <Image
+          src={product.screenshot}
+          alt={`${product.name} product screenshot`}
+          fill
+          sizes={sizes}
+          className="object-cover object-top"
+        />
+      </div>
     </div>
   );
 }
 
-/** Own products: large 2-up cards with the product-accent keyline. */
-function ProductCard({
-  product,
-  onOpen,
+/** The one call to action per card. Gold so it carries against the white block. */
+function VisitButton({
+  href,
+  children,
+  className = "",
 }: {
-  product: Product;
-  onOpen: (product: Product) => void;
+  href: string;
+  children: React.ReactNode;
+  className?: string;
 }) {
   return (
+    <a
+      href={href}
+      className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-brand-gold px-5 text-sm font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover cursor-pointer ${className}`}
+    >
+      {children}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-3.5 w-3.5"
+      >
+        <path d="M7 17 17 7M9 7h8v8" />
+      </svg>
+    </a>
+  );
+}
+
+/**
+ * Own products: 2-up cards. The whole card used to be clickable and opened a
+ * modal; both are gone. A single explicit link per card is the only thing that
+ * navigates, which also means no nested-interactive markup and no keyboard trap.
+ */
+function ProductCard({ product }: { product: Product }) {
+  return (
     <div
-      onClick={() => onOpen(product)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") onOpen(product);
-      }}
       style={product.accent ? { borderTopColor: product.accent } : undefined}
-      className="glass glass-hover card-focus group relative flex h-full flex-col overflow-hidden rounded-2xl border-t-[3px] cursor-pointer"
+      className="glass group relative flex h-full flex-col overflow-hidden rounded-2xl border-t-[3px]"
     >
       <Screenshot product={product} sizes="(max-width: 640px) 100vw, 50vw" />
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
+      <div className="flex flex-1 flex-col bg-bg p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2.5">
           <ProductLockup product={product} />
           {product.status === "in-development" && <StatusBadge />}
@@ -115,23 +127,10 @@ function ProductCard({
             </li>
           ))}
         </ul>
-        <div className="mt-6 flex flex-1 items-end gap-2">
-          <a
-            href={product.href}
-            onClick={(e) => e.stopPropagation()}
-            className="glass glass-hover flex-1 rounded-full px-4 py-2.5 text-center text-sm font-semibold text-brand-navy-soft cursor-pointer"
-          >
-            Visit {product.shortName ?? product.name}
-          </a>
-          {product.demoHref && product.demoHref !== product.href && (
-            <a
-              href={product.demoHref}
-              onClick={(e) => e.stopPropagation()}
-              className="glass glass-hover flex-1 rounded-full px-4 py-2.5 text-center text-sm font-semibold text-fg cursor-pointer"
-            >
-              View Demo
-            </a>
-          )}
+        <div className="mt-6 flex flex-1 flex-wrap items-end gap-2">
+          <VisitButton href={product.href}>
+            See Brian&rsquo;s {product.shortName ?? product.name}
+          </VisitButton>
         </div>
       </div>
     </div>
@@ -139,27 +138,13 @@ function ProductCard({
 }
 
 /** Client work: case-study rows — their brand up front, our credit line. */
-function ClientRow({
-  product,
-  onOpen,
-}: {
-  product: Product;
-  onOpen: (product: Product) => void;
-}) {
+function ClientRow({ product }: { product: Product }) {
   return (
-    <div
-      onClick={() => onOpen(product)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") onOpen(product);
-      }}
-      className="glass glass-hover card-focus group flex flex-col overflow-hidden rounded-2xl cursor-pointer sm:flex-row"
-    >
+    <div className="glass group flex flex-col overflow-hidden rounded-2xl sm:flex-row">
       <div className="sm:w-72 sm:shrink-0 sm:border-r sm:border-border">
         <Screenshot product={product} sizes="(max-width: 640px) 100vw, 288px" />
       </div>
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
+      <div className="flex flex-1 flex-col bg-bg p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2.5">
           <h3 className="font-heading text-lg font-semibold text-fg">
             {product.name}
@@ -172,98 +157,11 @@ function ClientRow({
         <p className="mt-3 text-sm leading-relaxed text-fg-muted">
           {product.hook}
         </p>
-        <div className="mt-4 flex flex-1 flex-wrap items-end justify-between gap-3">
+        <div className="mt-5 flex flex-1 flex-wrap items-end justify-between gap-3">
           <span className="text-xs text-fg-subtle">
             Built by <span className="font-semibold text-fg-muted">Brian</span>
           </span>
-          <a
-            href={product.href}
-            onClick={(e) => e.stopPropagation()}
-            className="glass glass-hover rounded-full px-4 py-2 text-center text-xs font-semibold text-brand-navy-soft cursor-pointer"
-          >
-            Visit site
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProductModal({
-  product,
-  onClose,
-}: {
-  product: Product;
-  onClose: () => void;
-}) {
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="glass relative grid w-full max-w-4xl overflow-hidden rounded-3xl md:grid-cols-[2fr_3fr]"
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-bg-elevated text-fg cursor-pointer"
-        >
-          ✕
-        </button>
-        <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-bg-card md:aspect-auto md:h-full md:border-r md:border-b-0">
-          <Image
-            src={product.screenshot}
-            alt={`${product.name} product screenshot`}
-            fill
-            sizes="(max-width: 768px) 100vw, 360px"
-            className="object-cover object-top"
-          />
-        </div>
-        <div className="max-h-[60vh] overflow-y-auto p-8 md:max-h-[85vh]">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <ProductLockup product={product} size="lg" />
-            {product.status === "in-development" && <StatusBadge />}
-          </div>
-          <p className="mt-1 text-xs font-medium tracking-wide text-brand-navy-soft uppercase">
-            {product.tagline}
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-fg-muted">
-            {product.description}
-          </p>
-          <ul className="mt-4 space-y-2 text-sm leading-relaxed text-fg-muted">
-            {product.bullets.map((bullet) => (
-              <li key={bullet} className="flex gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-navy-soft" />
-                {bullet}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={product.href}
-              className="flex-1 rounded-full bg-brand-navy-bright px-5 py-3 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-navy-mid cursor-pointer"
-            >
-              Visit {product.shortName ?? "site"}
-            </a>
-            {product.demoHref && product.demoHref !== product.href && (
-              <a
-                href={product.demoHref}
-                className="glass glass-hover flex-1 rounded-full px-5 py-3 text-center text-sm font-semibold text-fg cursor-pointer"
-              >
-                View Demo
-              </a>
-            )}
-            <a
-              href={WHATSAPP_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass glass-hover flex-1 rounded-full px-5 py-3 text-center text-sm font-semibold text-brand-navy-soft cursor-pointer"
-            >
-              Message Brian on WhatsApp
-            </a>
-          </div>
+          <VisitButton href={product.href}>Visit {product.name}</VisitButton>
         </div>
       </div>
     </div>
@@ -271,7 +169,6 @@ function ProductModal({
 }
 
 export function ProductsSection() {
-  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const selfCategory = productCategories.find((c) => c.key === "self")!;
   const clientCategory = productCategories.find((c) => c.key === "client")!;
   const selfProducts = products.filter((p) => p.category === "self");
@@ -293,7 +190,7 @@ export function ProductsSection() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {selfProducts.map((product, i) => (
               <Reveal key={product.name} delay={Math.min(i, 3) * 80}>
-                <ProductCard product={product} onOpen={setActiveProduct} />
+                <ProductCard product={product} />
               </Reveal>
             ))}
           </div>
@@ -314,19 +211,12 @@ export function ProductsSection() {
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
             {clientProducts.map((product, i) => (
               <Reveal key={product.name} delay={Math.min(i, 3) * 80}>
-                <ClientRow product={product} onOpen={setActiveProduct} />
+                <ClientRow product={product} />
               </Reveal>
             ))}
           </div>
         </div>
       </div>
-
-      {activeProduct && (
-        <ProductModal
-          product={activeProduct}
-          onClose={() => setActiveProduct(null)}
-        />
-      )}
     </section>
   );
 }
