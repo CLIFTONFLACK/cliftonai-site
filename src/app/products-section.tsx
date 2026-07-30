@@ -41,10 +41,27 @@ function StatusBadge() {
  * The plate sits on the panel tint with its own inner border, so the captured
  * page reads as a separate object rather than bleeding into the card's own
  * white text block underneath.
+ *
+ * `fillHeight` is for ClientRow: its flex row stretches both columns to the
+ * text column's height, so a fixed 16/9 box left the rest of the image
+ * column as bare panel tint. At sm+ the aspect ratio is dropped in favor of
+ * flex-1 filling the stretched parent, with object-cover doing the crop —
+ * ProductCard's vertical stack has no such mismatch, so it keeps the plain
+ * aspect box.
  */
-function Screenshot({ product, sizes }: { product: Product; sizes: string }) {
+function Screenshot({
+  product,
+  sizes,
+  fillHeight = false,
+}: {
+  product: Product;
+  sizes: string;
+  fillHeight?: boolean;
+}) {
   return (
-    <div className="border-b-2 border-border-strong bg-bg-panel">
+    <div
+      className={`border-b-2 border-border-strong bg-bg-panel ${fillHeight ? "flex flex-col sm:h-full" : ""}`}
+    >
       {/* Chrome bar. The dots used to float loose over the screenshot, reading
           as an artefact; sitting them on a tinted strip makes the plate a
           window and gives the white text block below something to break
@@ -54,7 +71,9 @@ function Screenshot({ product, sizes }: { product: Product; sizes: string }) {
         <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
         <span className="h-2 w-2 rounded-full bg-fg-subtle/40" />
       </div>
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
+      <div
+        className={`relative aspect-[16/9] w-full overflow-hidden ${fillHeight ? "sm:aspect-auto sm:flex-1" : ""}`}
+      >
         <Image
           src={product.screenshot}
           alt={`${product.name} product screenshot`}
@@ -146,7 +165,11 @@ function ClientRow({ product }: { product: Product }) {
   return (
     <div className="glass group flex flex-col overflow-hidden rounded-2xl sm:flex-row">
       <div className="sm:w-72 sm:shrink-0 sm:border-r sm:border-border">
-        <Screenshot product={product} sizes="(max-width: 640px) 100vw, 288px" />
+        <Screenshot
+          product={product}
+          sizes="(max-width: 640px) 100vw, 288px"
+          fillHeight
+        />
       </div>
       <div className="flex flex-1 flex-col bg-bg-tint p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2.5">
