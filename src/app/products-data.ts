@@ -162,6 +162,40 @@ export const products: Product[] = [
     screenshot: "/screenshots/risinglions.jpg",
     category: "client",
   },
+  {
+    name: "HYDRGEL",
+    tagline: "Personal water purification",
+    hook: "Pour dirty water into a pouch, drink clean water three minutes later.",
+    bullets: [
+      "Patented hydrogel-and-silver pouch purifies 330ml in 3 minutes",
+      "HYDRLAB deploys a full production lab to disaster zones",
+      "Built for climate disasters and conflict-zone relief",
+    ],
+    description:
+      "2.8 billion people lack access to clean water, and disasters keep making it worse. HYDRGEL's patented hydrogel-and-silver pouches purify a can's worth of dirty water in three minutes, no plant, no bottles, no wait. HYDRLAB deploys a full production lab into disaster and conflict zones to manufacture pouches on-site. You get drinkable water at the point of need, not tankers of bottled water shipped in.",
+    href: "https://www.hydrgel.com",
+    subdomain: "hydrgel.com",
+    status: "live",
+    screenshot: "/screenshots/hydrgel.jpg",
+    category: "client",
+  },
+  {
+    name: "Vance Health Hub",
+    tagline: "Gastro health knowledge hub",
+    hook: "Turning gastro health research into tools patients can actually use.",
+    bullets: [
+      "Free self-assessment for personalised gut health support",
+      "VANCE-Ai answers gastro health questions 24/7",
+      "Clinical reviews and healthcare news curated for IBD and Crohn's patients",
+    ],
+    description:
+      "IBD and Crohn's patients get a diagnosis, then a stack of clinical literature to interpret alone. Vance Health Hub turns the research into a free self-assessment, a 24/7 AI health assistant, and a curated knowledgebase of gastro health news and clinical reviews. You get expert-led guidance you can act on, not a pile of studies to decode yourself.",
+    href: "https://www.vancehealthhub.co.uk",
+    subdomain: "vancehealthhub.co.uk",
+    status: "live",
+    screenshot: "/screenshots/vancehealthhub.jpg",
+    category: "client",
+  },
 ];
 
 /**
