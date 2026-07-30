@@ -11,17 +11,17 @@ const pillars = [
   {
     title: "Replace",
     description:
-      "Swap your CRM, project management, supply-chain, or marketing stack for a system built around you — and yours outright after three years. No rip-and-replace migration drama.",
+      "Swap your CRM, project management, supply-chain, or marketing stack for a system built around you, and yours outright after three years. No rip-and-replace migration drama.",
   },
   {
     title: "Personalise",
     description:
-      "Off-the-shelf SaaS bends you to its workflow. Brian builds the workflow around you — every field, every automation, every report.",
+      "Off-the-shelf SaaS bends you to its workflow. Brian builds the workflow around you: every field, every automation, every report.",
   },
   {
     title: "Save",
     description:
-      "You stop paying full subscription price the day it ships. Half of what you paid before — and after three years the system is yours.",
+      "You stop paying full subscription price the day it ships. Half of what you paid before, and after three years the system is yours.",
   },
 ];
 
@@ -43,7 +43,7 @@ const MARK_ASPECT = 653.8 / 517.3;
  */
 function Wordmark({ height, className }: { height: number; className?: string }) {
   return (
-    <span className={`flex items-center gap-2.5 ${className ?? ""}`}>
+    <span className={`flex flex-col items-center gap-1 ${className ?? ""}`}>
       <Image
         src="/brand/brian-mark-compact.svg"
         alt=""
@@ -52,7 +52,7 @@ function Wordmark({ height, className }: { height: number; className?: string })
         height={height}
         priority
       />
-      <span className="font-heading font-semibold tracking-tight">
+      <span className="font-heading leading-none font-semibold tracking-tight">
         <span className="text-brand-navy">Get</span>
         <span className="text-brand-gold">Brian</span>
       </span>
@@ -99,10 +99,10 @@ export default function Home() {
       <header className="fixed inset-x-4 top-4 z-50 sm:inset-x-6">
         <nav
           aria-label="Primary"
-          className="glass-nav mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-border px-4 py-3 sm:px-6"
+          className="glass-nav mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-3 sm:px-6"
         >
-          <a href="#top" aria-label="GetBrian — home" className="cursor-pointer">
-            <Wordmark height={30} className="text-xl" />
+          <a href="#top" aria-label="GetBrian home" className="cursor-pointer">
+            <Wordmark height={45} className="text-3xl" />
           </a>
           <div className="hidden items-center gap-8 md:flex">
             <a
@@ -153,15 +153,9 @@ export default function Home() {
                   replaces your software pain with simplicity and logic
                 </span>
               </h1>
-              {/* The name's origin, kept verbal — the logo does not spell this
-                  out typographically. See the brand book's visual identity
-                  chapter. */}
-              <p className="mt-5 font-heading text-lg font-semibold tracking-tight text-brand-navy-soft">
-                Brian puts AI in Brain.
-              </p>
-              <p className="mt-5 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
+              <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
                 Brian builds the CRM, project tracker, marketing engine, and
-                supply-chain tools your business rents every month — for a very
+                supply-chain tools your business rents every month, for a very
                 low build fee, then half of what you&apos;re already paying.
                 Stay three years and it&apos;s yours outright.
               </p>
@@ -202,14 +196,8 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <Reveal className="max-w-2xl">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                Not another subscription. A bloke who sorts it.
+                No more paid subscriptions. Brian builds it.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                Most small businesses don&apos;t need another login. They
-                need the CRM, the project board, the marketing engine built
-                around how they actually work — on a path to owning it, not
-                renting it forever.
-              </p>
             </Reveal>
             <div className="mt-14 grid gap-6 sm:grid-cols-3">
               {pillars.map((pillar, i) => (
@@ -241,7 +229,7 @@ export default function Home() {
                   Who&apos;s Brian?
                 </h2>
                 <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                  Brian isn&apos;t a call-centre queue — he&apos;s what
+                  Brian isn&apos;t a call-centre queue. He&apos;s what
                   happens when Clifton Flack builds you an AI system instead
                   of selling you another login. Every product on this site,
                   Brian built and still runs, himself, first.
@@ -249,7 +237,7 @@ export default function Home() {
                 <p className="mt-4 text-lg leading-relaxed text-fg-muted">
                   That means Brian builds with the same constraints you live
                   under: real data, real deadlines, a system that has to
-                  work on day one — not after a quarter of onboarding calls.
+                  work on day one, not after a quarter of onboarding calls.
                 </p>
                 <div className="mt-8 flex items-center gap-4">
                   {/* Founder portrait — swap this monogram for
@@ -267,7 +255,7 @@ export default function Home() {
                       Clifton Flack
                     </p>
                     <p className="text-sm text-fg-muted">
-                      Founder — the person behind Brian
+                      Founder, the person behind Brian
                     </p>
                   </div>
                 </div>
@@ -290,7 +278,7 @@ export default function Home() {
                     </li>
                     <li className="flex gap-3">
                       <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-navy-soft" />
-                      You own what gets built — no lock-in, no
+                      You own what gets built. No lock-in, no
                       re-subscribing to leave.
                     </li>
                   </ul>
@@ -335,7 +323,7 @@ export default function Home() {
 
       <footer className="border-t border-border px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
-          <Wordmark height={24} className="text-base" />
+          <Wordmark height={36} className="text-2xl" />
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-fg-muted">
             {products.map((product) => (
               <a

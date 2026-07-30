@@ -167,13 +167,13 @@ export const products: Product[] = [
 export const productCategories = [
   {
     key: "self" as const,
-    title: "Built and run by Brian",
+    title: "Built by Brian so you don't have to",
     intro:
-      "Proof, not promises. Brian uses these tools himself, every day, before he ever pitched one to you.",
+      "Proof, not promises. Brian has evolved alongside the world of Ai.",
   },
   {
     key: "client" as const,
     title: "Built for clients",
-    intro: "Their brand, their market — Brian's engineering.",
+    intro: "Their brand, their market. Brian's engineering.",
   },
 ];

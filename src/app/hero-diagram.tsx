@@ -34,11 +34,16 @@ const hub = {
   },
 };
 
-const CHIP_X = 16;
-const CHIP_W = 108;
-const CHIP_H = 30;
+/* Chips are sized for the longest label ("Operation Management"), which is why
+   they run much wider than the old one-word set and push the rings and traces
+   right. Labels are sentence case rather than uppercase: at this width uppercase
+   would not fit without dropping the type below legible size. */
+const CHIP_X = 6;
+const CHIP_W = 158;
+const CHIP_H = 34;
+const LABEL_X = CHIP_X + 26;
 /** Terminal ring centre — the hollow gold circles the logo's traces start from. */
-const RING_X = 142;
+const RING_X = 180;
 const RING_R = 9;
 
 /**
@@ -50,44 +55,44 @@ const RING_R = 9;
  */
 const lanes: Lane[] = [
   {
-    key: "content",
-    label: "CONTENT",
+    key: "workflows",
+    label: "Repetitive Workflows",
     color: "#1565c0",
-    y: 90,
-    path: "M 153 90 H 182 L 250 158 H 264",
+    y: 110,
+    path: "M 191 110 H 205 L 253 158 H 264",
     end: [264, 158],
     tip: false,
     drawDelay: 0,
     pulseDelay: 1.4,
   },
   {
-    key: "crm",
-    label: "CRM",
+    key: "operations",
+    label: "Operation Management",
     color: "#00695c",
-    y: 170,
-    path: "M 153 170 H 232 L 254 192 H 352",
-    end: [352, 192],
+    y: 180,
+    path: "M 191 180 H 235 L 251 196 H 352",
+    end: [352, 196],
     tip: true,
     drawDelay: 0.12,
     pulseDelay: 2.3,
   },
   {
-    key: "docs",
-    label: "DOCS",
+    key: "financial",
+    label: "Financial Modelling",
     color: "#6a1b9a",
-    y: 270,
-    path: "M 153 270 H 214 L 262 222 H 320",
-    end: [320, 222],
+    y: 260,
+    path: "M 191 260 H 235 L 251 244 H 320",
+    end: [320, 244],
     tip: true,
     drawDelay: 0.24,
     pulseDelay: 3.2,
   },
   {
-    key: "deals",
-    label: "DEALS",
+    key: "marketing",
+    label: "Marketing Processes",
     color: "#b3541e",
-    y: 350,
-    path: "M 153 350 H 182 L 250 282 H 264",
+    y: 330,
+    path: "M 191 330 H 205 L 253 282 H 264",
     end: [264, 282],
     tip: false,
     drawDelay: 0.36,
@@ -97,9 +102,9 @@ const lanes: Lane[] = [
 
 /** Free-floating solid nodes — the logo scatters a few of these between traces. */
 const studs = [
-  { cx: 198, cy: 132, r: 5.5 },
-  { cx: 206, cy: 226, r: 4.5 },
-  { cx: 192, cy: 312, r: 5 },
+  { cx: 216, cy: 146, r: 5 },
+  { cx: 224, cy: 222, r: 4.5 },
+  { cx: 214, cy: 300, r: 5 },
 ];
 
 /**
@@ -235,13 +240,11 @@ export function HeroDiagram() {
               />
               <circle cx={CHIP_X + 15} cy={l.y} r="3.5" fill={l.color} />
               <text
-                x={CHIP_X + CHIP_W / 2 + 7}
+                x={LABEL_X}
                 y={l.y + 4}
-                textAnchor="middle"
                 fill="#14172b"
                 style={{
-                  font: "700 14px ui-monospace, monospace",
-                  letterSpacing: "0.06em",
+                  font: "600 10.5px ui-sans-serif, system-ui, sans-serif",
                 }}
               >
                 {l.label}

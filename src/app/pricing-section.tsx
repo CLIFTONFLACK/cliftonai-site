@@ -16,7 +16,7 @@ const pricingCards = [
     price: "Very low",
     note: "one-off, quoted up front",
     description:
-      "Brian designs, builds, and ships the system that replaces your CRM, project board, marketing stack, or supply-chain tool. Kept deliberately low — the build isn't where Brian makes his money.",
+      "Brian designs, builds, and ships the system that replaces your CRM, project board, marketing stack, or supply-chain tool. Kept deliberately low, because the build isn't where Brian makes his money.",
   },
   {
     title: "Ongoing",
@@ -30,7 +30,7 @@ const pricingCards = [
     price: "After 3 years",
     note: "agreed handover",
     description:
-      "Stay three years and the system becomes yours outright, transferred through an agreed handover — code, data, and the documentation to run it without Brian.",
+      "Stay three years and the system becomes yours outright, transferred through an agreed handover of code, data, and the documentation to run it without Brian.",
   },
   {
     title: "Profit share",
