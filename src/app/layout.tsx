@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: "GetBrian: AI & Automation for UK Small Business",
   description:
-    "Brian builds AI-powered apps and workflows that replace the CRM, project management, supply chain, and marketing software you're renting, for a very low build fee plus half your current subscription cost, and it's yours outright after three years. If you see Brian, get him.",
+    "Brian builds AI-powered apps and workflows that replace the CRM, project management, supply chain, and marketing software you're renting, for a £2,500 build fee (more for bigger projects) plus half your current subscription cost, and it's yours outright after three years. If you see Brian, get him.",
   icons: {
     icon: [
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "GetBrian: AI & Automation for UK Small Business",
     description:
-      "If you see Brian, get him. He replaces the software you rent with software you own, for a very low build fee plus half of what you're already paying.",
+      "If you see Brian, get him. He replaces the software you rent with software you own, for a £2,500 build fee (more for bigger projects) plus half of what you're already paying.",
     url: siteUrl,
     siteName: "GetBrian",
     type: "website",

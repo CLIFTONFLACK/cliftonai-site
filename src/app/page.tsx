@@ -156,9 +156,10 @@ export default function Home() {
               </h1>
               <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
                 Brian builds the CRM, project tracker, marketing engine, and
-                supply-chain tools your business rents every month, for a very
-                low build fee, then half of what you&apos;re already paying.
-                Stay three years and it&apos;s yours outright.
+                supply-chain tools your business rents every month, for a
+                £2,500 build fee (more for bigger projects), then half of what
+                you&apos;re already paying. Stay three years and it&apos;s
+                yours outright.
               </p>
               <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row lg:w-auto lg:justify-start">
                 <a

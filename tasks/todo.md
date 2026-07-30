@@ -190,6 +190,80 @@ modals, all four CTAs 44px. Client screenshots are still the older 16/10 assets 
 into the 16/9 plate, which crops ~11% off their bottom; they read fine and were left
 alone deliberately.
 
+## v5 — interactive pricing calculator (30 July 2026)
+
+The static "Worked example" card in the pricing section is now a live calculator:
+`src/app/pricing-section.tsx` gained `"use client"`, two sliders, and animated,
+recomputed figures. Also restored the £2,500 build-fee number the user had asked
+changed to "very low" earlier the same day — reverted site-wide (hero, metadata, OG,
+pricing card) back to a concrete, negotiable figure.
+
+- [x] **Build fee restored**: "£2,500" / "one-off, negotiable on scale" replaces "Very
+      low". Propagated everywhere it had been softened: the hero paragraph, `layout.tsx`
+      metadata description, and the OG description.
+- [x] **Resolved a standing ambiguity this feature needed answered.** The "Ongoing" card
+      said the 50% fee runs "for as long as you use the system, never more" — i.e.
+      forever — while the "Ownership" card said the system is handed over after three
+      years. Modelling "savings after handover" only makes sense if something changes
+      *at* handover, so the fee now explicitly stops there: years 4-6 keep the full old
+      spend, not half of it. The "Ongoing" card's copy was rewritten to say so, so the
+      four pricing cards stay mutually consistent rather than quietly disagreeing on the
+      same page.
+- [x] **6-year worked example**, computed live from two sliders rather than the fixed
+      £900/month example row:
+      - Year 1 = (50% × spend × 12) − £2,500
+      - Years 2-3 = 50% × spend × 12, each year
+      - Years 4-6 (post-handover, no more fee) = 100% × spend × 12, each year
+      - Total saved over 6 years = sum of the above, in large gradient type
+- [x] **Two sliders**: current monthly software spend (£200-3,000) and hours a week on
+      repetitive tasks (1-40). Custom-styled range inputs (`.brand-slider` in
+      globals.css) with a gold thumb and a fill gradient computed per-frame from the
+      current value, since a range input has no CSS-only way to paint its own progress.
+- [x] **Working days lost**: `round(hours × 52 / 8)` — an 8-hour day is stated in the
+      caption rather than assumed silently. Defaults to 8 hrs/week, which is a
+      deliberately round marketing number: 52 working days a year, one full day a week.
+- [x] **Animated, not snapped.** Every derived figure runs through a `useAnimatedNumber`
+      hook (rAF, ease-out-cubic, ~500ms) that tracks its in-flight value in a ref rather
+      than just the last target — a range input fires on every pixel of drag, so a
+      second change almost always lands mid-animation, and re-reading the target instead
+      of the live position made the number stutter backward before continuing.
+      `prefers-reduced-motion` skips the tween and jumps to the value in one frame.
+- [x] **"Marketing juice"**: an uppercase "Drag the sliders" eyebrow pill, a soft gold
+      glow behind the card, and the total set in `.brand-gradient-text` at display size.
+
+Caught during lint: the first cut of the reduced-motion branch called `setValue()`
+synchronously in the effect body, which `eslint-plugin-react-hooks`'
+`set-state-in-effect` rule (new since the last time this repo was linted this closely)
+correctly flags as a cascading-render risk. Fixed by moving that call inside a
+`requestAnimationFrame` callback like the rest of the hook already does, rather than
+suppressing the rule.
+
+Verification had to route around two environment quirks:
+
+- **Two `next dev` servers can't run in the same project directory** — even on
+  different ports, the second exits immediately with "Another next dev server is
+  already running" because both would share the same `.next` dev lock. Another session
+  had port 3000 running throughout this pass; verification here used `npm run build`
+  then `next start -p 3010` against that build, which isn't subject to the same lock and
+  left the other session untouched.
+- **Headless Chrome doesn't reliably fire the `IntersectionObserver`** the `.reveal`
+  wrapper waits on before showing its content (no real frames get delivered), so a
+  screenshot taken without accounting for that comes back blank white. Fixed by forcing
+  `.classList.add('is-visible')` on every `.reveal` before capturing — see
+  [[headless-screenshot-capture]] for this and the sibling `Page.captureScreenshot`
+  `clip`-coordinates gotcha it took two tries to get right (`clip` needs document-absolute
+  coordinates plus `captureBeyondViewport: true`, not viewport-relative ones from a
+  scrolled page — the first attempt scrolled, then clipped as if it hadn't, and landed
+  in blank space below the real content).
+
+Correctness verified over the DOM itself, not by eye: drove the two sliders via CDP
+(`Runtime.evaluate` + a real `input` event, which is what React's `onChange` listens
+for) through spend 900→1500 and hours 8→20, reading the rendered figures at each step
+and checking them against hand-calculated values. All matched, including a mid-animation
+read confirming the numbers genuinely tween rather than jump. Screenshots at 1400px and
+390px show no overflow, correct stacking, and legible sliders at both widths. Build,
+lint and typecheck clean.
+
 ## Not done (needs user action / assets)
 
 - `hello@getbrian.xyz` mailbox — unverified. (getbrian.xyz itself is live: www.getbrian.xyz and www.cliftonai.co both serve this repo, auto-deployed on push to main.)
@@ -206,7 +280,10 @@ alone deliberately.
   schedule would silently republish their site as it looked today.
 - Retrofit sub-site repos (DealMaker, DiffDoc, CRM, ContentFlow) with the new "Built by
   Brian" badge — those live in other repos, some without push access (see prior memory)
-- Founder photo for the "Who's Brian" section (still a CF monogram placeholder)
+- Founder photo for the "Who's Brian" section — moot as of the anonymisation pass
+  (30 Jul 2026): the section no longer names or depicts a founder at all, CF monogram
+  included, so there is nothing left to photograph. Struck rather than deleted so the
+  history of "we considered a photo, then decided against showing anyone" is visible.
 - **Re-publish the brand book Artifact.** The file is current, but the previously
   published copy at the Artifact URL in the `brian-rebrand` memory still shows the v2
   placeholder identity until it's re-uploaded.

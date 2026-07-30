@@ -2,9 +2,11 @@
 
 Single-page marketing site for **getbrian.xyz**. Brian builds AI-powered
 apps and workflows that replace the CRM, project management, marketing, and
-supply-chain SaaS small businesses are renting — for a £1,000 build fee plus
-half of what they're already paying, forever. Built with Next.js (App
-Router) + Tailwind CSS v4, deployed as a fully static site on Vercel.
+supply-chain SaaS small businesses are renting — for a £2,500 build fee
+(negotiable on project scale) plus half of what they're already paying, for
+three years, after which the system is handed over and owned outright. Built
+with Next.js (App Router) + Tailwind CSS v4, deployed as a fully static site
+on Vercel.
 
 Campaign line: **"If you see Brian, get him."**
 
@@ -29,7 +31,9 @@ Open http://localhost:3000.
 - `src/app/page.tsx` — the one-page site (hero, positioning, products, pricing, who's Brian, contact, footer)
 - `src/app/products-data.ts` — the product/portfolio data (names, copy, links, screenshots)
 - `src/app/products-section.tsx` — product cards, client case-study rows, and detail modal
-- `src/app/pricing-section.tsx` — the £1,000 + 50% pricing model + worked example
+- `src/app/pricing-section.tsx` — the £2,500 + 50%-for-3-years pricing model, plus an
+  interactive worked-example calculator (two sliders: monthly software spend, weekly
+  hours on repetitive tasks) with animated, live-recomputed savings
 - `src/app/hero-diagram.tsx` — animated hero integration diagram (CSS/SVG only)
 - `src/app/layout.tsx` — fonts + metadata
 - `src/app/globals.css` — color tokens, gradients, theme, animations
@@ -94,6 +98,8 @@ this file was updated. Use `*.getbrian.xyz`.
 | Empirely Game | client | empirely.getbrian.xyz |
 | GetForged | client | getforged.getbrian.xyz |
 | The Rising Lions | client | therisinglions.com |
+| HYDRGEL | client | hydrgel.com |
+| Vance Health Hub | client | vancehealthhub.co.uk |
 
 ## Deploy
 

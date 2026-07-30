@@ -264,6 +264,77 @@ body {
   }
 }
 
+/* Pricing calculator sliders. The filled portion of the track (gold up to the
+   thumb, border past it) is painted by the component as an inline
+   background-image gradient computed from the current value — range inputs
+   have no CSS-only way to know their own position, so the track colour here
+   is only ever the unfilled base the gradient sits on top of. */
+.brand-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-strong);
+  outline-offset: 4px;
+}
+
+.brand-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  border: 3px solid var(--bg);
+  box-shadow: 0 1px 4px rgba(20, 23, 43, 0.35);
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.brand-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  border: 3px solid var(--bg);
+  box-shadow: 0 1px 4px rgba(20, 23, 43, 0.35);
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.brand-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.brand-slider:hover::-webkit-slider-thumb,
+.brand-slider:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+.brand-slider:hover::-moz-range-thumb,
+.brand-slider:active::-moz-range-thumb {
+  transform: scale(1.15);
+}
+
+.brand-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 1px 4px rgba(20, 23, 43, 0.35),
+    0 0 0 4px rgba(186, 139, 50, 0.35);
+}
+
+.brand-slider:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 1px 4px rgba(20, 23, 43, 0.35),
+    0 0 0 4px rgba(186, 139, 50, 0.35);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);
