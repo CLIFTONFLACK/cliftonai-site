@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Clauses } from "./clauses";
 import { Reveal } from "./reveal";
 import { ProductsSection } from "./products-section";
 import { PricingSection } from "./pricing-section";
@@ -196,7 +197,7 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <Reveal className="max-w-2xl">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                No more paid subscriptions. Brian builds it.
+                <Clauses of={["No more paid subscriptions.", "Brian builds it."]} />
               </h2>
             </Reveal>
             <div className="mt-14 grid gap-6 sm:grid-cols-3">
@@ -261,7 +262,10 @@ export default function Home() {
                       Founder-led
                     </p>
                     <p className="text-sm text-fg-muted">
-                      One person behind every build, UK-based
+                      One person behind every build,{" "}
+                      {/* nowrap so a phone doesn't break the compound after the
+                          hyphen and leave "based" on its own line. */}
+                      <span className="whitespace-nowrap">UK-based</span>
                     </p>
                   </div>
                 </div>
@@ -300,9 +304,9 @@ export default function Home() {
           <Reveal className="relative mx-auto max-w-4xl">
             <div className="glass rounded-3xl px-8 py-16 text-center sm:px-16">
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-                Seen Brian? Get him.
+                <Clauses of={["Seen Brian?", "Get him."]} />
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-fg-muted">
+              <p className="mx-auto mt-4 max-w-xl text-balance text-lg leading-relaxed text-fg-muted">
                 Tell him what you&apos;re paying for right now. He&apos;ll
                 show you what it looks like owned instead of rented.
               </p>

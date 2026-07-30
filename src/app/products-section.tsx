@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Clauses } from "./clauses";
 import { Reveal } from "./reveal";
 import { products, productCategories, type Product } from "./products-data";
 
@@ -184,9 +185,9 @@ export function ProductsSection() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-              {selfCategory.title}
+              <Clauses of={selfCategory.title} />
             </h2>
-            <p className="mt-3 text-lg leading-relaxed text-fg-muted">
+            <p className="mt-3 text-balance text-lg leading-relaxed text-fg-muted">
               {selfCategory.intro}
             </p>
           </Reveal>
@@ -205,9 +206,9 @@ export function ProductsSection() {
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-              {clientCategory.title}
+              <Clauses of={clientCategory.title} />
             </h2>
-            <p className="mt-3 text-lg leading-relaxed text-fg-muted">
+            <p className="mt-3 text-balance text-lg leading-relaxed text-fg-muted">
               {clientCategory.intro}
             </p>
           </Reveal>

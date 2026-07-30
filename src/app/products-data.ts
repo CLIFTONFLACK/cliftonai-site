@@ -164,16 +164,21 @@ export const products: Product[] = [
   },
 ];
 
+/**
+ * `title` is the section heading as clauses, not one string: each entry wraps as
+ * a unit so a phone never splits the phrase mid-way. See `Clauses` in
+ * clauses.tsx. Desktop still renders them as one line.
+ */
 export const productCategories = [
   {
     key: "self" as const,
-    title: "Built by Brian so you don't have to",
+    title: ["Built by Brian", "so you don't have to"],
     intro:
       "Proof, not promises. Brian has evolved alongside the world of Ai.",
   },
   {
     key: "client" as const,
-    title: "Built for clients",
+    title: ["Built for clients"],
     intro: "Their brand, their market. Brian's engineering.",
   },
 ];
