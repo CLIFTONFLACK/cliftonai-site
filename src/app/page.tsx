@@ -230,7 +230,7 @@ export default function Home() {
                 </h2>
                 <p className="mt-4 text-lg leading-relaxed text-fg-muted">
                   Brian isn&apos;t a call-centre queue. He&apos;s what
-                  happens when Clifton Flack builds you an AI system instead
+                  happens when one person builds you an AI system instead
                   of selling you another login. Every product on this site,
                   Brian built and still runs, himself, first.
                 </p>
@@ -240,22 +240,28 @@ export default function Home() {
                   work on day one, not after a quarter of onboarding calls.
                 </p>
                 <div className="mt-8 flex items-center gap-4">
-                  {/* Founder portrait — swap this monogram for
-                      <Image src="/brand/clifton.jpg" width={56} height={56}
-                      alt="Clifton Flack" className="h-14 w-14 rounded-full object-cover" />
-                      once the photo is available. */}
+                  {/* Deliberately anonymous: no name, no portrait, no
+                      initials. The mark stands in for the person, which also
+                      keeps the "Brian is never depicted as a person" rule
+                      intact rather than trading one likeness for another. */}
                   <span
                     aria-hidden="true"
-                    className="brand-gradient flex h-14 w-14 shrink-0 items-center justify-center rounded-full font-heading text-lg font-semibold text-white"
+                    className="brand-gradient flex h-14 w-14 shrink-0 items-center justify-center rounded-full"
                   >
-                    CF
+                    <Image
+                      src="/brand/brian-mark-compact-white.svg"
+                      alt=""
+                      aria-hidden="true"
+                      width={Math.round(24 * MARK_ASPECT)}
+                      height={24}
+                    />
                   </span>
                   <div>
                     <p className="font-heading text-base font-semibold text-fg">
-                      Clifton Flack
+                      Founder-led
                     </p>
                     <p className="text-sm text-fg-muted">
-                      Founder, the person behind Brian
+                      One person behind every build, UK-based
                     </p>
                   </div>
                 </div>
@@ -278,8 +284,8 @@ export default function Home() {
                     </li>
                     <li className="flex gap-3">
                       <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-navy-soft" />
-                      You own what gets built. No lock-in, no
-                      re-subscribing to leave.
+                      You own what gets built after three years. No lock-in,
+                      no re-subscribing to leave.
                     </li>
                   </ul>
                 </div>
