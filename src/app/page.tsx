@@ -149,17 +149,14 @@ export default function Home() {
                 If you see Brian, get him
               </span>
               <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-fg sm:text-5xl">
-                The helpful AI bloke who{" "}
+                The helpful Ai guy who{" "}
                 <span className="brand-gradient-text">
-                  replaces your software pain with simplicity and logic
+                  replaces your rented software
                 </span>
               </h1>
               <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-fg-muted">
-                Brian builds the CRM, project tracker, marketing engine, and
-                supply-chain tools your business rents every month, for a
-                £2,500 build fee (more for bigger projects), then half of what
-                you&apos;re already paying. Stay three years and it&apos;s
-                yours outright.
+                Brian builds the tech you rent: CRM, project tools, marketing,
+                and <span className="whitespace-nowrap">supply chain</span>
               </p>
               <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row lg:w-auto lg:justify-start">
                 <a
