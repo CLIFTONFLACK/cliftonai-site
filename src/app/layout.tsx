@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -21,6 +21,21 @@ const dmSans = DM_Sans({
  * disagrees with the page's own canonical is worse than no sitemap.
  */
 export const siteUrl = "https://www.getbrian.xyz";
+
+/**
+ * `viewportFit: "cover"` is the load-bearing line, not the theme colour:
+ * `env(safe-area-inset-*)` resolves to 0 on every device unless the viewport
+ * opts into the display cutout area. The sticky CTA bar's bottom padding
+ * depends on it, so without this the bar sits under the iPhone home indicator.
+ *
+ * `userScalable` is deliberately left alone — pinch-zoom stays enabled.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#ffffff",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

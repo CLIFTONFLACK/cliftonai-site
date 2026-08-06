@@ -5,8 +5,18 @@ import { ProductsSection } from "./products-section";
 import { PricingSection } from "./pricing-section";
 import { HeroDiagram } from "./hero-diagram";
 import { products } from "./products-data";
+import { MobileNav, type NavLink } from "./mobile-nav";
+import { StickyCta } from "./sticky-cta";
 
 const WHATSAPP_HREF = "https://wa.me/447547258570";
+
+/** Single source for both the desktop nav row and the mobile sheet. */
+const navLinks: NavLink[] = [
+  { href: "#products", label: "Work" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#who-we-are", label: "Who's Brian" },
+  { href: "#contact", label: "Contact" },
+];
 
 const pillars = [
   {
@@ -29,7 +39,19 @@ const pillars = [
 const proofPoints = [
   "4 tools Brian runs daily",
   "4 client platforms shipped",
-  "Founder-led, UK-based",
+  /* At desktop widths the three points plus their separators come to almost
+     exactly the hero column, so each item wraps internally — and the only
+     break point in this one is the hyphen, which stranded "based" on a line
+     of its own. nowrap keeps the compound whole; the comma still takes the
+     break.
+
+     The outer span is load-bearing: the <li> is a flex container, so a bare
+     fragment would make the text and the nowrap span two separate flex items
+     laid out side by side, each wrapping on its own. Wrapping them keeps the
+     item a single run of inline text. */
+  <span key="founder-led">
+    Founder-led, <span className="whitespace-nowrap">UK-based</span>
+  </span>,
 ];
 
 /** brian-mark-compact.svg viewBox aspect — keeps the mark from being squashed. */
@@ -77,7 +99,7 @@ function BuiltByBadge() {
   return (
     <a
       href="#top"
-      className="group inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-sm text-fg-muted transition-colors duration-200 hover:border-brand-navy hover:text-brand-navy cursor-pointer"
+      className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-sm text-fg-muted transition-colors duration-200 hover:border-brand-navy hover:text-brand-navy cursor-pointer"
     >
       <Image
         src="/brand/brian-mark-compact.svg"
@@ -106,37 +128,25 @@ export default function Home() {
             <Wordmark height={45} className="text-3xl" />
           </a>
           <div className="hidden items-center gap-8 md:flex">
-            <a
-              href="#products"
-              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
-            >
-              Work
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
-            >
-              Pricing
-            </a>
-            <a
-              href="#who-we-are"
-              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
-            >
-              Who&apos;s Brian
-            </a>
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-1">
             <a
               href="#contact"
-              className="text-sm text-fg-muted transition-colors duration-200 hover:text-fg cursor-pointer"
+              className="hidden min-h-11 items-center rounded-full bg-brand-gold px-4 text-sm font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover cursor-pointer md:inline-flex"
             >
-              Contact
+              Get Brian
             </a>
+            <MobileNav links={navLinks} ctaHref="#contact" ctaLabel="Get Brian" />
           </div>
-          <a
-            href="#contact"
-            className="inline-flex min-h-11 items-center rounded-full bg-brand-gold px-4 text-sm font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover cursor-pointer"
-          >
-            Get Brian
-          </a>
         </nav>
       </header>
 
@@ -160,6 +170,7 @@ export default function Home() {
               </p>
               <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row lg:w-auto lg:justify-start">
                 <a
+                  id="hero-cta"
                   href="#contact"
                   className="w-full rounded-full bg-brand-gold px-6 py-3 text-sm font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover cursor-pointer sm:w-auto"
                 >
@@ -174,7 +185,7 @@ export default function Home() {
               </div>
               <ul className="mt-10 flex flex-col items-center justify-center gap-2 text-xs font-medium tracking-wide text-fg-subtle uppercase sm:flex-row sm:gap-0 lg:justify-start">
                 {proofPoints.map((point, i) => (
-                  <li key={point} className="flex items-center">
+                  <li key={i} className="flex items-center">
                     {i > 0 && (
                       <span
                         aria-hidden="true"
@@ -329,15 +340,20 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-border px-6 py-10">
+      {/* Clears the sticky CTA bar so the copyright line is never trapped
+          under it. Only the phone breakpoint needs it — the bar is md:hidden. */}
+      <footer className="border-t border-border px-6 pt-10 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
           <Wordmark height={36} className="text-2xl" />
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-fg-muted">
+          {/* -mx-2 pulls the row back flush: each link now carries its own
+              padding to reach a 44px target, which would otherwise inset the
+              first and last items relative to the wordmark above. */}
+          <div className="-mx-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-fg-muted">
             {products.map((product) => (
               <a
                 key={product.name}
                 href={product.href}
-                className="transition-colors duration-200 hover:text-fg cursor-pointer"
+                className="inline-flex min-h-11 items-center rounded-lg px-2 transition-colors duration-200 hover:text-fg cursor-pointer"
               >
                 {product.shortName ?? product.name}
               </a>
@@ -349,6 +365,8 @@ export default function Home() {
           © {new Date().getFullYear()} Brian. All rights reserved.
         </p>
       </footer>
+
+      <StickyCta href="#contact" label="Get Brian" watchId="hero-cta" />
     </>
   );
 }

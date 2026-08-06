@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Reveal } from "./reveal";
 
 /**
@@ -138,10 +138,14 @@ function SliderField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="brand-slider mt-3 w-full"
-        style={{
-          background: `linear-gradient(to right, var(--brand-gold) ${pct}%, var(--border-strong) ${pct}%)`,
-        }}
+        // mt-1, not mt-3: the input box grew from 6px to 44px to be tappable
+        // and the extra height is centred padding around the same visible
+        // track, so the old margin would now read as a gap.
+        className="brand-slider mt-1 w-full"
+        // A custom property, not a `background` shorthand — the shorthand is
+        // an inline declaration that would reset the stylesheet's
+        // background-size and repaint the track at full 44px height.
+        style={{ "--fill": `${pct}%` } as CSSProperties}
         aria-label={label}
       />
     </div>

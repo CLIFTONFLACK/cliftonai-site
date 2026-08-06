@@ -64,11 +64,27 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+  /* The header is fixed, so a plain #anchor jump lands with the target's first
+     line tucked under it. Offsetting the scroll port by the header's height
+     plus its top inset fixes every in-page link at once, including the ones
+     the mobile sheet now exposes. */
+  scroll-padding-top: 6rem;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
+  /* Stops the rubber-band scroll chaining to the browser chrome / triggering
+     pull-to-refresh when the mobile sheet is open. */
+  overscroll-behavior-y: none;
+}
+
+/* iOS Safari zooms the viewport whenever a focused field is under 16px, and
+   never zooms back out. Sets the floor without disabling pinch-zoom. */
+input,
+select,
+textarea {
+  font-size: max(16px, 1em);
 }
 
 .brand-gradient {
@@ -99,6 +115,14 @@ body {
   background: var(--bg-elevated);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
+}
+
+/* While the mobile sheet is open the fixed header stays above the scrim so its
+   close button remains tappable — but at 80% opacity the scrim reads straight
+   through the glass and the whole bar goes muddy grey. Going opaque for the
+   duration keeps the wordmark clean. */
+header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav {
+  background: var(--bg);
 }
 
 .glass-hover {
@@ -269,14 +293,30 @@ body {
    background-image gradient computed from the current value — range inputs
    have no CSS-only way to know their own position, so the track colour here
    is only ever the unfilled base the gradient sits on top of. */
+/* The element box IS the touch target on a range input — the 22px thumb is
+   painted, not hit-tested beyond it. At the old height: 6px the whole control
+   was a 6px-tall tap target, which no thumb can hit reliably.
+   The box is now 44px and the visible 6px track is painted as a centred
+   background band instead, so the control looks identical and is tappable.
+   The fill percentage arrives as --fill from the component; it must not be set
+   as a `background` shorthand inline, or it would reset background-size. */
 .brand-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 6px;
+  height: 44px;
+  background-image: linear-gradient(
+    to right,
+    var(--brand-gold) var(--fill, 0%),
+    var(--border-strong) var(--fill, 0%)
+  );
+  background-size: 100% 6px;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 999px;
-  background: var(--border-strong);
   outline-offset: 4px;
+  /* Stops iOS treating a horizontal drag on the thumb as a page scroll. */
+  touch-action: none;
 }
 
 .brand-slider::-webkit-slider-thumb {
