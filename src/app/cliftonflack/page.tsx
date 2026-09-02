@@ -99,7 +99,7 @@ export default function CliftonFlackHome() {
       <section className="relative overflow-hidden px-6 pt-8 pb-20 sm:pt-12">
         <div className="mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
           <Reveal>
-            <span className="cf-clay-inset inline-flex items-center px-4 py-1.5 text-xs font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
+            <span className="cf-clay-inset inline-flex items-center px-8 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
               My preferred portfolio
             </span>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-5xl">

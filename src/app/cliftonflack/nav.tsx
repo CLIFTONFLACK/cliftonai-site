@@ -41,12 +41,18 @@ export function CliftonFlackHeader() {
         </div>
         <div className="flex items-center gap-2">
           <a
-            href="/"
+            href="https://www.linkedin.com/in/cliftonflack/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="cf-clay-ghost hidden min-h-11 items-center px-4 text-sm font-semibold text-[var(--cf-ink)] md:inline-flex"
           >
-            GetBrian.xyz
+            Connect on LinkedIn
           </a>
-          <MobileNav links={navLinks} ctaHref="/" ctaLabel="GetBrian.xyz" />
+          <MobileNav
+            links={navLinks}
+            ctaHref="https://www.linkedin.com/in/cliftonflack/"
+            ctaLabel="Connect on LinkedIn"
+          />
         </div>
       </nav>
     </header>
