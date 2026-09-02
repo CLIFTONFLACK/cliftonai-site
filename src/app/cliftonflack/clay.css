@@ -1,0 +1,201 @@
+/**
+ * Claymorphism scoped to /cliftonflack only, via the .cf-scope class the
+ * layout wraps around every page here. This is a plain global CSS import,
+ * so it physically ships on every route, but every rule is prefixed and
+ * gated under .cf-scope — nothing here can touch the GetBrian marketing
+ * site's own glass/navy-gold look.
+ */
+
+.cf-scope {
+  --cf-bg: #e8edf6;
+  --cf-bg-deep: #dde5f1;
+  --cf-surface: #eef2fa;
+  --cf-surface-alt: #f4f7fc;
+  --cf-ink: #1c2b44;
+  --cf-ink-muted: #55637d;
+  --cf-ink-subtle: #7c879c;
+  --cf-line: rgba(28, 43, 68, 0.08);
+  --cf-shadow-dark: rgba(30, 45, 74, 0.28);
+  --cf-shadow-light: rgba(255, 255, 255, 0.9);
+  --cf-gold: #ba8b32;
+  --cf-gold-deep: #8a6520;
+  --cf-gold-soft: #f1e3c6;
+  --cf-navy: #0a1d3b;
+
+  background: var(--cf-bg);
+  color: var(--cf-ink);
+  min-height: 100%;
+}
+
+.cf-scope a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---------- clay surfaces ---------- */
+
+.cf-clay {
+  background: var(--cf-surface);
+  border-radius: 28px;
+  box-shadow:
+    9px 9px 20px var(--cf-shadow-dark),
+    -9px -9px 20px var(--cf-shadow-light);
+}
+
+.cf-clay-sm {
+  border-radius: 20px;
+  box-shadow:
+    6px 6px 14px var(--cf-shadow-dark),
+    -6px -6px 14px var(--cf-shadow-light);
+}
+
+.cf-clay-inset {
+  border-radius: 28px;
+  background: var(--cf-bg);
+  box-shadow:
+    inset 6px 6px 14px var(--cf-shadow-dark),
+    inset -6px -6px 14px var(--cf-shadow-light);
+}
+
+.cf-clay-hover {
+  transition:
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 250ms ease;
+}
+
+.cf-clay-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    12px 12px 26px var(--cf-shadow-dark),
+    -12px -12px 26px var(--cf-shadow-light);
+}
+
+/* ---------- gold clay CTA ---------- */
+
+.cf-clay-cta {
+  background: linear-gradient(155deg, #cda253 0%, var(--cf-gold) 60%, #a87b2a 100%);
+  color: #26190a;
+  border-radius: 999px;
+  box-shadow:
+    7px 7px 16px var(--cf-shadow-dark),
+    -5px -5px 14px rgba(255, 255, 255, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition:
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease;
+}
+
+.cf-clay-cta:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    10px 10px 22px var(--cf-shadow-dark),
+    -7px -7px 18px rgba(255, 255, 255, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.cf-clay-cta:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 4px 4px 10px rgba(90, 60, 10, 0.45),
+    inset -4px -4px 10px rgba(255, 214, 140, 0.35);
+}
+
+.cf-clay-ghost {
+  background: var(--cf-surface);
+  border-radius: 999px;
+  box-shadow:
+    6px 6px 14px var(--cf-shadow-dark),
+    -6px -6px 14px var(--cf-shadow-light);
+  transition:
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease,
+    color 200ms ease;
+}
+
+.cf-clay-ghost:hover {
+  transform: translateY(-3px);
+  color: var(--cf-navy);
+  box-shadow:
+    9px 9px 18px var(--cf-shadow-dark),
+    -9px -9px 18px var(--cf-shadow-light);
+}
+
+/* ---------- header nav: animated clay pill behind each link on hover ---------- */
+
+.cf-nav-link {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.05rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--cf-ink-muted);
+  transition:
+    color 220ms ease,
+    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cf-nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: var(--cf-surface-alt);
+  opacity: 0;
+  transform: scale(0.55);
+  box-shadow:
+    5px 5px 12px var(--cf-shadow-dark),
+    -5px -5px 12px var(--cf-shadow-light);
+  transition:
+    transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 220ms ease;
+}
+
+.cf-nav-link:hover,
+.cf-nav-link[aria-current="page"] {
+  color: var(--cf-navy);
+  transform: translateY(-1px);
+}
+
+.cf-nav-link:hover::before,
+.cf-nav-link[aria-current="page"]::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cf-nav-link:active::before {
+  box-shadow:
+    inset 4px 4px 9px var(--cf-shadow-dark),
+    inset -4px -4px 9px var(--cf-shadow-light);
+}
+
+/* ---------- header shell ---------- */
+
+.cf-header {
+  background: var(--cf-bg);
+  box-shadow:
+    0 8px 20px var(--cf-shadow-dark),
+    0 -1px 0 var(--cf-shadow-light) inset;
+}
+
+/* ---------- stack rows (Vance ecosystem etc.) ---------- */
+
+.cf-stack-connector {
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(var(--cf-bg-deep), var(--cf-gold), var(--cf-bg-deep));
+  box-shadow: inset 1px 0 2px var(--cf-shadow-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-nav-link,
+  .cf-nav-link::before,
+  .cf-clay-hover,
+  .cf-clay-cta,
+  .cf-clay-ghost {
+    transition: none !important;
+  }
+}
