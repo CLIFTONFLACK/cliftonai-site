@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Reveal } from "../../reveal";
 import { siteUrl } from "../../layout";
 import { CaseShot, CaseHead, PrincipleGrid, StackRow, StackNode, SectionLabel } from "../components";
@@ -45,6 +46,7 @@ const stack = [
     name: "Content Generator",
     role: "Origin",
     body: "Briefs, drafts and reference-checks articles, appointment-prep handouts and clinical review copy against the source literature before a human ever sees them.",
+    screenshot: "/screenshots/vance-content-generator.png",
   },
   {
     name: "Vance Health Hub",
@@ -52,19 +54,22 @@ const stack = [
     body: "The site patients and clinicians actually see: the free self-assessment, VANCE-Ai, and the clinical reviews the generator drafted. Publishes months before commerce opens.",
   },
   {
-    name: "Email",
+    name: "Email Marketing Console",
     role: "Lifecycle",
     body: "Segmented sends built from the same content pipeline, the monthly evidence digest, appointment reminders, the self-assessment follow-up sequence.",
+    screenshot: "/screenshots/vance-email-console.png",
   },
   {
-    name: "CS",
+    name: "Customer Service and SOP Portal",
     role: "Service desk",
     body: "Built straight from the regulatory submission packs, so every patient question is routed by SOP and every answer is traceable, including pharmacovigilance escalation.",
+    screenshot: "/screenshots/vance-customer-service.png",
   },
   {
     name: "Alerts",
     role: "Uptime & monitoring",
     body: "Watches every property and worker in the stack and pages a phone, not a dashboard, the moment the site, checkout, email pipeline or an automation worker goes down.",
+    screenshot: "/screenshots/vance-alerts.png",
   },
 ];
 
@@ -81,10 +86,9 @@ export default function VanceHealthHubPage() {
             roleLabel="My role"
             roleBody={
               <>
-                Chief Commercial Officer, SLA Pharma. Conceived the model,
-                specified the architecture, and briefed{" "}
-                <span className="font-semibold text-[var(--cf-ink)]">GetBrian</span> to
-                build the stack that runs it.
+                Chief Commercial Officer, SLA Pharma. Focusing on a digital
+                first launch and growth strategy for new B2C healthcare
+                business unit.
               </>
             }
           />
@@ -92,7 +96,7 @@ export default function VanceHealthHubPage() {
 
         <Reveal delay={80} className="mt-12">
           <CaseShot
-            src="/screenshots/vancehealthhub.jpg"
+            src="/screenshots/vancehealthhub-v2.png"
             alt="Vance Health Hub homepage screenshot"
             url="vancehealthhub.co.uk"
             sizes="(max-width: 1024px) 100vw, 1120px"
@@ -118,6 +122,20 @@ export default function VanceHealthHubPage() {
             loop with patients directly, and alerting watches the whole
             chain, so a five-person job runs on one.
           </p>
+          <div className="relative mt-6 aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--cf-line)]">
+            <Image
+              src="/screenshots/vance-hq.png"
+              alt="Vance HQ, the internal directory tying every system together"
+              fill
+              sizes="(max-width: 1024px) 100vw, 672px"
+              className="object-cover object-top"
+            />
+          </div>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--cf-ink-muted)]">
+            <b className="text-[var(--cf-ink)]">Vance HQ.</b> The internal
+            directory every system above sits behind, one login into the
+            whole estate.
+          </p>
           <div className="mt-8">
             {stack.map((node, i) => (
               <StackNode
@@ -126,6 +144,7 @@ export default function VanceHealthHubPage() {
                 name={node.name}
                 role={node.role}
                 body={node.body}
+                screenshot={node.screenshot}
                 last={i === stack.length - 1}
               />
             ))}

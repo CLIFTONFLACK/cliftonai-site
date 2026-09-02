@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { MobileNav, type NavLink } from "../mobile-nav";
 
 const navLinks: NavLink[] = [
@@ -24,8 +23,7 @@ export function CliftonFlackHeader() {
           href="/cliftonflack"
           className="flex min-h-11 cursor-pointer items-center gap-2 px-1"
         >
-          <Image src="/brand/brian-mark-compact.svg" alt="" aria-hidden="true" width={24} height={19} />
-          <span className="font-heading text-sm font-semibold tracking-tight text-[var(--cf-ink)]">
+          <span className="font-heading text-lg font-semibold tracking-tight text-[var(--cf-ink)]">
             Clifton Flack
           </span>
         </a>

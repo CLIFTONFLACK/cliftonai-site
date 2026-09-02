@@ -69,7 +69,7 @@ const cases = [
     tag: "Live · Medical foods",
     name: "Vance Health Hub",
     hook: "The public face of a private system, a free self-assessment, a 24/7 AI health assistant, and the full Vance HQ marketing stack running behind it.",
-    screenshot: "/screenshots/vancehealthhub.jpg",
+    screenshot: "/screenshots/vancehealthhub-v2.png",
     url: "vancehealthhub.co.uk",
   },
   {
@@ -100,7 +100,7 @@ export default function CliftonFlackHome() {
         <div className="mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
           <Reveal>
             <span className="cf-clay-inset inline-flex items-center px-4 py-1.5 text-xs font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
-              Three consumer healthcare systems
+              My preferred portfolio
             </span>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-5xl">
               <Clauses of={["Trust before", "transaction."]} />
@@ -227,30 +227,18 @@ export default function CliftonFlackHome() {
 
       {/* Contact */}
       <section className="relative overflow-hidden px-6 py-20">
-        <Reveal className="relative mx-auto max-w-4xl">
-          <div className="cf-clay px-8 py-16 text-center sm:px-16">
-            <h2 className="font-heading text-3xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-4xl">
-              <Clauses of={["Want the stack behind one of these?", "Get Brian."]} />
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-balance text-lg leading-relaxed text-[var(--cf-ink-muted)]">
-              Tell me what you&apos;re paying for right now. I&apos;ll show
-              you what it looks like owned instead of rented.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="mailto:hello@getbrian.xyz"
-                className="cf-clay-cta w-full cursor-pointer px-6 py-3 text-sm font-semibold sm:w-auto"
-              >
-                hello@getbrian.xyz
-              </a>
-              <a
-                href="/"
-                className="cf-clay-ghost w-full cursor-pointer px-6 py-3 text-sm font-semibold text-[var(--cf-navy)] sm:w-auto"
-              >
-                See all of Brian&apos;s work
-              </a>
-            </div>
-          </div>
+        <Reveal className="relative mx-auto max-w-4xl text-center">
+          <a
+            href="https://www.linkedin.com/in/cliftonflack/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cf-clay-cta inline-flex cursor-pointer items-center gap-2.5 px-8 py-4 text-base font-semibold"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56z" />
+            </svg>
+            Connect on LinkedIn
+          </a>
         </Reveal>
       </section>
     </main>

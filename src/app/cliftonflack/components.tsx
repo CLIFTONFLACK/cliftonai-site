@@ -145,12 +145,14 @@ export function StackNode({
   name,
   role,
   body,
+  screenshot,
   last,
 }: {
   index: number;
   name: string;
   role: string;
   body: string;
+  screenshot?: string;
   last?: boolean;
 }) {
   return (
@@ -162,13 +164,28 @@ export function StackNode({
         {!last && <div className="cf-stack-connector my-1 min-h-10 flex-1" />}
       </div>
       <div className={`cf-clay cf-clay-hover w-full p-5 ${last ? "" : "mb-5"}`}>
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h4 className="font-heading text-base font-semibold text-[var(--cf-ink)]">{name}</h4>
-          <span className="font-mono text-[10px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
-            {role}
-          </span>
+        <div className={screenshot ? "flex flex-wrap gap-5 sm:flex-nowrap" : ""}>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h4 className="font-heading text-base font-semibold text-[var(--cf-ink)]">{name}</h4>
+              <span className="font-mono text-[10px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+                {role}
+              </span>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--cf-ink-muted)]">{body}</p>
+          </div>
+          {screenshot && (
+            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-xl border border-[var(--cf-line)] sm:w-56">
+              <Image
+                src={screenshot}
+                alt={`${name} screenshot`}
+                fill
+                sizes="224px"
+                className="object-cover object-top"
+              />
+            </div>
+          )}
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--cf-ink-muted)]">{body}</p>
       </div>
     </div>
   );

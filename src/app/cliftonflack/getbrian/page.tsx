@@ -49,7 +49,7 @@ export default function GetBrianCasePage() {
             index="03"
             tag="Ongoing · Applied AI"
             title="GetBrian.xyz"
-            intro="This site. Most operators rent software that does eighty percent of what they need, forever. Brian builds the hundred percent: a £2,500 build fee, half of what they were already paying for three years, then the system is theirs outright."
+            intro="This site. Most operators rent software that does eighty percent of what they need, forever. Brian builds the hundred percent: half of what they were already paying for three years, then the system is theirs outright."
             roleLabel="My role"
             roleBody="Founder. Scoping, designing, writing it with agentic tooling, shipping it, and running the ones that are live. Brian is the anonymous mark; I'm the person behind it."
           />
