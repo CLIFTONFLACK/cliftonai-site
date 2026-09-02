@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Reveal } from "../../reveal";
 import { siteUrl } from "../../layout";
 import { CaseShot, CaseHead, PrincipleGrid, StackRow, StackNode, SectionLabel } from "../components";
+import { Lightbox } from "../lightbox";
 
 export const metadata: Metadata = {
   title: "Vance Health Hub | Clifton Flack",
@@ -122,14 +123,18 @@ export default function VanceHealthHubPage() {
             loop with patients directly, and alerting watches the whole
             chain, so a five-person job runs on one.
           </p>
-          <div className="relative mt-6 aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--cf-line)]">
-            <Image
-              src="/screenshots/vance-hq.png"
-              alt="Vance HQ, the internal directory tying every system together"
-              fill
-              sizes="(max-width: 1024px) 100vw, 672px"
-              className="object-cover object-top"
-            />
+          <div className="mt-6 max-w-2xl">
+            <Lightbox src="/screenshots/vance-hq.png" alt="Vance HQ, the internal directory tying every system together">
+              <div className="relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-[var(--cf-line)] transition-opacity duration-200 hover:opacity-90">
+                <Image
+                  src="/screenshots/vance-hq.png"
+                  alt="Vance HQ, the internal directory tying every system together"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 672px"
+                  className="object-cover object-top"
+                />
+              </div>
+            </Lightbox>
           </div>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--cf-ink-muted)]">
             <b className="text-[var(--cf-ink)]">Vance HQ.</b> The internal

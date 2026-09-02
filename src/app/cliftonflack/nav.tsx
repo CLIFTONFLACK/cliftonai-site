@@ -23,7 +23,7 @@ export function CliftonFlackHeader() {
           href="/cliftonflack"
           className="flex min-h-11 cursor-pointer items-center gap-2 px-1"
         >
-          <span className="font-heading text-lg font-semibold tracking-tight text-[var(--cf-ink)]">
+          <span className="font-heading text-4xl font-semibold tracking-tight text-[var(--cf-gold-deep)]">
             Clifton Flack
           </span>
         </a>
@@ -44,7 +44,7 @@ export function CliftonFlackHeader() {
             href="https://www.linkedin.com/in/cliftonflack/"
             target="_blank"
             rel="noopener noreferrer"
-            className="cf-clay-ghost hidden min-h-11 items-center px-4 text-sm font-semibold text-[var(--cf-ink)] md:inline-flex"
+            className="cf-clay-ghost hidden min-h-11 items-center px-4 text-sm font-semibold text-[var(--cf-gold-deep)] md:inline-flex"
           >
             Connect on LinkedIn
           </a>

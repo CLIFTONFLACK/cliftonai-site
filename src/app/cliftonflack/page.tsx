@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Clauses } from "../clauses";
 import { Reveal } from "../reveal";
 import { siteUrl } from "../layout";
@@ -99,9 +100,15 @@ export default function CliftonFlackHome() {
       <section className="relative overflow-hidden px-6 pt-8 pb-20 sm:pt-12">
         <div className="mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
           <Reveal>
-            <span className="cf-clay-inset inline-flex items-center px-8 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
-              My preferred portfolio
-            </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="cf-clay-inset inline-flex items-center px-8 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
+                My preferred portfolio
+              </span>
+              <span className="cf-clay-inset inline-flex items-center gap-2 px-6 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
+                Built for
+                <Image src="/brand/helfy-logo.png" alt="Helfy" width={72} height={45} className="h-6 w-auto" />
+              </span>
+            </div>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-5xl">
               <Clauses of={["Trust before", "transaction."]} />
             </h1>
@@ -145,7 +152,7 @@ export default function CliftonFlackHome() {
       {/* Case links */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <SectionLabel>The three systems</SectionLabel>
+          <SectionLabel>Favourite Marketing Systems</SectionLabel>
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             {cases.map((c, i) => (
               <Reveal key={c.href} delay={i * 90}>

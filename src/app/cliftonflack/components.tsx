@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "../reveal";
+import { Lightbox } from "./lightbox";
 
 /**
  * Shared across all four /cliftonflack pages. Kept out of the main site's
@@ -175,14 +176,18 @@ export function StackNode({
             <p className="mt-2 text-sm leading-relaxed text-[var(--cf-ink-muted)]">{body}</p>
           </div>
           {screenshot && (
-            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-xl border border-[var(--cf-line)] sm:w-56">
-              <Image
-                src={screenshot}
-                alt={`${name} screenshot`}
-                fill
-                sizes="224px"
-                className="object-cover object-top"
-              />
+            <div className="w-full shrink-0 sm:w-56">
+              <Lightbox src={screenshot} alt={`${name} screenshot`}>
+                <div className="relative aspect-[16/10] w-full cursor-zoom-in overflow-hidden rounded-xl border border-[var(--cf-line)] transition-opacity duration-200 hover:opacity-90">
+                  <Image
+                    src={screenshot}
+                    alt={`${name} screenshot`}
+                    fill
+                    sizes="224px"
+                    className="object-cover object-top"
+                  />
+                </div>
+              </Lightbox>
             </div>
           )}
         </div>
