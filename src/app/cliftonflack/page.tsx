@@ -190,8 +190,7 @@ export default function CliftonFlackHome() {
             <p className="mt-4 font-heading text-2xl leading-snug font-semibold tracking-tight text-[var(--cf-ink)] sm:text-3xl">
               The same bet, every time:{" "}
               <span style={{ color: "var(--cf-gold-deep)" }}>earn belief first</span>{" "}
-              and keep the customer, or buy attention first and keep paying
-              for it.
+              and keep the customer.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-[var(--cf-ink-muted)]">
               Eight rules, drawn from three builds, that hold regardless of
