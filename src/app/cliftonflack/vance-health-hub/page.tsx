@@ -23,12 +23,12 @@ const vancePrinciples = [
   {
     mark: "Sequence",
     title: "Credibility is the first product",
-    body: "In a regulated health category you can't buy your way past scepticism. The Hub shipped months before commerce did, so by the time there's something to sell, there's already a reason to believe it.",
+    body: "In a regulated health category you can't buy your way past scepticism. The Hub shipped months before commerce, so there's already a reason to believe by the time there's something to sell.",
   },
   {
     mark: "Spend",
     title: "Paid media follows proof, never precedes it",
-    body: "Budget is gated on organic traction. Paid starts as a learning line, not a growth line, and only scales behind a channel that's already shown it converts.",
+    body: "Budget is gated on organic traction. Paid starts as a learning line, not a growth line, and scales only behind a channel that's already converting.",
   },
   {
     mark: "Language",
@@ -46,13 +46,13 @@ const stack = [
   {
     name: "Content Generator",
     role: "Origin",
-    body: "Briefs, drafts and reference-checks articles, appointment-prep handouts and clinical review copy against the source literature before a human ever sees them.",
+    body: "Briefs, drafts and reference-checks articles, appointment-prep handouts and clinical review copy against the source literature before a human sees them.",
     screenshot: "/screenshots/vance-content-generator.png",
   },
   {
     name: "Vance Health Hub",
     role: "Public trust asset",
-    body: "The site patients and clinicians actually see: the free self-assessment, VANCE-Ai, and the clinical reviews the generator drafted. Publishes months before commerce opens.",
+    body: "The site patients and clinicians see: the free self-assessment, VANCE-Ai, and the clinical reviews the generator drafted. Publishes months before commerce opens.",
   },
   {
     name: "Email Marketing Console",
@@ -83,7 +83,7 @@ export default function VanceHealthHubPage() {
             index="01"
             tag="Live · Medical foods"
             title="Vance Health Hub"
-            intro="The public face of a private system. The Hub is what IBD, Crohn's and IBS patients see: a free self-assessment, a 24/7 AI health assistant, and clinical reviews written for people, not journals. Behind it sits the Vance HQ stack that writes, publishes and answers on its own."
+            intro="The public face of a private system. The Hub is what IBD, Crohn's and IBS patients see: a free self-assessment, a 24/7 AI health assistant, and clinical reviews written for people, not journals. Behind it, the Vance HQ stack writes, publishes and answers on its own."
             roleLabel="My role"
             roleBody={
               <>
@@ -105,7 +105,7 @@ export default function VanceHealthHubPage() {
           />
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--cf-ink-muted)]">
             <b className="text-[var(--cf-ink)]">The trust asset.</b> The Hub
-            went live before commerce did. Its job is credibility and a
+            went live before commerce. Its job is credibility and a
             qualified, data-rich list, a self-assessment and VANCE-Ai
             answering questions around the clock, not a basket.
           </p>

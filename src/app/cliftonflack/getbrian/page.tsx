@@ -26,7 +26,7 @@ const brianPrinciples = [
   {
     mark: "Practice",
     title: "Do the work before you sell the plan",
-    body: "GetBrian's own tools, ContentFlow, the CRM, DiffDoc, DealMaker, run my own businesses first. I build the thing to find out where it actually breaks.",
+    body: "GetBrian's own tools, ContentFlow, the CRM, DiffDoc, DealMaker, run my own businesses first. I build the thing to find out where it breaks.",
   },
   {
     mark: "Scope",
@@ -49,7 +49,7 @@ export default function GetBrianCasePage() {
             index="03"
             tag="Ongoing · Applied AI"
             title="GetBrian.xyz"
-            intro="This site. Most operators rent software that does eighty percent of what they need, forever. Brian builds the hundred percent: half of what they were already paying for three years, then the system is theirs outright."
+            intro="This site. Most operators rent software that does eighty percent of what they need, forever. Brian builds the hundred percent: half of what they were paying for three years, then the system is theirs outright."
             roleLabel="My role"
             roleBody="Founder. Scoping, designing, writing it with agentic tooling, shipping it, and running the ones that are live. Brian is the anonymous mark; I'm the person behind it."
           />
@@ -95,7 +95,7 @@ export default function GetBrianCasePage() {
             <p className="mt-3 text-sm leading-relaxed text-[var(--cf-ink-muted)]">
               <b className="text-[var(--cf-ink)]">DealMaker.</b> One
               automated pipeline that sources leads, drafts outreach,
-              captures replies, and books meetings, in a stage flow fully
+              captures replies, and books meetings, in a stage flow
               customised per industry.
             </p>
           </div>
@@ -108,8 +108,8 @@ export default function GetBrianCasePage() {
             />
             <p className="mt-3 text-sm leading-relaxed text-[var(--cf-ink-muted)]">
               <b className="text-[var(--cf-ink)]">DiffDoc.</b> Reads two
-              versions of a document, marks up exactly what changed, and
-              exports an audit-ready copy, for people who read contracts.
+              versions of a document, marks up what changed, and exports an
+              audit-ready copy, for people who read contracts.
             </p>
           </div>
         </Reveal>

@@ -24,22 +24,22 @@ const howIWork = [
   {
     mark: "Sequence",
     title: "Credibility is the first product",
-    body: "In a low-trust or regulated category you can't buy your way past scepticism. The trust asset ships before commerce does, so by the time there's something to sell, there's already a reason to believe it.",
+    body: "In a low-trust or regulated category you can't buy your way past scepticism. The trust asset ships before commerce, so there's already a reason to believe by the time there's something to sell.",
   },
   {
     mark: "Spend",
     title: "Paid media follows proof, never precedes it",
-    body: "Budget is gated on organic traction. Paid starts as a learning line, not a growth line, and only scales behind a channel that's already shown it converts. A plan that needs the ad budget to work isn't a plan.",
+    body: "Budget is gated on organic traction. Paid starts as a learning line, not a growth line, and scales only behind a channel that's already converting. A plan that needs ad budget to work isn't a plan.",
   },
   {
     mark: "Structure",
     title: "Separate the jobs, separate the properties",
-    body: "Credibility, education and commerce want different tones, different proof, different calls to action. Forcing them onto one site or one page makes all three less convincing.",
+    body: "Credibility, education and commerce want different tones, different proof, different calls to action. Forcing them onto one page makes all three less convincing.",
   },
   {
     mark: "Systems",
     title: "Automate the repetition, never the judgement",
-    body: "Machines are excellent at the first draft and the fourth hundred rows. Every build keeps a human gate at the point where being wrong actually costs something, clinical review, PV, a signed-off brief.",
+    body: "Machines are excellent at the first draft and the fourth hundred rows. Every build keeps a human gate at the point where being wrong costs something, clinical review, PV, a signed-off brief.",
   },
   {
     mark: "Leverage",
@@ -49,7 +49,7 @@ const howIWork = [
   {
     mark: "Practice",
     title: "Do the work before you sell the plan",
-    body: "I build the thing to find out where it actually breaks. GetBrian's own tools run my own businesses first, that's not a hobby detour from commercial strategy, it's how the judgement gets calibrated.",
+    body: "I build the thing to find out where it breaks. GetBrian's own tools run my own businesses first, that's not a hobby detour from commercial strategy, it's how the judgement gets calibrated.",
   },
   {
     mark: "Proof",
@@ -69,7 +69,7 @@ const cases = [
     index: "01",
     tag: "Live · Medical foods",
     name: "Vance Health Hub",
-    hook: "The public face of a private system, a free self-assessment, a 24/7 AI health assistant, and the full Vance HQ marketing stack running behind it.",
+    hook: "The public face of a private system: a free self-assessment, a 24/7 AI health assistant, and the Vance HQ stack running behind it.",
     screenshot: "/screenshots/vancehealthhub-v2.png",
     url: "vancehealthhub.co.uk",
   },
@@ -78,7 +78,7 @@ const cases = [
     index: "02",
     tag: "Founded & built · Consumer wellness",
     name: "CiiTECH",
-    hook: "Three properties, three jobs, one funnel: research credibility, category education, and Provacan, the commerce layer that made it purchasable.",
+    hook: "Three properties, three jobs, one funnel: research credibility, category education, and Provacan, the commerce layer.",
     screenshot: "/screenshots/cliftonflack-ciitechlabs.jpg",
     url: "ciitech.co.il",
   },
@@ -87,7 +87,7 @@ const cases = [
     index: "03",
     tag: "Ongoing · Applied AI",
     name: "GetBrian.xyz",
-    hook: "This site. An AI build studio that replaces rented software with owned systems, ContentFlow, a CRM, DealMaker, DiffDoc, built and run by one person.",
+    hook: "This site. An AI build studio replacing rented software with owned systems: ContentFlow, a CRM, DealMaker, DiffDoc, built and run by one person.",
     screenshot: "/screenshots/contentflowsuite.jpg",
     url: "getbrian.xyz",
   },
@@ -101,7 +101,7 @@ export default function CliftonFlackHome() {
         <div className="mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
           <Reveal>
             <span className="cf-clay-inset inline-flex flex-wrap items-center gap-2 px-8 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
-              My preferred portfolio · Built for
+              Preferred portfolio · Built for
               <Image src="/brand/helfy-logo.png" alt="Helfy" width={72} height={45} className="h-6 w-auto" />
             </span>
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-5xl">
@@ -109,8 +109,8 @@ export default function CliftonFlackHome() {
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-[var(--cf-ink-muted)]">
               Consumer healthcare has a credibility problem before it has a
-              conversion problem. Three builds, each one an attempt to solve
-              the first so the second takes care of itself.
+              conversion problem. Three builds, each one solving the first so
+              the second takes care of itself.
             </p>
           </Reveal>
           <Reveal delay={100}>
@@ -183,10 +183,10 @@ export default function CliftonFlackHome() {
           <Reveal className="max-w-2xl">
             <SectionLabel>How I work</SectionLabel>
             <p className="mt-4 font-heading text-2xl leading-snug font-semibold tracking-tight text-[var(--cf-ink)] sm:text-3xl">
-              Every one of these started with the same bet: that the business
-              which <span style={{ color: "var(--cf-gold-deep)" }}>earns belief first</span>{" "}
-              gets to keep the customer, and the one that buys attention
-              first has to keep buying it.
+              Every one of these started with the same bet: the business that{" "}
+              <span style={{ color: "var(--cf-gold-deep)" }}>earns belief first</span>{" "}
+              keeps the customer; the one that buys attention first has to
+              keep buying it.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-[var(--cf-ink-muted)]">
               Eight rules, drawn from three builds, that hold regardless of
@@ -215,9 +215,8 @@ export default function CliftonFlackHome() {
           <Reveal delay={200} className="mt-10">
             <p className="mt-2 text-lg leading-relaxed text-[var(--cf-ink-muted)]">
               I&apos;m most useful where a consumer business needs someone
-              who can hold the P&amp;L, write the growth plan, then go and
-              build the thing the plan depends on, which is the whole
-              premise of{" "}
+              who can hold the P&amp;L, write the growth plan, then build the
+              thing the plan depends on, which is the whole premise of{" "}
               <a href="/" className="cursor-pointer underline decoration-1 underline-offset-2">
                 GetBrian
               </a>

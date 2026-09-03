@@ -31,7 +31,7 @@ const ciitechPrinciples = [
   {
     mark: "Retention",
     title: "The second purchase is a different problem",
-    body: "First purchase is trust. Second is habit. A laddered range and subscription exist so the customer never has to re-litigate the original decision.",
+    body: "First purchase is trust. Second is habit. A laddered range and subscription exist so the customer never has to re-litigate the decision.",
   },
   {
     mark: "Proof",
@@ -51,7 +51,7 @@ export default function CiitechPage() {
             title="CiiTECH"
             intro="Three properties, three jobs, one funnel. A research company that made the science credible, an academy that made the category understandable, and Provacan, the consumer brand that made it purchasable."
             roleLabel="My role"
-            roleBody="Founder and CEO. Conceived it, built it, and grew Provacan into a leading UK brand in its category, before the venture wound down."
+            roleBody="Founder and CEO. Conceived it, built it, and grew Provacan into a leading UK brand before the venture wound down."
           />
         </Reveal>
 
