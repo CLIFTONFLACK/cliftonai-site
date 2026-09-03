@@ -87,7 +87,7 @@ const cases = [
     index: "03",
     tag: "Ongoing · Applied AI",
     name: "GetBrian.xyz",
-    hook: "This site. An AI build studio replacing rented software with owned systems: ContentFlow, a CRM, DealMaker, DiffDoc, built and run by one person.",
+    hook: "My AI playground exploring modern software development: ContentFlow, a CRM, DealMaker, DiffDoc, built and run by Brian.",
     screenshot: "/screenshots/contentflowsuite.jpg",
     url: "getbrian.xyz",
   },
