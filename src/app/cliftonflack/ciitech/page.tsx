@@ -51,7 +51,7 @@ export default function CiitechPage() {
             title="CiiTECH"
             intro="Three properties, three jobs, one funnel. A research company that made the science credible, an academy that made the category understandable, and Provacan, the consumer brand that made it purchasable."
             roleLabel="My role"
-            roleBody="Founder and CEO. Conceived it, built it, and grew Provacan into a leading UK brand before the venture wound down."
+            roleBody="Founder and CEO. Conceived it, built it, and grew Provacan into the leading UK brand and industry thought leaders."
           />
         </Reveal>
 
@@ -79,10 +79,9 @@ export default function CiitechPage() {
               sizes="(max-width: 640px) 100vw, 33vw"
             />
             <p className="mt-3 text-sm leading-relaxed text-[var(--cf-ink-muted)]">
-              <b className="text-[var(--cf-ink)]">Learn the category before you sell it.</b>{" "}
-              Free, certificated modules for retailers and pharmacists in a
-              market where almost nobody could explain what they were
-              buying.
+              <b className="text-[var(--cf-ink)]">Education at the core of the emerging sector.</b>{" "}
+              Free, certificated modules for customers and pharmacists in a
+              market where clarity and trust is a premium.
             </p>
           </div>
           <div>
@@ -93,9 +92,9 @@ export default function CiitechPage() {
               sizes="(max-width: 640px) 100vw, 33vw"
             />
             <p className="mt-3 text-sm leading-relaxed text-[var(--cf-ink-muted)]">
-              <b className="text-[var(--cf-ink)]">More support, less to think about.</b>{" "}
-              A laddered oil range, subscribe &amp; save, third-party lab
-              reports, a 30-day guarantee. Provacan is still trading today.
+              <b className="text-[var(--cf-ink)]">Leading UK cannabis brand, #1 digital sales revenue, over £10m.</b>{" "}
+              Clinically supported and uniquely high strength formulation
+              delivering trust and strong CLV.
             </p>
           </div>
         </Reveal>
