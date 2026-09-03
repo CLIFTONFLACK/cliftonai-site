@@ -9,7 +9,7 @@
 .cf-scope {
   --cf-bg: #e8edf6;
   --cf-bg-deep: #dde5f1;
-  --cf-surface: #eef2fa;
+  --cf-surface: #ffffff;
   --cf-surface-alt: #f4f7fc;
   --cf-ink: #1c2b44;
   --cf-ink-muted: #55637d;
@@ -190,12 +190,68 @@
   box-shadow: inset 1px 0 2px var(--cf-shadow-dark);
 }
 
+/* ---------- hero decorative blobs (movement, no content weight) ---------- */
+
+.cf-hero-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+  animation: cf-drift ease-in-out infinite;
+}
+
+.cf-hero-blob--a {
+  top: -120px;
+  right: -60px;
+  width: 380px;
+  height: 380px;
+  background: var(--cf-gold-deep);
+  opacity: 0.28;
+  animation-duration: 22s;
+}
+
+.cf-hero-blob--b {
+  bottom: -140px;
+  left: -60px;
+  width: 320px;
+  height: 320px;
+  background: var(--cf-gold);
+  opacity: 0.22;
+  animation-duration: 27s;
+  animation-delay: -6s;
+}
+
+.cf-hero-blob--c {
+  top: 10%;
+  left: 52%;
+  width: 220px;
+  height: 220px;
+  background: var(--cf-navy);
+  opacity: 0.1;
+  animation-duration: 32s;
+  animation-delay: -14s;
+}
+
+@keyframes cf-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-24px, 18px) scale(1.06);
+  }
+  66% {
+    transform: translate(18px, -14px) scale(0.96);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cf-nav-link,
   .cf-nav-link::before,
   .cf-clay-hover,
   .cf-clay-cta,
-  .cf-clay-ghost {
+  .cf-clay-ghost,
+  .cf-hero-blob {
     transition: none !important;
+    animation: none !important;
   }
 }

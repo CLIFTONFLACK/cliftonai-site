@@ -58,7 +58,7 @@ export function PrincipleGrid({
       {items.map((p, i) => (
         <Reveal key={p.title} delay={i * 70}>
           <div className="cf-clay cf-clay-hover h-full p-6">
-            <span className="font-mono text-[11px] font-semibold tracking-widest text-[var(--cf-gold-deep)] uppercase">
+            <span className="font-mono text-[15px] font-semibold tracking-widest text-[var(--cf-gold-deep)] uppercase">
               {p.mark}
             </span>
             <h4 className="mt-2 font-heading text-lg font-semibold text-[var(--cf-ink)]">
@@ -83,7 +83,7 @@ export function StackRow({
     <div className="grid gap-4 sm:grid-cols-4">
       {layers.map((layer) => (
         <div key={layer.name} className="cf-clay p-5">
-          <p className="font-mono text-[11px] font-medium tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+          <p className="font-mono text-[15px] font-medium tracking-widest text-[var(--cf-gold-deep)] uppercase">
             {layer.name}
           </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
@@ -120,7 +120,7 @@ export function CaseHead({
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-start">
       <div>
-        <span className="cf-clay-inset inline-flex items-center px-3 py-1 font-mono text-[11px] font-medium tracking-widest text-[var(--cf-gold-deep)] uppercase">
+        <span className="cf-clay-inset inline-flex items-center px-3 py-1 font-mono text-[15px] font-medium tracking-widest text-[var(--cf-gold-deep)] uppercase">
           {index} · {tag}
         </span>
         <h1 className="mt-4 font-heading text-3xl font-semibold tracking-tight text-[var(--cf-ink)] sm:text-4xl">
@@ -131,7 +131,7 @@ export function CaseHead({
         </p>
       </div>
       <div className="cf-clay p-5" style={{ borderLeft: "4px solid var(--cf-gold)" }}>
-        <p className="text-xs font-semibold tracking-wide text-[var(--cf-ink-subtle)] uppercase">
+        <p className="text-[16px] font-semibold tracking-wide text-[var(--cf-gold-deep)] uppercase">
           {roleLabel}
         </p>
         <p className="mt-2 text-sm leading-relaxed text-[var(--cf-ink-muted)]">{roleBody}</p>
@@ -169,7 +169,7 @@ export function StackNode({
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h4 className="font-heading text-base font-semibold text-[var(--cf-ink)]">{name}</h4>
-              <span className="font-mono text-[10px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+              <span className="font-mono text-[14px] tracking-widest text-[var(--cf-gold-deep)] uppercase">
                 {role}
               </span>
             </div>
@@ -198,7 +198,7 @@ export function StackNode({
 
 export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-mono text-[11px] font-semibold tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+    <p className="font-mono text-[15px] font-semibold tracking-widest text-[var(--cf-gold-deep)] uppercase">
       {children}
     </p>
   );

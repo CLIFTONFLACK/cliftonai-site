@@ -116,7 +116,7 @@ export default function GetBrianCasePage() {
 
         <Reveal delay={120} className="mt-8">
           <div className="cf-clay p-6">
-            <p className="text-xs font-semibold tracking-wide text-[var(--cf-ink-subtle)] uppercase">
+            <p className="text-[16px] font-semibold tracking-wide text-[var(--cf-gold-deep)] uppercase">
               Live for
             </p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--cf-ink-muted)]">

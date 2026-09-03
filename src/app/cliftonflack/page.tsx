@@ -98,7 +98,12 @@ export default function CliftonFlackHome() {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden px-6 pt-8 pb-20 sm:pt-12">
-        <div className="mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cf-hero-blob cf-hero-blob--a" />
+          <span className="cf-hero-blob cf-hero-blob--b" />
+          <span className="cf-hero-blob cf-hero-blob--c" />
+        </div>
+        <div className="relative mx-auto grid max-w-6xl items-end gap-y-12 lg:grid-cols-[1.3fr_1fr] lg:gap-x-12">
           <Reveal>
             <span className="cf-clay-inset inline-flex flex-wrap items-center gap-2 px-8 py-3 text-base font-medium tracking-wide text-[var(--cf-ink-muted)] uppercase">
               Preferred portfolio · Built for
@@ -116,7 +121,7 @@ export default function CliftonFlackHome() {
           <Reveal delay={100}>
             <dl className="cf-clay p-6">
               <div className="border-b border-[var(--cf-line)] pb-4">
-                <dt className="font-mono text-[11px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+                <dt className="font-mono text-[15px] tracking-widest text-[var(--cf-gold-deep)] uppercase">
                   Discipline
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--cf-ink-muted)]">
@@ -124,7 +129,7 @@ export default function CliftonFlackHome() {
                 </dd>
               </div>
               <div className="border-b border-[var(--cf-line)] py-4">
-                <dt className="font-mono text-[11px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+                <dt className="font-mono text-[15px] tracking-widest text-[var(--cf-gold-deep)] uppercase">
                   Sectors
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--cf-ink-muted)]">
@@ -132,7 +137,7 @@ export default function CliftonFlackHome() {
                 </dd>
               </div>
               <div className="pt-4">
-                <dt className="font-mono text-[11px] tracking-widest text-[var(--cf-ink-subtle)] uppercase">
+                <dt className="font-mono text-[15px] tracking-widest text-[var(--cf-gold-deep)] uppercase">
                   Method
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--cf-ink-muted)]">
@@ -147,14 +152,14 @@ export default function CliftonFlackHome() {
       {/* Case links */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <SectionLabel>Favourite Marketing Systems</SectionLabel>
+          <SectionLabel>Standout Examples of my Work</SectionLabel>
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             {cases.map((c, i) => (
               <Reveal key={c.href} delay={i * 90}>
                 <a href={c.href} className="cf-clay cf-clay-hover group block h-full cursor-pointer p-0">
                   <CaseShot src={c.screenshot} alt={`${c.name} screenshot`} url={c.url} sizes="(max-width: 1024px) 100vw, 33vw" priority={i === 0} />
                   <div className="p-6">
-                    <span className="font-mono text-[11px] font-medium tracking-widest text-[var(--cf-gold-deep)] uppercase">
+                    <span className="font-mono text-[15px] font-medium tracking-widest text-[var(--cf-gold-deep)] uppercase">
                       {c.index} · {c.tag}
                     </span>
                     <h3 className="mt-2 font-heading text-xl font-semibold text-[var(--cf-ink)]">
@@ -183,10 +188,10 @@ export default function CliftonFlackHome() {
           <Reveal className="max-w-2xl">
             <SectionLabel>How I work</SectionLabel>
             <p className="mt-4 font-heading text-2xl leading-snug font-semibold tracking-tight text-[var(--cf-ink)] sm:text-3xl">
-              Every one of these started with the same bet: the business that{" "}
-              <span style={{ color: "var(--cf-gold-deep)" }}>earns belief first</span>{" "}
-              keeps the customer; the one that buys attention first has to
-              keep buying it.
+              The same bet, every time:{" "}
+              <span style={{ color: "var(--cf-gold-deep)" }}>earn belief first</span>{" "}
+              and keep the customer, or buy attention first and keep paying
+              for it.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-[var(--cf-ink-muted)]">
               Eight rules, drawn from three builds, that hold regardless of
@@ -198,7 +203,7 @@ export default function CliftonFlackHome() {
             {howIWork.map((p, i) => (
               <Reveal key={p.title} delay={i * 60}>
                 <div className="cf-clay cf-clay-hover h-full p-5">
-                  <span className="font-mono text-[11px] font-semibold tracking-widest text-[var(--cf-gold-deep)] uppercase">
+                  <span className="font-mono text-[15px] font-semibold tracking-widest text-[var(--cf-gold-deep)] uppercase">
                     {p.mark}
                   </span>
                   <h4 className="mt-2 font-heading text-base font-semibold text-[var(--cf-ink)]">
