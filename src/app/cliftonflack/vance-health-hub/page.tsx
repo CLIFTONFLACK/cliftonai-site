@@ -53,6 +53,7 @@ const stack = [
     name: "Vance Health Hub",
     role: "Public trust asset",
     body: "The site patients and clinicians see: the free self-assessment, VANCE-Ai, and the clinical reviews the generator drafted. Publishes months before commerce opens.",
+    screenshot: "/screenshots/vancehealthhub-v2.png",
   },
   {
     name: "Email Marketing Console",
