@@ -113,9 +113,9 @@ export default function CliftonFlackHome() {
               <Clauses of={["Trust before", "transaction."]} />
             </h1>
             <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-[var(--cf-ink-muted)]">
-              Consumer healthcare has a credibility problem before it has a
-              conversion problem. Three builds, each one solving the first so
-              the second takes care of itself.
+              &ldquo;In healthcare, the challenge is not simply informing the
+              consumer, but closing the gap between what the doctor
+              recommends and what the patient actually does.&rdquo;
             </p>
           </Reveal>
           <Reveal delay={100}>
@@ -125,7 +125,7 @@ export default function CliftonFlackHome() {
                   Discipline
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--cf-ink-muted)]">
-                  Commercial strategy, B2C growth, and the AI systems underneath both
+                  Commercial strategy, B2C growth, and the systems underneath
                 </dd>
               </div>
               <div className="border-b border-[var(--cf-line)] py-4">
@@ -141,7 +141,7 @@ export default function CliftonFlackHome() {
                   Method
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--cf-ink-muted)]">
-                  Build the trust asset first. Prove the channel. Then spend behind it
+                  Uncover desire, understand intent, match the offering
                 </dd>
               </div>
             </dl>
