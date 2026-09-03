@@ -23,8 +23,9 @@ export function CliftonFlackHeader() {
           href="/cliftonflack"
           className="flex min-h-11 cursor-pointer items-center gap-2 px-1"
         >
-          <span className="font-heading text-4xl font-semibold tracking-tight text-[var(--cf-gold-deep)]">
-            Clifton Flack
+          <span className="font-heading text-4xl font-bold tracking-tighter">
+            <span className="text-[var(--cf-navy)]">Clifton</span>{" "}
+            <span className="text-[var(--cf-gold-deep)]">Flack</span>
           </span>
         </a>
         <div className="hidden items-center gap-1 md:flex">
