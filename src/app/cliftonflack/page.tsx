@@ -76,7 +76,7 @@ const cases = [
   {
     href: "/cliftonflack/ciitech",
     index: "02",
-    tag: "Founded & built · Consumer wellness",
+    tag: "Founded · Consumer wellness",
     name: "CiiTECH",
     hook: "Three properties, three jobs, one funnel: research credibility, category education, and Provacan, the commerce layer.",
     screenshot: "/screenshots/cliftonflack-ciitechlabs.jpg",

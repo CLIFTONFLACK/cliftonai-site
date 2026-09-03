@@ -47,7 +47,7 @@ export default function CiitechPage() {
         <Reveal>
           <CaseHead
             index="02"
-            tag="Founded & built · Consumer wellness"
+            tag="Founded · Consumer wellness"
             title="CiiTECH"
             intro="Three properties, three jobs, one funnel. A research company that made the science credible, an academy that made the category understandable, and Provacan, the consumer brand that made it purchasable."
             roleLabel="My role"
