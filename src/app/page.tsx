@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Clauses } from "./clauses";
 import { Reveal } from "./reveal";
 import { ProductsSection } from "./products-section";
@@ -362,7 +363,20 @@ export default function Home() {
           <BuiltByBadge />
         </div>
         <p className="mx-auto mt-8 max-w-6xl text-center text-xs text-fg-subtle sm:text-right">
-          © {new Date().getFullYear()} Brian. All rights reserved.
+          © {new Date().getFullYear()} Brian. All rights reserved.{" "}
+          <Link
+            href="/legal/getbrianapp/privacy"
+            className="underline-offset-2 hover:text-fg hover:underline"
+          >
+            Privacy
+          </Link>
+          {" · "}
+          <Link
+            href="/legal/getbrianapp/terms"
+            className="underline-offset-2 hover:text-fg hover:underline"
+          >
+            Terms
+          </Link>
         </p>
       </footer>
 
