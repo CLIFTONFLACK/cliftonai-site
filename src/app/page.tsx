@@ -366,14 +366,14 @@ export default function Home() {
           © {new Date().getFullYear()} Brian. All rights reserved.{" "}
           <Link
             href="/legal/getbrianapp/privacy"
-            className="underline-offset-2 hover:text-fg hover:underline"
+            className="inline-block -my-3.5 -mx-1 px-1 py-3.5 underline-offset-2 hover:text-fg hover:underline"
           >
             Privacy
           </Link>
           {" · "}
           <Link
             href="/legal/getbrianapp/terms"
-            className="underline-offset-2 hover:text-fg hover:underline"
+            className="inline-block -my-3.5 -mx-1 px-1 py-3.5 underline-offset-2 hover:text-fg hover:underline"
           >
             Terms
           </Link>
