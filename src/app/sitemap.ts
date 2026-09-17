@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "./layout";
+import { LAUNCHED, products } from "./healthy/data";
 
 /**
  * The product subdomains (flow/crm/diffdoc/dealmaker/... on getbrian.xyz)
@@ -8,6 +9,24 @@ import { siteUrl } from "./layout";
  * on this host, so they're listed.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
+  // /healthy stays out until LAUNCHED, so draft product figures are never
+  // submitted for indexing (the pages are noindex until then as well).
+  const healthy: MetadataRoute.Sitemap = LAUNCHED
+    ? [
+        "/healthy",
+        "/healthy/method",
+        "/healthy/compare/creatine",
+        "/healthy/about",
+        "/healthy/disclosures",
+        ...products.map((p) => `/healthy/products/${p.slug}`),
+      ].map((path) => ({
+        url: `${siteUrl}${path}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: path === "/healthy" ? 0.8 : 0.6,
+      }))
+    : [];
+
   return [
     {
       url: siteUrl,
@@ -27,5 +46,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...healthy,
   ];
 }

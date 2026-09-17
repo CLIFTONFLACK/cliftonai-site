@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "node --experimental-test-module-mocks --import ./scripts/test-loader-register.mjs --test \"src/**/*.test.{ts,tsx}\"",
     "brand": "node scripts/trace-logo.mjs && node scripts/gen-icons.mjs",
     "screenshots": "node scripts/gen-screenshots.mjs"
   },
