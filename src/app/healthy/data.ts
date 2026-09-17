@@ -47,7 +47,7 @@ export type Product = {
   slug: string;
   name: string;
   brand: string;
-  category: "Creatine" | "Magnesium";
+  category: "Creatine" | "Magnesium" | "L-theanine";
   format: string;
   /** One line for cards. */
   summary: string;
@@ -121,7 +121,7 @@ export const supplements: Supplement[] = [
     name: "L-theanine",
     role: "Calm and relaxation",
     contribution: "May support relaxation, managing everyday stress and winding down.",
-    category: null,
+    category: "L-theanine",
   },
 ];
 
@@ -201,155 +201,222 @@ export const pillars = [
   },
 ];
 
+/**
+ * All three picks are Thorne: label figures and USD prices below were read
+ * directly from thorne.com on the date in `priceCheckedAt`/`lastReviewed`,
+ * not estimated or converted from another currency.
+ */
 export const products: Product[] = [
   {
-    slug: "create-creatine-gummies",
-    name: "Creatine Monohydrate Gummies",
-    brand: "Create",
-    category: "Creatine",
-    format: "Gummies",
-    summary: "Creatine in a chewable format, for people who will not stick with a powder.",
-    verdict:
-      "The pick for convenience. Creatine only works if you take it every day, and a gummy is the easiest daily habit to keep. You pay more per gram than for powder, so it earns its place only if convenience is what gets you to take it.",
-    bestFor: [
-      "Adults who have tried powders and stopped",
-      "Travel and busy routines",
-    ],
-    notFor: [
-      "Anyone keeping sugar or sweeteners to a minimum",
-      "Buyers who want the lowest cost per gram",
-    ],
-    servingSize: null,
-    servingsPerContainer: null,
-    ingredients: [
-      { name: "Creatine monohydrate", amount: null, studiedDose: "3 to 5 g per day" },
-    ],
-    priceUsd: null,
-    priceCheckedAt: null,
-    testing: [],
-    evidence: [
-      {
-        claim: "Supports muscle strength when combined with resistance training",
-        grade: "strong",
-        summary:
-          "In adults over 50, creatine taken alongside a resistance training program has repeatedly produced larger strength gains than training alone.",
-        citations: [],
-      },
-      {
-        claim: "Supports lean muscle mass with regular training",
-        grade: "moderate",
-        summary:
-          "Gains in lean mass are seen in pooled analyses of older adults, but they are modest and depend on training.",
-        citations: [],
-      },
-    ],
-    safety: [
-      "Talk to your doctor first if you have kidney disease or take medication that affects the kidneys.",
-      "Early water retention of a pound or two is common and is not fat gain.",
-    ],
-    pros: ["Easy to take every day", "No mixing or measuring"],
-    cons: ["Higher cost per gram than powder", "Contains added sugar or sweeteners"],
-    brandUrl: "https://trycreate.co",
-    affiliateUrl: null,
-    redirectAllowed: false,
-    retailer: "Create",
-    lastReviewed: null,
-    verified: false,
-  },
-  {
-    slug: "california-gold-creatine",
-    name: "Creatine Monohydrate Powder",
-    brand: "California Gold Nutrition",
-    category: "Creatine",
-    format: "Unflavored powder",
-    summary: "Plain creatine monohydrate at a low cost per gram. The value pick.",
-    verdict:
-      "The pick for value. Plain creatine monohydrate is the form used in almost all of the research, and powder is the cheapest way to take it. Stir it into water, coffee or a shake.",
-    bestFor: ["Anyone who wants the studied form at the lowest cost", "People already making a daily shake"],
-    notFor: ["People who dislike mixing powders"],
-    servingSize: null,
-    servingsPerContainer: null,
-    ingredients: [
-      { name: "Creatine monohydrate", amount: null, studiedDose: "3 to 5 g per day" },
-    ],
-    priceUsd: null,
-    priceCheckedAt: null,
-    testing: [],
-    evidence: [
-      {
-        claim: "Supports muscle strength when combined with resistance training",
-        grade: "strong",
-        summary:
-          "In adults over 50, creatine taken alongside a resistance training program has repeatedly produced larger strength gains than training alone.",
-        citations: [],
-      },
-    ],
-    safety: [
-      "Talk to your doctor first if you have kidney disease or take medication that affects the kidneys.",
-      "Early water retention of a pound or two is common and is not fat gain.",
-    ],
-    pros: ["Lowest cost per gram of the picks", "Single ingredient, nothing added"],
-    cons: ["Needs mixing", "Can feel gritty in cold water"],
-    brandUrl: "https://www.iherb.com/search?kw=california%20gold%20nutrition%20creatine",
-    affiliateUrl: null,
-    redirectAllowed: false,
-    retailer: "iHerb",
-    lastReviewed: null,
-    verified: false,
-  },
-  {
-    slug: "bioptimizers-magnesium-breakthrough",
-    name: "Magnesium Breakthrough",
-    brand: "BIOptimizers",
+    slug: "thorne-magnesium-glycinate",
+    name: "Magnesium Glycinate",
+    brand: "Thorne",
     category: "Magnesium",
     format: "Capsules",
-    summary: "A multi-form magnesium blend for an evening routine.",
+    summary: "Single-ingredient magnesium glycinate, dosed one capsule at a time.",
     verdict:
-      "The pick for people who want magnesium in several forms in one capsule. The research on specific forms is thinner than the marketing suggests, so read the evidence grades before you buy, and compare the elemental magnesium per serving with a single-form product.",
-    bestFor: ["Adults whose diet is low in magnesium-rich foods", "People building an evening routine"],
-    notFor: ["Anyone with kidney disease", "Buyers who want the lowest cost per milligram"],
-    servingSize: null,
-    servingsPerContainer: null,
-    ingredients: [{ name: "Magnesium (multiple forms)", amount: null }],
-    priceUsd: null,
-    priceCheckedAt: null,
-    testing: [],
-    evidence: [
+      "The pick for straightforward, well-absorbed magnesium. One capsule is 120 mg of elemental magnesium as glycinate, so you can build up your dose gradually instead of committing to a large serving on day one. It costs more per milligram than a bulk glycinate powder, but the label is simple: one ingredient, no blend to decode.",
+    bestFor: [
+      "Adults who want to titrate their dose one capsule at a time",
+      "Anyone who gets loose stools from higher-dose magnesium forms",
+    ],
+    notFor: ["Buyers who want the lowest cost per milligram of elemental magnesium"],
+    servingSize: "1 capsule",
+    servingsPerContainer: 90,
+    ingredients: [
       {
-        claim: "Supports normal energy metabolism",
-        grade: "strong",
-        summary:
-          "The body needs magnesium for the enzymes that turn food into usable energy. Extra magnesium is most likely to make a noticeable difference if your diet falls short.",
-        citations: [],
+        name: "Magnesium (as magnesium glycinate)",
+        amount: "120 mg",
+        studiedDose: "Supplemental intake studied up to 350 mg/day, the tolerable upper limit for supplemental elemental magnesium",
       },
+    ],
+    priceUsd: 26,
+    priceCheckedAt: "September 17, 2026",
+    testing: [
+      "Not NSF Certified for Sport. Thorne's own magnesium bisglycinate powder carries that mark; this glycinate capsule does not.",
+      "Thorne states the product is made under NSF-audited cGMP manufacturing, but publishes no independent certificate of analysis for this specific SKU.",
+    ],
+    evidence: [
       {
         claim: "Supports normal muscle and nerve function",
         grade: "strong",
         summary:
-          "Magnesium is an essential mineral, and many US adults eat less than the recommended amount.",
-        citations: [],
+          "Magnesium is required for muscle contraction and nerve signaling, and most US adults do not meet the recommended daily intake from food alone.",
+        citations: [
+          {
+            label: "NIH Office of Dietary Supplements: Magnesium, health professional fact sheet",
+            url: "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+          },
+        ],
       },
       {
-        claim: "May support sleep quality in older adults",
+        claim: "Supports normal energy metabolism",
+        grade: "strong",
+        summary: "Magnesium is a cofactor for the enzymes that convert food into usable cellular energy.",
+        citations: [
+          {
+            label: "NIH Office of Dietary Supplements: Magnesium, health professional fact sheet",
+            url: "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+          },
+        ],
+      },
+      {
+        claim: "May support sleep quality when magnesium intake is low",
         grade: "early",
         summary:
-          "A small number of short trials report better sleep scores, but the studies are small and the results are not consistent.",
+          "Small trials suggest evening magnesium may modestly improve sleep in people who are not getting enough, but results are inconsistent and most trials are short.",
         citations: [],
       },
     ],
     safety: [
       "Do not take magnesium supplements if you have kidney disease unless your doctor advises it.",
       "Separate from some antibiotics and osteoporosis medicines by a few hours; ask your pharmacist.",
-      "Some forms loosen stools at higher doses.",
+      "Higher doses of most magnesium forms can loosen stools; glycinate is one of the gentler forms.",
     ],
-    pros: ["Several forms in one product", "Capsules, no taste"],
-    cons: ["Higher cost than single-form magnesium", "Little research on the blend itself"],
-    brandUrl: "https://bioptimizers.com",
+    pros: [
+      "Single ingredient, easy to check against the label",
+      "Sold directly by Thorne, no marketplace resale risk",
+      "One-capsule serving makes it easy to adjust your dose",
+    ],
+    cons: [
+      "Higher cost per milligram of elemental magnesium than a bulk glycinate powder",
+      "Not NSF Certified for Sport, unlike Thorne's own creatine",
+    ],
+    brandUrl: "https://www.thorne.com/products/dp/magnesium-glycinate",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "BIOptimizers",
-    lastReviewed: null,
-    verified: false,
+    retailer: "Thorne",
+    lastReviewed: "September 17, 2026",
+    verified: true,
+  },
+  {
+    slug: "thorne-creatine-stick-packs",
+    name: "Creatine Monohydrate Stick Packs",
+    brand: "Thorne",
+    category: "Creatine",
+    format: "Powder stick packs",
+    summary: "Pre-measured 5 g creatine monohydrate packets, NSF Certified for Sport.",
+    verdict:
+      "The pick for anyone who does not want to deal with a scoop or a scale. Each packet is a single measured 5 g dose of plain creatine monohydrate, the form almost all of the research uses, and the product is NSF Certified for Sport, so every batch is checked for banned substances. You pay a premium over a bulk tub for that convenience and testing.",
+    bestFor: [
+      "Travel and gym-bag routines where measuring powder is impractical",
+      "Athletes who need NSF Certified for Sport testing for banned substances",
+    ],
+    notFor: ["Buyers who want the lowest cost per gram (a bulk tub is cheaper per serving)"],
+    servingSize: "1 packet (5 g)",
+    servingsPerContainer: 30,
+    ingredients: [{ name: "Creatine monohydrate", amount: "5 g", studiedDose: "3 to 5 g per day" }],
+    priceUsd: 36,
+    priceCheckedAt: "September 17, 2026",
+    testing: [
+      "NSF Certified for Sport: every batch is tested for label accuracy and for nearly 300 substances banned by major athletic organizations.",
+    ],
+    evidence: [
+      {
+        claim: "Supports muscle strength when combined with resistance training",
+        grade: "strong",
+        summary:
+          "In a meta-analysis of 22 randomized trials in adults with a mean age of 57 to 70, creatine taken alongside resistance training produced significantly greater gains in chest- and leg-press strength than training with a placebo.",
+        citations: [
+          {
+            label: "Chilibeck et al., 2017, Open Access Journal of Sports Medicine (meta-analysis, 721 older adults)",
+            url: "https://pubmed.ncbi.nlm.nih.gov/29138605/",
+          },
+        ],
+      },
+      {
+        claim: "Supports lean muscle mass with regular training",
+        grade: "moderate",
+        summary:
+          "Pooled results show a meaningful average gain in lean tissue mass in older adults, though the size of the effect varies by dosing strategy and study length.",
+        citations: [
+          {
+            label: "Forbes et al., 2021, Nutrients (meta-analysis of creatine ingestion strategies in older adults)",
+            url: "https://pubmed.ncbi.nlm.nih.gov/34199420/",
+          },
+        ],
+      },
+    ],
+    safety: [
+      "Talk to your doctor first if you have kidney disease or take medication that affects the kidneys.",
+      "Early water retention of a pound or two is common and is not fat gain.",
+    ],
+    pros: [
+      "NSF Certified for Sport, batch-tested for banned substances",
+      "No scoop or scale needed",
+      "Plain creatine monohydrate, the form used in the research",
+    ],
+    cons: [
+      "Higher cost per gram than a bulk tub of the same brand's creatine",
+      "30 packets is roughly a one-month supply at one serving a day, so it means more frequent reordering",
+    ],
+    brandUrl: "https://www.thorne.com/products/dp/creatine-sf903p",
+    affiliateUrl: null,
+    redirectAllowed: false,
+    retailer: "Thorne",
+    lastReviewed: "September 17, 2026",
+    verified: true,
+  },
+  {
+    slug: "thorne-theanine",
+    name: "Theanine",
+    brand: "Thorne",
+    category: "L-theanine",
+    format: "Capsules",
+    summary: "200 mg of Suntheanine, a patented, purified form of L-theanine, one capsule at a time.",
+    verdict:
+      "The pick for a single-ingredient, precisely dosed L-theanine. Each capsule delivers 200 mg of Suntheanine, the branded form used in most of the human research on L-theanine, rather than a cheaper generic. It costs more per capsule than generic L-theanine, and the independent research specifically on Suntheanine is thinner than Thorne's own claim of over 50 supporting studies suggests once industry-funded and non-human work is set aside.",
+    bestFor: [
+      "Adults who want a single, well-documented form of L-theanine",
+      "Evening or pre-stress dosing at a fixed 200 mg",
+    ],
+    notFor: ["Buyers who want the lowest cost per milligram (generic L-theanine capsules are cheaper)"],
+    servingSize: "1 capsule",
+    servingsPerContainer: 90,
+    ingredients: [{ name: "L-theanine (as Suntheanine)", amount: "200 mg", studiedDose: "200 to 400 mg per day" }],
+    priceUsd: 68,
+    priceCheckedAt: "September 17, 2026",
+    testing: [
+      "Thorne states this product is third-party tested to verify label accuracy and to screen for heavy metals, pesticides and microorganisms.",
+      "Not NSF Certified for Sport.",
+    ],
+    evidence: [
+      {
+        claim: "May support relaxation and a calmer response to everyday stress",
+        grade: "moderate",
+        summary:
+          "A systematic review of 9 randomized controlled trials found that 200 to 400 mg per day of L-theanine may help lower stress and anxiety symptoms in people under stressful conditions, though the authors called for larger, longer trials before it is relied on as an established therapy.",
+        citations: [
+          {
+            label: "Williams et al., 2020, Plant Foods for Human Nutrition (systematic review, 9 RCTs)",
+            url: "https://pubmed.ncbi.nlm.nih.gov/31758301/",
+          },
+        ],
+      },
+      {
+        claim: "May increase alpha brain-wave activity associated with relaxed wakefulness",
+        grade: "early",
+        summary:
+          "Small studies report increased alpha-wave activity within about 40 minutes of a 200 mg dose, a marker of relaxed wakefulness rather than sedation, but sample sizes are small.",
+        citations: [],
+      },
+    ],
+    safety: [
+      "Generally well tolerated. Talk to your doctor before combining with blood pressure medication, since it may add to a blood-pressure-lowering effect.",
+      "Interactions with sedatives have not been ruled out; check with a pharmacist if you take one.",
+    ],
+    pros: [
+      "Suntheanine, the branded form used in most human research on L-theanine",
+      "Single ingredient, fixed 200 mg dose",
+      "Third-party tested for contaminants",
+    ],
+    cons: ["Costs more per capsule than generic L-theanine", "Not NSF Certified for Sport"],
+    brandUrl: "https://www.thorne.com/products/dp/theanine",
+    affiliateUrl: null,
+    redirectAllowed: false,
+    retailer: "Thorne",
+    lastReviewed: "September 17, 2026",
+    verified: true,
   },
 ];
 

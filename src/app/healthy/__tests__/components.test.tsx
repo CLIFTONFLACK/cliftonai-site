@@ -135,12 +135,6 @@ function withTempProducts<T>(temp: Product[], fn: () => T): T {
   }
 }
 
-test("supplementHref returns the compare page for creatine when more than one creatine pick exists (real data)", () => {
-  const creatinePicks = products.filter((p) => p.category === "Creatine");
-  assert.ok(creatinePicks.length > 1, "fixture assumption: more than one creatine product exists");
-  assert.equal(supplementHref(getSupplement("creatine")), "/healthy/compare/creatine");
-});
-
 test("supplementHref returns the single product page when exactly one pick exists (real data, magnesium)", () => {
   const magnesiumPicks = products.filter((p) => p.category === "Magnesium");
   assert.equal(magnesiumPicks.length, 1, "fixture assumption: exactly one magnesium product exists");
@@ -150,29 +144,27 @@ test("supplementHref returns the single product page when exactly one pick exist
   );
 });
 
-test("supplementHref returns null when no pick exists for the supplement's category (real data, l-theanine)", () => {
-  assert.equal(supplementHref(getSupplement("l-theanine")), null);
-});
-
-test("supplementHref points at the single remaining product page when creatine drops to exactly one pick", () => {
+test("supplementHref returns the single product page when exactly one pick exists (real data, creatine)", () => {
   const creatinePicks = products.filter((p) => p.category === "Creatine");
-  const removed = creatinePicks[1];
-  const idx = products.indexOf(removed);
-  products.splice(idx, 1);
-  try {
-    assert.equal(
-      supplementHref(getSupplement("creatine")),
-      `/healthy/products/${creatinePicks[0].slug}`,
-    );
-  } finally {
-    products.splice(idx, 0, removed);
-  }
+  assert.equal(creatinePicks.length, 1, "fixture assumption: exactly one creatine product exists");
+  assert.equal(
+    supplementHref(getSupplement("creatine")),
+    `/healthy/products/${creatinePicks[0].slug}`,
+  );
 });
 
-test("supplementHref returns only the first pick's page for a non-creatine category with more than one pick", () => {
-  // The compare-page branch is gated on `s.id === "creatine"`, so a second
-  // category ever growing to two products would silently keep pointing at
-  // the first pick rather than a comparison page. This pins that behavior.
+test("supplementHref returns the single product page when exactly one pick exists (real data, l-theanine)", () => {
+  const theaninePicks = products.filter((p) => p.category === "L-theanine");
+  assert.equal(theaninePicks.length, 1, "fixture assumption: exactly one l-theanine product exists");
+  assert.equal(
+    supplementHref(getSupplement("l-theanine")),
+    `/healthy/products/${theaninePicks[0].slug}`,
+  );
+});
+
+test("supplementHref returns only the first pick's page once a category grows to more than one pick", () => {
+  // The program keeps one pick per category on purpose, so this pins the
+  // fallback behavior if a category ever temporarily grows to two.
   const extraMagnesium = baseProduct({ slug: "fixture-magnesium-2", category: "Magnesium" });
   withTempProducts([extraMagnesium], () => {
     const magnesiumPicks = products.filter((p) => p.category === "Magnesium");
@@ -257,7 +249,9 @@ test("SupplementCard does not render a caveat when the supplement has none", () 
 });
 
 test("SupplementCard shows the in-progress message when there is no pick", () => {
-  const el = SupplementCard({ supplement: getSupplement("l-theanine") });
+  // Every real supplement now has a pick, so a fixture with a null category
+  // is what exercises the "no pick yet" branch.
+  const el = SupplementCard({ supplement: baseSupplement({ category: null }) });
   const [, , footer] = articleChildren(el) as [unknown, unknown, { type: string; props: { children: string } }];
   assert.equal(footer.type, "p");
   assert.match(footer.props.children, /review is in progress/);
@@ -270,16 +264,16 @@ test("SupplementCard renders a link instead of the in-progress message when a pi
   assert.equal(footer.props.href, supplementHref(getSupplement("magnesium")));
 });
 
-test("SupplementCard link says 'Compare the creatine picks' specifically for creatine", () => {
+test("SupplementCard link names the supplement for a creatine review", () => {
   const el = SupplementCard({ supplement: getSupplement("creatine") });
-  const [, , footer] = articleChildren(el) as [unknown, unknown, { props: { children: string } }];
-  assert.equal(footer.props.children, "Compare the creatine picks");
+  const [, , footer] = articleChildren(el) as [unknown, unknown, { props: { children: unknown[] } }];
+  assert.equal(footer.props.children.join(""), "Read the creatine review");
 });
 
 test("SupplementCard link names the supplement for a non-creatine review", () => {
   const el = SupplementCard({ supplement: getSupplement("magnesium") });
-  const [, , footer] = articleChildren(el) as [unknown, unknown, { props: { children: string } }];
-  assert.equal(footer.props.children, "Read the magnesium review");
+  const [, , footer] = articleChildren(el) as [unknown, unknown, { props: { children: unknown[] } }];
+  assert.equal(footer.props.children.join(""), "Read the magnesium review");
 });
 
 test("SupplementCard uses the supplement id as the section anchor", () => {

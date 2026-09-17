@@ -143,15 +143,13 @@ export function ProductCard({ product }: { product: Product }) {
 }
 
 /**
- * Where a supplement's reviews live: the comparison when there is more than
- * one pick in its category, the single review when there is one, nothing yet
- * when there is none.
+ * Where a supplement's review lives: its product page once a pick exists,
+ * nothing yet when there is none. The program keeps one pick per category on
+ * purpose (see "How we choose"), so there is no separate comparison route.
  */
 export function supplementHref(s: Supplement): string | null {
   const picks = products.filter((p) => p.category === s.category);
-  if (picks.length > 1 && s.id === "creatine") return "/healthy/compare/creatine";
-  if (picks.length >= 1) return `/healthy/products/${picks[0].slug}`;
-  return null;
+  return picks.length >= 1 ? `/healthy/products/${picks[0].slug}` : null;
 }
 
 /** "What do you want more of?" Each tile jumps to the supplement that does that job. */
@@ -215,7 +213,7 @@ export function SupplementCard({
           href={href}
           className="mt-6 inline-flex min-h-11 items-center font-semibold text-brand-navy-bright underline underline-offset-4"
         >
-          {supplement.id === "creatine" ? "Compare the creatine picks" : `Read the ${supplement.name.toLowerCase()} review`}
+          Read the {supplement.name.toLowerCase()} review
         </a>
       ) : (
         <p className="mt-6 text-base text-fg-subtle">Brian&apos;s review is in progress.</p>

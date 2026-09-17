@@ -211,6 +211,11 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
               ) : (
                 <p className="text-fg-muted"><Pending /></p>
               )}
+              <p className="mt-4 text-base">
+                <Link href="/healthy/thorne" className="text-brand-navy-bright underline underline-offset-4">
+                  See what Thorne itself claims about this ingredient, and how Brian grades each claim
+                </Link>
+              </p>
             </Section>
 
             <Section title="Safety">

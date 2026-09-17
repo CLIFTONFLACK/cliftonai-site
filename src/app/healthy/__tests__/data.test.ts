@@ -53,8 +53,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
 // ---------------------------------------------------------------------------
 
 test("getProduct returns the matching product for a known slug", () => {
-  const product = getProduct("california-gold-creatine");
-  assert.equal(product?.slug, "california-gold-creatine");
+  const product = getProduct("thorne-creatine-stick-packs");
+  assert.equal(product?.slug, "thorne-creatine-stick-packs");
 });
 
 test("getProduct returns undefined for an unknown slug", () => {
@@ -66,7 +66,7 @@ test("getProduct returns undefined for an empty string slug", () => {
 });
 
 test("getProduct is case sensitive (does not loosely match)", () => {
-  assert.equal(getProduct("CALIFORNIA-GOLD-CREATINE"), undefined);
+  assert.equal(getProduct("THORNE-CREATINE-STICK-PACKS"), undefined);
 });
 
 // ---------------------------------------------------------------------------

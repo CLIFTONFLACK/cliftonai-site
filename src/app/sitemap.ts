@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ? [
         "/healthy",
         "/healthy/method",
-        "/healthy/compare/creatine",
+        "/healthy/thorne",
         "/healthy/about",
         "/healthy/disclosures",
         ...products.map((p) => `/healthy/products/${p.slug}`),
