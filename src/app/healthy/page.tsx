@@ -57,6 +57,31 @@ export default function HealthyHome() {
         </div>
       </section>
 
+      <section id="picks" aria-labelledby="picks-heading" className="bg-bg-panel px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <h2 id="picks-heading" className="font-heading text-3xl font-semibold text-brand-navy sm:text-4xl">
+            Current picks
+          </h2>
+          <p className="mt-4 max-w-2xl leading-relaxed text-fg-muted">
+            One pick per job: magnesium, creatine and L-theanine, all from Thorne. Each review shows
+            the evidence grade, the dose against what was studied, the cost per serving and who
+            should skip it.
+          </p>
+          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+            {products.map((product) => (
+              <li key={product.slug}>
+                <ProductCard product={product} />
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8">
+            <Link href="/healthy/thorne" className="font-semibold text-brand-navy-bright underline underline-offset-4">
+              Why all three picks are Thorne, and the clinical reference behind them
+            </Link>
+          </p>
+        </div>
+      </section>
+
       <section id="start" aria-labelledby="start-heading" className="scroll-mt-6 px-4 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <h2 id="start-heading" className="font-heading text-3xl font-semibold text-brand-navy sm:text-4xl">
@@ -124,31 +149,6 @@ export default function HealthyHome() {
               </Link>
             </p>
           </div>
-        </div>
-      </section>
-
-      <section id="picks" aria-labelledby="picks-heading" className="bg-bg-panel px-4 py-16 sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-6xl">
-          <h2 id="picks-heading" className="font-heading text-3xl font-semibold text-brand-navy sm:text-4xl">
-            Current picks
-          </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-fg-muted">
-            One pick per job: magnesium, creatine and L-theanine, all from Thorne. Each review shows
-            the evidence grade, the dose against what was studied, the cost per serving and who
-            should skip it.
-          </p>
-          <ul className="mt-10 grid gap-6 md:grid-cols-3">
-            {products.map((product) => (
-              <li key={product.slug}>
-                <ProductCard product={product} />
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8">
-            <Link href="/healthy/thorne" className="font-semibold text-brand-navy-bright underline underline-offset-4">
-              Why all three picks are Thorne, and the clinical reference behind them
-            </Link>
-          </p>
         </div>
       </section>
 

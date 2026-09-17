@@ -49,6 +49,9 @@ export type Product = {
   brand: string;
   category: "Creatine" | "Magnesium" | "L-theanine";
   format: string;
+  /** Product packshot, or null until we have one checked against the brand's own listing. Path under /public. */
+  image: string | null;
+  imageAlt: string;
   /** One line for cards. */
   summary: string;
   verdict: string;
@@ -213,6 +216,8 @@ export const products: Product[] = [
     brand: "Thorne",
     category: "Magnesium",
     format: "Capsules",
+    image: "/healthy/products/thorne-magnesium-glycinate.png",
+    imageAlt: "Bottle of Thorne Magnesium Glycinate, 90 capsules",
     summary: "Single-ingredient magnesium glycinate, dosed one capsule at a time.",
     verdict:
       "The pick for straightforward, well-absorbed magnesium. One capsule is 120 mg of elemental magnesium as glycinate, so you can build up your dose gradually instead of committing to a large serving on day one. It costs more per milligram than a bulk glycinate powder, but the label is simple: one ingredient, no blend to decode.",
@@ -295,6 +300,8 @@ export const products: Product[] = [
     brand: "Thorne",
     category: "Creatine",
     format: "Powder stick packs",
+    image: "/healthy/products/thorne-creatine-stick-packs.png",
+    imageAlt: "Box of Thorne Creatine Travel Packs, 30 stick packs",
     summary: "Pre-measured 5 g creatine monohydrate packets, NSF Certified for Sport.",
     verdict:
       "The pick for anyone who does not want to deal with a scoop or a scale. Each packet is a single measured 5 g dose of plain creatine monohydrate, the form almost all of the research uses, and the product is NSF Certified for Sport, so every batch is checked for banned substances. You pay a premium over a bulk tub for that convenience and testing.",
@@ -363,6 +370,8 @@ export const products: Product[] = [
     brand: "Thorne",
     category: "L-theanine",
     format: "Capsules",
+    image: "/healthy/products/thorne-theanine.png",
+    imageAlt: "Bottle of Thorne Theanine, 90 capsules",
     summary: "200 mg of Suntheanine, a patented, purified form of L-theanine, one capsule at a time.",
     verdict:
       "The pick for a single-ingredient, precisely dosed L-theanine. Each capsule delivers 200 mg of Suntheanine, the branded form used in most of the human research on L-theanine, rather than a cheaper generic. It costs more per capsule than generic L-theanine, and the independent research specifically on Suntheanine is thinner than Thorne's own claim of over 50 supporting studies suggests once industry-funded and non-human work is set aside.",

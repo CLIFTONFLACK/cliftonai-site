@@ -24,6 +24,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     brand: "Fixture Brand",
     category: "Creatine",
     format: "Powder",
+    image: null,
+    imageAlt: "",
     summary: "A fixture product for tests.",
     verdict: "It is a fixture.",
     bestFor: [],

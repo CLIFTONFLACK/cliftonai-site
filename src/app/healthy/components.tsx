@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   buyHref,
@@ -124,6 +125,17 @@ export function FdaDisclaimer() {
 export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="relative flex h-full flex-col rounded-2xl border border-border bg-bg p-6 shadow-[0_4px_28px_rgba(20,23,43,0.06)] transition-colors duration-200 hover:border-brand-navy-bright/40">
+      {product.image && (
+        <div className="relative -mx-6 -mt-6 mb-2 aspect-[4/3] overflow-hidden rounded-t-2xl bg-bg-tint">
+          <Image
+            src={product.image}
+            alt={product.imageAlt}
+            fill
+            sizes="(min-width: 768px) 33vw, 90vw"
+            className="object-contain p-6"
+          />
+        </div>
+      )}
       <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
         {product.category}
       </p>
