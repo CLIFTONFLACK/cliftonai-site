@@ -4,10 +4,16 @@ import {
   buyHref,
   costPerServing,
   getProduct,
+  getSupplement,
+  goals,
   outboundUrl,
   products,
+  supplementFor,
+  supplements,
+  TAGLINE,
   usesRedirect,
   type Product,
+  type Supplement,
 } from "../data.ts";
 
 /** A minimal, valid product used as a base for one-field-changed fixtures. */
@@ -211,4 +217,228 @@ for (const product of products) {
       assert.equal(findDiseaseClaimWord(ev.summary), undefined);
     });
   }
+}
+
+// ---------------------------------------------------------------------------
+// getSupplement
+// ---------------------------------------------------------------------------
+
+test("getSupplement returns the matching supplement for a known id", () => {
+  assert.equal(getSupplement("creatine").id, "creatine");
+});
+
+test("getSupplement throws for an unknown id", () => {
+  assert.throws(
+    () => getSupplement("vitamin-d" as Supplement["id"]),
+    /Unknown supplement: vitamin-d/,
+  );
+});
+
+test("getSupplement throws for an empty string id", () => {
+  assert.throws(() => getSupplement("" as Supplement["id"]), /Unknown supplement: /);
+});
+
+test("getSupplement is case sensitive (does not loosely match)", () => {
+  assert.throws(() => getSupplement("CREATINE" as Supplement["id"]));
+});
+
+// ---------------------------------------------------------------------------
+// goals <-> supplements invariants
+// ---------------------------------------------------------------------------
+
+test("every goal id is unique", () => {
+  const ids = goals.map((g) => g.id);
+  const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+  assert.deepEqual(duplicates, []);
+});
+
+test("every supplement id is unique", () => {
+  const ids = supplements.map((s) => s.id);
+  const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+  assert.deepEqual(duplicates, []);
+});
+
+for (const goal of goals) {
+  test(`goal "${goal.id}" supplement ("${goal.supplement}") resolves via getSupplement`, () => {
+    const s = getSupplement(goal.supplement);
+    assert.equal(s.id, goal.supplement);
+  });
+}
+
+test("every supplement is used by at least one goal", () => {
+  const usedIds = new Set(goals.map((g) => g.supplement));
+  const unused = supplements.filter((s) => !usedIds.has(s.id)).map((s) => s.id);
+  assert.deepEqual(unused, []);
+});
+
+// ---------------------------------------------------------------------------
+// supplements <-> products (category) invariants
+// ---------------------------------------------------------------------------
+
+const categorizedSupplements = supplements.filter((s) => s.category !== null);
+
+test("at least one supplement has a non-null category (sanity check for the loop below)", () => {
+  assert.ok(categorizedSupplements.length > 0);
+});
+
+for (const supplement of categorizedSupplements) {
+  test(`supplement "${supplement.id}" has at least one product in category "${supplement.category}"`, () => {
+    const matches = products.filter((p) => p.category === supplement.category);
+    assert.ok(matches.length > 0);
+  });
+}
+
+test("supplementFor returns the creatine supplement for a creatine product", () => {
+  const product = products.find((p) => p.category === "Creatine");
+  assert.ok(product, "fixture assumption: a creatine product exists");
+  assert.equal(supplementFor(product as Product), getSupplement("creatine"));
+});
+
+test("supplementFor returns the magnesium supplement for a magnesium product", () => {
+  const product = products.find((p) => p.category === "Magnesium");
+  assert.ok(product, "fixture assumption: a magnesium product exists");
+  assert.equal(supplementFor(product as Product), getSupplement("magnesium"));
+});
+
+test("supplementFor returns undefined when no supplement matches the product's category", () => {
+  // Every real category currently has a matching supplement, so this removes
+  // the magnesium supplement temporarily (mirroring the withTempProduct
+  // pattern used in the /healthy/go route tests) to exercise the "no match"
+  // branch without inventing a category value outside the Product type.
+  const magnesiumSupplement = getSupplement("magnesium");
+  const idx = supplements.indexOf(magnesiumSupplement);
+  supplements.splice(idx, 1);
+  try {
+    const product = products.find((p) => p.category === "Magnesium");
+    assert.ok(product, "fixture assumption: a magnesium product exists");
+    assert.equal(supplementFor(product as Product), undefined);
+  } finally {
+    supplements.splice(idx, 0, magnesiumSupplement);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Compliance guards on the goal-chooser / supplement copy
+// ---------------------------------------------------------------------------
+
+const BANNED_MARKETING_WORDS = [
+  "leverage",
+  "synergy",
+  "revolutioni", // catches both "revolutionise" and "revolutionize"
+  "cutting-edge",
+  "game-changing",
+  "unlock",
+  "seamless",
+  "disrupt",
+  "solutioning",
+];
+
+const BRITISH_SPELLINGS = ["ageing", "signalling"];
+
+function findBannedWord(text: string): string | undefined {
+  const lower = text.toLowerCase();
+  return BANNED_MARKETING_WORDS.find((word) => lower.includes(word));
+}
+
+function findBritishSpelling(text: string): string | undefined {
+  const lower = text.toLowerCase();
+  return BRITISH_SPELLINGS.find((word) => lower.includes(word));
+}
+
+test("TAGLINE has no disease-claim words", () => {
+  assert.equal(findDiseaseClaimWord(TAGLINE), undefined);
+});
+
+test("TAGLINE has no banned marketing words", () => {
+  assert.equal(findBannedWord(TAGLINE), undefined);
+});
+
+test("TAGLINE uses US spelling", () => {
+  assert.equal(findBritishSpelling(TAGLINE), undefined);
+});
+
+for (const supplement of supplements) {
+  test(`supplement "${supplement.id}" role has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(supplement.role), undefined);
+  });
+
+  test(`supplement "${supplement.id}" role has no banned marketing words`, () => {
+    assert.equal(findBannedWord(supplement.role), undefined);
+  });
+
+  test(`supplement "${supplement.id}" role uses US spelling`, () => {
+    assert.equal(findBritishSpelling(supplement.role), undefined);
+  });
+
+  test(`supplement "${supplement.id}" contribution has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(supplement.contribution), undefined);
+  });
+
+  test(`supplement "${supplement.id}" contribution has no banned marketing words`, () => {
+    assert.equal(findBannedWord(supplement.contribution), undefined);
+  });
+
+  test(`supplement "${supplement.id}" contribution uses US spelling`, () => {
+    assert.equal(findBritishSpelling(supplement.contribution), undefined);
+  });
+}
+
+const supplementsWithCaveat = supplements.filter((s) => s.caveat);
+
+test("at least one supplement has a caveat (sanity check for the loop below)", () => {
+  assert.ok(supplementsWithCaveat.length > 0);
+});
+
+for (const supplement of supplementsWithCaveat) {
+  test(`supplement "${supplement.id}" caveat has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(supplement.caveat as string), undefined);
+  });
+
+  test(`supplement "${supplement.id}" caveat has no banned marketing words`, () => {
+    assert.equal(findBannedWord(supplement.caveat as string), undefined);
+  });
+
+  test(`supplement "${supplement.id}" caveat uses US spelling`, () => {
+    assert.equal(findBritishSpelling(supplement.caveat as string), undefined);
+  });
+}
+
+for (const goal of goals) {
+  test(`goal "${goal.id}" label has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(goal.label), undefined);
+  });
+
+  test(`goal "${goal.id}" label has no banned marketing words`, () => {
+    assert.equal(findBannedWord(goal.label), undefined);
+  });
+
+  test(`goal "${goal.id}" label uses US spelling`, () => {
+    assert.equal(findBritishSpelling(goal.label), undefined);
+  });
+
+  test(`goal "${goal.id}" hook has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(goal.hook), undefined);
+  });
+
+  test(`goal "${goal.id}" hook has no banned marketing words`, () => {
+    assert.equal(findBannedWord(goal.hook), undefined);
+  });
+
+  test(`goal "${goal.id}" hook uses US spelling`, () => {
+    assert.equal(findBritishSpelling(goal.hook), undefined);
+  });
+}
+
+const focusOrCognitiveSupplements = supplements.filter(
+  (s) => s.role.toLowerCase().includes("focus") || s.role.toLowerCase().includes("cognitive"),
+);
+
+test("at least one supplement's role mentions focus or cognitive (sanity check for the loop below)", () => {
+  assert.ok(focusOrCognitiveSupplements.length > 0);
+});
+
+for (const supplement of focusOrCognitiveSupplements) {
+  test(`supplement "${supplement.id}" has a non-empty caveat because its role mentions focus/cognitive`, () => {
+    assert.ok(supplement.caveat && supplement.caveat.trim().length > 0);
+  });
 }

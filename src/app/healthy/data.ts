@@ -81,6 +81,93 @@ export type Product = {
   verified: boolean;
 };
 
+/** The program promise. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
+export const TAGLINE = "Support your energy, strengthen your body, support your focus and find your calm.";
+
+export type Goal = "energy" | "strength" | "focus" | "calm";
+
+export type Supplement = {
+  id: "magnesium" | "creatine" | "l-theanine";
+  name: string;
+  role: string;
+  /** What it contributes to healthy aging. Structure/function wording only. */
+  contribution: string;
+  /** Where the evidence is thinner than the role suggests. Shown beside the role, never hidden. */
+  caveat?: string;
+  /** Products in this category review this supplement. Null until a pick exists. */
+  category: Product["category"] | null;
+};
+
+export const supplements: Supplement[] = [
+  {
+    id: "magnesium",
+    name: "Magnesium",
+    role: "Muscle function and energy metabolism",
+    contribution:
+      "Supports normal muscle contraction, nerve signaling and cellular energy production.",
+    category: "Magnesium",
+  },
+  {
+    id: "creatine",
+    name: "Creatine",
+    role: "Strength, physical performance and cognitive support, including focus",
+    contribution: "Supports strength and lean-mass gains alongside resistance training.",
+    caveat:
+      "Cognitive benefits are promising, but reliable improvements in everyday focus are not yet established.",
+    category: "Creatine",
+  },
+  {
+    id: "l-theanine",
+    name: "L-theanine",
+    role: "Calm and relaxation",
+    contribution: "May support relaxation, managing everyday stress and winding down.",
+    category: null,
+  },
+];
+
+/**
+ * Engagement hooks for the goal chooser. Each one leads with the reader's
+ * situation and ends in an honest answer, never a promise: no invented
+ * numbers, no urgency, no "clinically proven".
+ */
+export const goals: { id: Goal; label: string; hook: string; supplement: Supplement["id"] }[] = [
+  {
+    id: "energy",
+    label: "Support your energy",
+    hook: "Low on magnesium? Many US adults do not eat enough of it, and your body uses it to turn food into energy.",
+    supplement: "magnesium",
+  },
+  {
+    id: "strength",
+    label: "Strengthen your body",
+    hook: "Lifting after 40? Meet one of the most-studied supplements for getting more from the work.",
+    supplement: "creatine",
+  },
+  {
+    id: "focus",
+    label: "Support your focus",
+    hook: "Creatine for your brain? Promising, not proven. Here is what the research really shows.",
+    supplement: "creatine",
+  },
+  {
+    id: "calm",
+    label: "Find your calm",
+    hook: "Still wired at 10pm? Meet the compound from tea that people take to wind down.",
+    supplement: "l-theanine",
+  },
+];
+
+export function getSupplement(id: Supplement["id"]): Supplement {
+  const s = supplements.find((x) => x.id === id);
+  if (!s) throw new Error(`Unknown supplement: ${id}`);
+  return s;
+}
+
+/** The supplement a product reviews, if any. */
+export function supplementFor(p: Product): Supplement | undefined {
+  return supplements.find((s) => s.category === p.category);
+}
+
 export const gradeLabels: Record<EvidenceGrade, { label: string; meaning: string }> = {
   strong: {
     label: "Strong evidence",
@@ -228,6 +315,13 @@ export const products: Product[] = [
     priceCheckedAt: null,
     testing: [],
     evidence: [
+      {
+        claim: "Supports normal energy metabolism",
+        grade: "strong",
+        summary:
+          "The body needs magnesium for the enzymes that turn food into usable energy. Extra magnesium is most likely to make a noticeable difference if your diet falls short.",
+        citations: [],
+      },
       {
         claim: "Supports normal muscle and nerve function",
         grade: "strong",

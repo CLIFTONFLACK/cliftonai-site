@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { buyHref, gradeLabels, type EvidenceGrade, type Product } from "./data";
+import {
+  buyHref,
+  getSupplement,
+  goals,
+  gradeLabels,
+  products,
+  type EvidenceGrade,
+  type Product,
+  type Supplement,
+} from "./data";
 
 /** Shared reading column for prose pages. */
 export function Prose({ children }: { children: React.ReactNode }) {
@@ -129,6 +138,88 @@ export function ProductCard({ product }: { product: Product }) {
       <p className="mt-1 text-base text-fg-subtle">{product.format}</p>
       <p className="mt-4 flex-1 leading-relaxed text-fg-muted">{product.summary}</p>
       <p className="mt-6 font-semibold text-brand-navy-bright">Read the full review &rarr;</p>
+    </article>
+  );
+}
+
+/**
+ * Where a supplement's reviews live: the comparison when there is more than
+ * one pick in its category, the single review when there is one, nothing yet
+ * when there is none.
+ */
+export function supplementHref(s: Supplement): string | null {
+  const picks = products.filter((p) => p.category === s.category);
+  if (picks.length > 1 && s.id === "creatine") return "/healthy/compare/creatine";
+  if (picks.length >= 1) return `/healthy/products/${picks[0].slug}`;
+  return null;
+}
+
+/** "What do you want more of?" Each tile jumps to the supplement that does that job. */
+export function GoalChooser() {
+  return (
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {goals.map((goal) => {
+        const s = getSupplement(goal.supplement);
+        return (
+          <li key={goal.id}>
+            <a
+              href={`#${s.id}`}
+              className="flex h-full min-h-44 flex-col rounded-2xl border border-border bg-bg p-6 transition-colors duration-200 hover:border-brand-navy-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-bright"
+            >
+              <span className="font-heading text-xl font-semibold text-brand-navy">{goal.label}</span>
+              <span className="mt-3 flex-1 leading-relaxed text-fg-muted">{goal.hook}</span>
+              <span className="mt-4 font-semibold text-brand-navy-bright">{s.name} &darr;</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+export function SupplementCard({
+  supplement,
+  headingLevel = 3,
+  currentHref,
+}: {
+  supplement: Supplement;
+  headingLevel?: 2 | 3;
+  /** The page this card sits on. Its link is dropped rather than pointing back at the same page. */
+  currentHref?: string;
+}) {
+  const href = supplementHref(supplement);
+  const isSelf = href !== null && href === currentHref;
+  const Heading = headingLevel === 2 ? "h2" : "h3";
+  return (
+    <article id={supplement.id} className="flex h-full scroll-mt-6 flex-col rounded-2xl border border-border bg-bg p-6">
+      <Heading className="font-heading text-2xl font-semibold text-brand-navy">{supplement.name}</Heading>
+      <dl className="mt-4 flex-1 space-y-4">
+        <div>
+          <dt className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">Primary role</dt>
+          <dd className="mt-1 font-medium text-fg">{supplement.role}</dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+            Contribution to healthy aging
+          </dt>
+          <dd className="mt-1 leading-relaxed text-fg-muted">{supplement.contribution}</dd>
+          {supplement.caveat && (
+            <dd className="mt-2 rounded-lg bg-bg-panel px-3 py-2 text-base leading-relaxed text-fg-muted">
+              <strong className="font-semibold text-fg">Honest caveat:</strong> {supplement.caveat}
+            </dd>
+          )}
+        </div>
+      </dl>
+      {isSelf ? null : href ? (
+        <a
+          href={href}
+          className="mt-6 inline-flex min-h-11 items-center font-semibold text-brand-navy-bright underline underline-offset-4"
+        >
+          {supplement.id === "creatine" ? "Compare the creatine picks" : `Read the ${supplement.name.toLowerCase()} review`}
+        </a>
+      ) : (
+        <p className="mt-6 text-base text-fg-subtle">Brian&apos;s review is in progress.</p>
+      )}
     </article>
   );
 }

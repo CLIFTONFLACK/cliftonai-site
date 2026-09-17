@@ -91,6 +91,17 @@ export default function CompareCreatinePage() {
               every day alongside resistance training. Creatine on its own, without the training,
               has much weaker support.
             </p>
+            <h2>What about focus?</h2>
+            <p>
+              Creatine is also studied for the brain. The cognitive results are promising, but
+              reliable improvements in everyday focus are not yet established. Buy it for strength;
+              treat any effect on focus as a possible bonus, not the reason.
+            </p>
+            <p>
+              Creatine is one of three supplements in the program. For energy metabolism, see{" "}
+              <Link href="/healthy/products/bioptimizers-magnesium-breakthrough">magnesium</Link>. For
+              winding down, the L-theanine review is in progress.
+            </p>
           </Prose>
         </div>
 

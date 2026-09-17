@@ -4,7 +4,7 @@ import Link from "next/link";
 import { LAUNCHED, PROGRAM_NAME } from "./data";
 
 const description =
-  "Brian's Human Longevity Program: supplement picks for adults over 40, chosen from the clinical research, checked label by label, and kept to a short list.";
+  "Brian's Human Longevity Program for adults over 40: support your energy, strengthen your body, support your focus and find your calm, with supplement picks explained from the clinical research.";
 
 /**
  * Next merges metadata one level deep, so a page that sets `openGraph` replaces

@@ -9,8 +9,10 @@ import {
   FdaDisclaimer,
   GradeBadge,
   Pending,
+  SupplementCard,
+  supplementHref,
 } from "../../components";
-import { costPerServing, getProduct, products } from "../../data";
+import { costPerServing, getProduct, goals, products, supplementFor, supplements } from "../../data";
 
 export const dynamicParams = false;
 
@@ -55,6 +57,9 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
   if (!product) notFound();
 
   const perServing = costPerServing(product);
+  const supplement = supplementFor(product);
+  const jobs = supplement ? goals.filter((g) => g.supplement === supplement.id) : [];
+  const others = supplements.filter((s) => s.id !== supplement?.id);
 
   // No rating or review markup: we have no real ratings, and Google treats
   // invented ones as spam.
@@ -109,6 +114,37 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 </ul>
               </div>
             </div>
+
+            {supplement && (
+              <Section title="Where it fits in the program">
+                <SupplementCard supplement={supplement} currentHref={`/healthy/products/${product.slug}`} />
+                <div className="mt-6 rounded-2xl bg-bg-tint p-6">
+                  <h3 className="font-heading text-lg font-semibold text-brand-navy">The rest of the program</h3>
+                  <p className="mt-2 leading-relaxed text-fg-muted">
+                    Each supplement covers a different job. You only need the ones that match your goals.
+                  </p>
+                  <ul className="mt-4 space-y-3">
+                    {others.map((o) => {
+                      const href = supplementHref(o);
+                      const hook = goals.find((g) => g.supplement === o.id);
+                      return (
+                        <li key={o.id} className="leading-relaxed">
+                          <strong className="font-semibold text-fg">{hook?.label ?? o.name}:</strong>{" "}
+                          <span className="text-fg-muted">{hook?.hook ?? o.contribution}</span>{" "}
+                          {href ? (
+                            <Link href={href} className="font-semibold text-brand-navy-bright underline underline-offset-4">
+                              {o.name}
+                            </Link>
+                          ) : (
+                            <span className="text-fg-subtle">({o.name} review in progress)</span>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Section>
+            )}
 
             <Section title="What is in it">
               <div className="overflow-x-auto">
@@ -205,6 +241,24 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
 
           <aside className="lg:sticky lg:top-6 lg:self-start">
             <div className="rounded-2xl border border-border bg-bg p-6 shadow-[0_4px_28px_rgba(20,23,43,0.06)]">
+              {jobs.length > 0 && (
+                <p className="mb-5 border-b border-border pb-5 text-base text-fg-muted">
+                  <span className="block text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+                    Its job in the program
+                  </span>
+                  {jobs.map((j) => (
+                    <span key={j.id} className="mt-1 block font-heading text-lg font-semibold text-brand-navy">
+                      {j.label}
+                      {/* Focus never appears without its caveat, even here, far from the card on phones. */}
+                      {supplement?.caveat && j.id === "focus" && (
+                        <span className="block font-body text-sm font-normal text-fg-muted">
+                          Promising, but not yet established
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </p>
+              )}
               <h2 className="font-heading text-xl font-semibold text-brand-navy">Cost</h2>
               <dl className="mt-4 space-y-3 text-base">
                 <div className="flex justify-between gap-4">
