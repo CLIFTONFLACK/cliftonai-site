@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const nav = [
   { href: "/healthy#picks", label: "Picks" },
   { href: "/healthy/method", label: "How we choose" },
-  { href: "/healthy/thorne", label: "Thorne clinical reference" },
+  { href: "/healthy/why-these-picks", label: "Why these picks" },
   { href: "/healthy/about", label: "About" },
 ];
 

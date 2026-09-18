@@ -2,14 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   buyHref,
+  costPerServing,
   getSupplement,
   goals,
   gradeLabels,
   products,
+  supplementFor,
   type EvidenceGrade,
   type Product,
   type Supplement,
 } from "./data";
+
+function usd(n: number) {
+  return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+}
 
 /** Shared reading column for prose pages. */
 export function Prose({ children }: { children: React.ReactNode }) {
@@ -123,8 +129,10 @@ export function FdaDisclaimer() {
 }
 
 export function ProductCard({ product }: { product: Product }) {
+  const perServing = costPerServing(product);
+  const role = supplementFor(product)?.role;
   return (
-    <article className="relative flex h-full flex-col rounded-2xl border border-border bg-bg p-6 shadow-[0_4px_28px_rgba(20,23,43,0.06)] transition-colors duration-200 hover:border-brand-navy-bright/40">
+    <article className="flex h-full flex-col rounded-2xl border border-border bg-bg p-6 shadow-[0_4px_28px_rgba(20,23,43,0.06)] transition-colors duration-200 hover:border-brand-navy-bright/40">
       {product.image && (
         <div className="relative -mx-6 -mt-6 mb-2 aspect-[4/3] overflow-hidden rounded-t-2xl bg-bg-tint">
           <Image
@@ -138,18 +146,52 @@ export function ProductCard({ product }: { product: Product }) {
       )}
       <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
         {product.category}
+        {role && <span className="font-normal normal-case text-fg-subtle"> &middot; {role}</span>}
       </p>
       <h3 className="mt-2 font-heading text-2xl font-semibold text-brand-navy">
-        <Link
-          href={`/healthy/products/${product.slug}`}
-          className="after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-bright"
-        >
+        <Link href={`/healthy/products/${product.slug}`} className="hover:underline">
           {product.brand} {product.name}
         </Link>
       </h3>
       <p className="mt-1 text-base text-fg-subtle">{product.format}</p>
-      <p className="mt-4 flex-1 leading-relaxed text-fg-muted">{product.summary}</p>
-      <p className="mt-6 font-semibold text-brand-navy-bright">Read the full review &rarr;</p>
+
+      <div className="mt-4 flex items-baseline gap-2">
+        {product.priceUsd !== null ? (
+          <span className="text-2xl font-semibold text-fg">{usd(product.priceUsd)}</span>
+        ) : (
+          <Pending />
+        )}
+        {perServing !== null && (
+          <span className="text-sm text-fg-subtle">({usd(perServing)}/serving)</span>
+        )}
+      </div>
+
+      <p className="mt-4 leading-relaxed text-fg-muted">{product.summary}</p>
+
+      <dl className="mt-4 space-y-2 border-t border-dashed border-border pt-4 text-sm">
+        {product.pros[0] && (
+          <div className="flex gap-2">
+            <dt className="shrink-0 font-semibold text-brand-navy-soft">Why:</dt>
+            <dd className="text-fg-muted">{product.pros[0]}</dd>
+          </div>
+        )}
+        {product.cons[0] && (
+          <div className="flex gap-2">
+            <dt className="shrink-0 font-semibold text-fg-subtle">Drawback:</dt>
+            <dd className="text-fg-muted">{product.cons[0]}</dd>
+          </div>
+        )}
+      </dl>
+
+      <div className="mt-6">
+        <BuyButton product={product} from="picks" />
+      </div>
+      <Link
+        href={`/healthy/products/${product.slug}`}
+        className="mt-4 font-semibold text-brand-navy-bright underline underline-offset-4"
+      >
+        Read the full review &rarr;
+      </Link>
     </article>
   );
 }
@@ -164,22 +206,23 @@ export function supplementHref(s: Supplement): string | null {
   return picks.length >= 1 ? `/healthy/products/${picks[0].slug}` : null;
 }
 
-/** "What do you want more of?" Each tile jumps to the supplement that does that job. */
+/** "What do you want more of?" Each tile links straight to that goal's review. */
 export function GoalChooser() {
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {goals.map((goal) => {
         const s = getSupplement(goal.supplement);
+        const href = supplementHref(s) ?? `#${s.id}`;
         return (
           <li key={goal.id}>
-            <a
-              href={`#${s.id}`}
+            <Link
+              href={href}
               className="flex h-full min-h-44 flex-col rounded-2xl border border-border bg-bg p-6 transition-colors duration-200 hover:border-brand-navy-bright focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-bright"
             >
               <span className="font-heading text-xl font-semibold text-brand-navy">{goal.label}</span>
               <span className="mt-3 flex-1 leading-relaxed text-fg-muted">{goal.hook}</span>
-              <span className="mt-4 font-semibold text-brand-navy-bright">{s.name} &darr;</span>
-            </a>
+              <span className="mt-4 font-semibold text-brand-navy-bright">{s.name} &rarr;</span>
+            </Link>
           </li>
         );
       })}

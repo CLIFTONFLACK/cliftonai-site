@@ -12,7 +12,7 @@ import {
   SupplementCard,
   supplementHref,
 } from "../../components";
-import { costPerServing, getProduct, goals, products, supplementFor, supplements } from "../../data";
+import { buyHref, costPerServing, getProduct, goals, products, supplementFor, supplements } from "../../data";
 
 export const dynamicParams = false;
 
@@ -212,8 +212,8 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 <p className="text-fg-muted"><Pending /></p>
               )}
               <p className="mt-4 text-base">
-                <Link href="/healthy/thorne" className="text-brand-navy-bright underline underline-offset-4">
-                  See what Thorne itself claims about this ingredient, and how Brian grades each claim
+                <Link href="/healthy/why-these-picks" className="text-brand-navy-bright underline underline-offset-4">
+                  See what the brand itself claims about this ingredient, and how Brian grades each claim
                 </Link>
               </p>
             </Section>
@@ -300,6 +300,36 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
           </aside>
         </div>
       </div>
+
+      {/* Compact purchase bar: same buyHref as the sidebar BuyButton, just reachable without
+          scrolling back up on a phone. The sidebar keeps the full disclosure sentence; this bar
+          links to it rather than repeating it in a strip this narrow. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-fg">{product.brand} {product.name}</p>
+            {product.priceUsd !== null && (
+              <p className="text-sm text-fg-muted">
+                {usd(product.priceUsd)}
+                {perServing !== null && <span> &middot; {usd(perServing)}/serving</span>}
+              </p>
+            )}
+          </div>
+          <a
+            href={buyHref(product, "product-mobile-bar")}
+            target="_blank"
+            rel="sponsored nofollow noopener"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-brand-gold px-4 font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-bright"
+          >
+            Check price
+          </a>
+        </div>
+        <Link href="/healthy/disclosures" className="mt-1 block text-xs text-fg-subtle underline underline-offset-2">
+          May earn a commission &mdash; how that works
+        </Link>
+      </div>
+      {/* Keeps the fixed bar from covering the FDA disclaimer / footer on small screens. */}
+      <div className="h-20 lg:hidden" aria-hidden="true" />
     </article>
   );
 }

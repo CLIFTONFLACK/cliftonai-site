@@ -84,8 +84,8 @@ export type Product = {
   verified: boolean;
 };
 
-/** The program promise. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
-export const TAGLINE = "Support your energy, strengthen your body, support your focus and find your calm.";
+/** The hero headline. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
+export const TAGLINE = "Choose supplements with more confidence.";
 
 export type Goal = "energy" | "strength" | "focus" | "calm";
 
@@ -186,6 +186,37 @@ export const gradeLabels: Record<EvidenceGrade, { label: string; meaning: string
   },
 };
 
+export type Faq = { question: string; answer: string };
+
+/** Short, honest answers for the homepage FAQ. No hedging beyond what's true. */
+export const faqs: Faq[] = [
+  {
+    question: "Is this medical advice?",
+    answer:
+      "No. It's general information, not a diagnosis or personal medical guidance. Talk to your doctor before starting a supplement, especially if you take medication or have a health condition.",
+  },
+  {
+    question: "Do you earn money if I buy?",
+    answer:
+      "Sometimes. Some links pay a commission if you buy through them, at no extra cost to you. It never decides which products are listed or how they're graded.",
+  },
+  {
+    question: "Why only one product per category?",
+    answer:
+      "One clear answer beats twenty options. Each pick is the one that best matched its studied dose, label and price once the research was checked; see why these picks for the comparison.",
+  },
+  {
+    question: "How often are picks re-checked?",
+    answer:
+      "At least every six months, or sooner if the price, label or evidence changes. A pick is dropped if it stops earning its place.",
+  },
+  {
+    question: "Can I take all three together?",
+    answer:
+      "Each one does a different job, so most people only need the one that matches their goal. If you take more than one, check with your doctor first, especially alongside any medication.",
+  },
+];
+
 export const pillars = [
   {
     title: "Research",
@@ -220,7 +251,7 @@ export const products: Product[] = [
     imageAlt: "Bottle of Thorne Magnesium Glycinate, 90 capsules",
     summary: "Single-ingredient magnesium glycinate, dosed one capsule at a time.",
     verdict:
-      "The pick for straightforward, well-absorbed magnesium. One capsule is 120 mg of elemental magnesium as glycinate, so you can build up your dose gradually instead of committing to a large serving on day one. It costs more per milligram than a bulk glycinate powder, but the label is simple: one ingredient, no blend to decode.",
+      "Straightforward, well-absorbed magnesium at 120 mg per capsule, so you can build your dose up gradually. Costs more per milligram than a bulk powder, but the label is one ingredient, no blend.",
     bestFor: [
       "Adults who want to titrate their dose one capsule at a time",
       "Anyone who gets loose stools from higher-dose magnesium forms",
@@ -269,8 +300,13 @@ export const products: Product[] = [
         claim: "May support sleep quality when magnesium intake is low",
         grade: "early",
         summary:
-          "Small trials suggest evening magnesium may modestly improve sleep in people who are not getting enough, but results are inconsistent and most trials are short.",
-        citations: [],
+          "A 7-week randomized trial in adults over 50 with poor sleep found sleep scores improved on magnesium citrate, but improved by a similar amount on the placebo too, so the trial could not show magnesium caused the change.",
+        citations: [
+          {
+            label: "Nielsen et al., 2011, Magnesium Research (randomized trial, 96 adults over 50)",
+            url: "https://pubmed.ncbi.nlm.nih.gov/21199787/",
+          },
+        ],
       },
     ],
     safety: [
@@ -304,7 +340,7 @@ export const products: Product[] = [
     imageAlt: "Box of Thorne Creatine Travel Packs, 30 stick packs",
     summary: "Pre-measured 5 g creatine monohydrate packets, NSF Certified for Sport.",
     verdict:
-      "The pick for anyone who does not want to deal with a scoop or a scale. Each packet is a single measured 5 g dose of plain creatine monohydrate, the form almost all of the research uses, and the product is NSF Certified for Sport, so every batch is checked for banned substances. You pay a premium over a bulk tub for that convenience and testing.",
+      "A single measured 5 g dose of plain creatine monohydrate per packet, no scoop needed, and NSF Certified for Sport so every batch is checked for banned substances. Costs more per gram than a bulk tub.",
     bestFor: [
       "Travel and gym-bag routines where measuring powder is impractical",
       "Athletes who need NSF Certified for Sport testing for banned substances",
@@ -374,7 +410,7 @@ export const products: Product[] = [
     imageAlt: "Bottle of Thorne Theanine, 90 capsules",
     summary: "200 mg of Suntheanine, a patented, purified form of L-theanine, one capsule at a time.",
     verdict:
-      "The pick for a single-ingredient, precisely dosed L-theanine. Each capsule delivers 200 mg of Suntheanine, the branded form used in most of the human research on L-theanine, rather than a cheaper generic. It costs more per capsule than generic L-theanine, and the independent research specifically on Suntheanine is thinner than Thorne's own claim of over 50 supporting studies suggests once industry-funded and non-human work is set aside.",
+      "200 mg of Suntheanine per capsule, the branded form used in most human L-theanine research, at a fixed dose. Costs more per capsule than generic L-theanine.",
     bestFor: [
       "Adults who want a single, well-documented form of L-theanine",
       "Evening or pre-stress dosing at a fixed 200 mg",
@@ -406,8 +442,13 @@ export const products: Product[] = [
         claim: "May increase alpha brain-wave activity associated with relaxed wakefulness",
         grade: "early",
         summary:
-          "Small studies report increased alpha-wave activity within about 40 minutes of a 200 mg dose, a marker of relaxed wakefulness rather than sedation, but sample sizes are small.",
-        citations: [],
+          "A crossover trial measuring brain activity directly found greater resting alpha-wave activity 2 hours after an L-theanine drink than after placebo, but only in people who ran higher in trait anxiety to start with.",
+        citations: [
+          {
+            label: "White et al., 2016, Nutrients (randomized crossover trial, MEG-measured brain activity)",
+            url: "https://pubmed.ncbi.nlm.nih.gov/26797633/",
+          },
+        ],
       },
     ],
     safety: [

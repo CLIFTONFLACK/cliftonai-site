@@ -193,10 +193,11 @@ test("GoalChooser renders exactly one list item per goal", () => {
 });
 
 for (const [i, goal] of goals.entries()) {
-  test(`GoalChooser link for goal "${goal.id}" points at #<supplement id>`, () => {
+  test(`GoalChooser link for goal "${goal.id}" points straight at that supplement's review`, () => {
     const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
     const anchor = items[i].props.children;
-    assert.equal(anchor.props.href, `#${getSupplement(goal.supplement).id}`);
+    const s = getSupplement(goal.supplement);
+    assert.equal(anchor.props.href, supplementHref(s) ?? `#${s.id}`);
   });
 
   test(`GoalChooser tile for goal "${goal.id}" shows its own label and hook text`, () => {
