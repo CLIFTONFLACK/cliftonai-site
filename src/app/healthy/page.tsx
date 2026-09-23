@@ -5,7 +5,6 @@ import { FdaDisclaimer, GoalChooser, ProductCard, GradeBadge } from "./component
 import {
   PROGRAM_NAME,
   TAGLINE,
-  TRIO_INTRO,
   faqs,
   pillars,
   products,
@@ -77,8 +76,8 @@ export default function HealthyHome() {
                 )}
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-                Three supplements, one clear job each. Brian grades the evidence honestly, so you can
-                see exactly where it&apos;s strong and where it isn&apos;t.
+                Three supplements, each with a single job. Each one carefully researched and
+                reasoned. Brian&apos;s done the work so you don&apos;t have to.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link href="#picks" className={primaryCta}>
@@ -132,8 +131,7 @@ export default function HealthyHome() {
                       Evidence-First Protocol
                     </span>
                   </div>
-                  <p className="py-3 text-xs leading-relaxed text-slate-600 sm:text-sm">{TRIO_INTRO.body}</p>
-                  <div className="space-y-2.5">
+                  <div className="mt-4 space-y-2.5">
                     {supplements.map((s, i) => {
                       const product = products.find((p) => p.category === s.category);
                       const grade = product ? topGrade(product) : null;
