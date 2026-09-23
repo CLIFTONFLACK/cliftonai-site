@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Plus_Jakarta_Sans } from "next/font/google";
+import { Sora, Plus_Jakarta_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { LAUNCHED, PROGRAM_NAME } from "./data";
@@ -11,10 +11,10 @@ import { LAUNCHED, PROGRAM_NAME } from "./data";
  * font-kinetic-body Tailwind utilities via the matching entries in
  * globals.css's @theme block.
  */
-const syne = Syne({
+const sora = Sora({
   variable: "--font-kinetic-heading",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  weight: ["600", "700", "800"],
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -53,9 +53,7 @@ export const metadata: Metadata = {
 const nav = [
   { href: "/healthy#picks", label: "3 Pillars" },
   { href: "/healthy/method", label: "How We Choose" },
-  { href: "/healthy/why-these-picks", label: "Why These Picks" },
   { href: "/healthy/about", label: "Research & About" },
-  { href: "/healthy#faq", label: "FAQ" },
 ];
 
 const linkClass =
@@ -64,7 +62,7 @@ const linkClass =
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className={`${syne.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
+      className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
       {/* Material Symbols Outlined, used only within /healthy markup. Next
           hoists this <link> into <head> automatically. */}
@@ -124,10 +122,10 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
           </nav>
 
           <Link
-            href="/healthy#start"
+            href="/healthy#picks"
             className="hidden items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(217,119,6,0.35)] transition-all hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-700 hover:shadow-[0_6px_20px_rgba(217,119,6,0.45)] sm:inline-flex"
           >
-            Find Where to Start
+            Start Today
             <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
           </Link>
 

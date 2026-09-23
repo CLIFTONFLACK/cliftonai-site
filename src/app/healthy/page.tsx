@@ -31,7 +31,7 @@ const primaryCta =
 const secondaryCta =
   "inline-flex min-h-12 items-center rounded-xl border-2 border-slate-200 bg-white px-6 py-3.5 font-bold text-slate-900 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50";
 
-const PILLAR_TILE_TONE = ["bg-emerald-600", "bg-kinetic-primary-electric", "bg-indigo-600"];
+const PILLAR_TILE_TONE = "bg-amber-600";
 
 export default function HealthyHome() {
   const faqJsonLd = {
@@ -90,8 +90,8 @@ export default function HealthyHome() {
                 see exactly where it&apos;s strong and where it isn&apos;t.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link href="#start" className={primaryCta}>
-                  Find where to start
+                <Link href="#picks" className={primaryCta}>
+                  Start Today
                   <span className="material-symbols-outlined ml-2 text-[20px] text-amber-400">arrow_forward</span>
                 </Link>
                 <Link href="#picks" className={secondaryCta}>
@@ -153,7 +153,7 @@ export default function HealthyHome() {
                         className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-blue-50/40"
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${PILLAR_TILE_TONE[i % PILLAR_TILE_TONE.length]}`}>
+                          <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${PILLAR_TILE_TONE}`}>
                             {String(i + 1).padStart(2, "0")}
                           </div>
                           <div>
@@ -333,8 +333,8 @@ export default function HealthyHome() {
             medication.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="#start" className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 font-bold text-white shadow-[0_4px_20px_rgba(217,119,6,0.4)] transition-all hover:scale-105 hover:from-amber-600 hover:to-amber-700">
-              Find where to start
+            <Link href="#picks" className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 font-bold text-white shadow-[0_4px_20px_rgba(217,119,6,0.4)] transition-all hover:scale-105 hover:from-amber-600 hover:to-amber-700">
+              Start Today
               <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
             </Link>
             <Link href="/healthy/disclosures" className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900 px-7 py-4 font-bold text-white transition-colors hover:bg-slate-800">

@@ -232,11 +232,11 @@ export function supplementFor(p: Product): Supplement | undefined {
 
 export const gradeLabels: Record<EvidenceGrade, { label: string; meaning: string }> = {
   strong: {
-    label: "Strong evidence",
+    label: "Robust evidence",
     meaning: "Consistent results across several randomized trials or meta-analyses.",
   },
   moderate: {
-    label: "Moderate evidence",
+    label: "Promising evidence",
     meaning: "Supportive trials exist, but results vary or populations are narrow.",
   },
   early: {
