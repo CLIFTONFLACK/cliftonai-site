@@ -20,10 +20,19 @@ test.before(async () => {
   ({ default: sitemap } = await import("../sitemap.ts"));
 });
 
-test("excludes every /healthy path while LAUNCHED is false", () => {
+test("includes every /healthy path now that LAUNCHED is true", () => {
   const urls = sitemap().map((entry) => entry.url);
   const healthyUrls = urls.filter((url) => url.includes("/healthy"));
-  assert.deepEqual(healthyUrls, []);
+  assert.deepEqual(healthyUrls, [
+    `${FAKE_SITE_URL}/healthy`,
+    `${FAKE_SITE_URL}/healthy/method`,
+    `${FAKE_SITE_URL}/healthy/why-these-picks`,
+    `${FAKE_SITE_URL}/healthy/about`,
+    `${FAKE_SITE_URL}/healthy/disclosures`,
+    `${FAKE_SITE_URL}/healthy/products/thorne-magnesium-glycinate`,
+    `${FAKE_SITE_URL}/healthy/products/thorne-creatine-stick-packs`,
+    `${FAKE_SITE_URL}/healthy/products/thorne-theanine`,
+  ]);
 });
 
 test("still includes the home page and legal pages regardless of LAUNCHED", () => {

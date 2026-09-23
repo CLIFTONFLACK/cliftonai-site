@@ -21,7 +21,7 @@ export const CONTACT_EMAIL = "hello@getbrian.xyz";
  * figures cannot be indexed. Flip to true only when all launch products are
  * `verified`.
  */
-export const LAUNCHED = false;
+export const LAUNCHED = true;
 
 export type EvidenceGrade = "strong" | "moderate" | "early";
 
