@@ -102,57 +102,61 @@ export default function HealthyHome() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 lg:col-span-6">
-              <div className="group relative h-52 overflow-hidden rounded-xl border border-slate-200 shadow-lg sm:h-60">
-                <Image
-                  src="/healthy/hero-couple.jpg"
-                  alt="A couple in their fifties hiking a coastal trail at sunrise"
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 90vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <span className="text-sm font-semibold text-slate-100">
-                    An active, evidence-checked routine for the decades ahead
-                  </span>
+            <div className="lg:col-span-6">
+              <div className="group animate-fade-in-up relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
+                {/* Photo header — one continuous card with the content below, not a separate box */}
+                <div className="relative h-52 overflow-hidden sm:h-60">
+                  <Image
+                    src="/healthy/hero-couple.jpg"
+                    alt="A couple in their fifties hiking a coastal trail at sunrise"
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 90vw"
+                    className="animate-kinetic-hero-zoom object-cover transition-transform duration-500 group-hover:scale-105"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <span className="text-sm font-semibold text-slate-100">
+                      An active, evidence-checked routine for the decades ahead
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="flex items-center gap-1.5 font-kinetic-heading text-xs font-extrabold tracking-wider text-kinetic-primary uppercase">
-                    <span className="material-symbols-outlined text-[20px] text-kinetic-primary-electric">science</span>
-                    Why 3 Pillars?
-                  </span>
-                  <span className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-                    Evidence-First Protocol
-                  </span>
-                </div>
-                <p className="py-3 text-xs leading-relaxed text-slate-600 sm:text-sm">{TRIO_INTRO.body}</p>
-                <div className="space-y-2.5">
-                  {supplements.map((s, i) => {
-                    const product = products.find((p) => p.category === s.category);
-                    const grade = product ? topGrade(product) : null;
-                    return (
-                      <div
-                        key={s.id}
-                        className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-blue-50/40"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${PILLAR_TILE_TONE}`}>
-                            {String(i + 1).padStart(2, "0")}
+                <div className="p-6">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <span className="flex items-center gap-1.5 font-kinetic-heading text-xs font-extrabold tracking-wider text-kinetic-primary uppercase">
+                      <span className="material-symbols-outlined text-[20px] text-kinetic-primary-electric">science</span>
+                      Why 3 Pillars?
+                    </span>
+                    <span className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+                      Evidence-First Protocol
+                    </span>
+                  </div>
+                  <p className="py-3 text-xs leading-relaxed text-slate-600 sm:text-sm">{TRIO_INTRO.body}</p>
+                  <div className="space-y-2.5">
+                    {supplements.map((s, i) => {
+                      const product = products.find((p) => p.category === s.category);
+                      const grade = product ? topGrade(product) : null;
+                      return (
+                        <div
+                          key={s.id}
+                          className="animate-fade-in-up flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-blue-50/40"
+                          style={{ animationDelay: `${420 + i * 130}ms` }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${PILLAR_TILE_TONE}`}>
+                              {String(i + 1).padStart(2, "0")}
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-slate-900">{s.tagline}</div>
+                              <div className="text-xs font-medium text-slate-500">{s.name}</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="text-sm font-bold text-slate-900">{s.tagline}</div>
-                            <div className="text-xs font-medium text-slate-500">{s.name}</div>
-                          </div>
+                          {grade && <GradeBadge grade={grade} />}
                         </div>
-                        {grade && <GradeBadge grade={grade} />}
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>

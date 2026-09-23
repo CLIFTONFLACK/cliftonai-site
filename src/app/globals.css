@@ -200,6 +200,23 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   background: radial-gradient(circle at 60% 40%, rgba(0, 210, 240, 0.3), transparent 70%);
 }
 
+/* /healthy hero photo — a one-time settle-into-focus zoom on load, not a
+   looping/continuous animation (those read as distracting on decorative
+   imagery). Covered by the prefers-reduced-motion block below like every
+   other animation in this file. */
+@keyframes kinetic-hero-zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-kinetic-hero-zoom {
+  animation: kinetic-hero-zoom 1.4s ease-out both;
+}
+
 @keyframes float {
   0%,
   100% {
