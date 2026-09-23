@@ -201,12 +201,16 @@ for (const [i, goal] of goals.entries()) {
   });
 
   test(`GoalChooser tile for goal "${goal.id}" shows its own label and hook text`, () => {
-    const items = listItems(GoalChooser()) as {
-      props: { children: { props: { children: { props: { children: unknown } }[] } } };
-    }[];
-    const anchorChildren = items[i].props.children.props.children;
-    assert.equal(anchorChildren[0].props.children, goal.label);
-    assert.equal(anchorChildren[1].props.children, goal.hook);
+    // items[i].props.children is the <li>'s single child, the Link itself.
+    // The Link's own children: [background Image, gradient overlay div, content div].
+    // Content div children: [icon chip, eyebrow, label, hook, CTA].
+    const items = listItems(GoalChooser()) as { props: { children: { props: { children: unknown[] } } } }[];
+    const anchor = items[i].props.children;
+    const anchorChildren = anchor.props.children;
+    const contentDiv = anchorChildren[2] as { props: { children: { props: { children: unknown } }[] } };
+    const [, , labelSpan, hookParagraph] = contentDiv.props.children;
+    assert.equal(labelSpan.props.children, goal.label);
+    assert.equal(hookParagraph.props.children, goal.hook);
   });
 }
 

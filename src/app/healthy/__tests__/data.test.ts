@@ -11,6 +11,8 @@ import {
   supplementFor,
   supplements,
   TAGLINE,
+  topGrade,
+  totalDailyCost,
   TRIO_INTRO,
   usesRedirect,
   type Product,
@@ -107,6 +109,74 @@ test("costPerServing handles a single serving (boundary of one)", () => {
 test("costPerServing treats a zero price as known, not unverified", () => {
   const product = baseProduct({ priceUsd: 0, servingsPerContainer: 10 });
   assert.equal(costPerServing(product), 0);
+});
+
+// ---------------------------------------------------------------------------
+// topGrade
+// ---------------------------------------------------------------------------
+
+test("topGrade returns null when a product has no evidence", () => {
+  const product = baseProduct({ evidence: [] });
+  assert.equal(topGrade(product), null);
+});
+
+test("topGrade returns the single grade when there is only one evidence claim", () => {
+  const product = baseProduct({
+    evidence: [{ claim: "x", grade: "early", summary: "s", citations: [] }],
+  });
+  assert.equal(topGrade(product), "early");
+});
+
+test("topGrade picks strong over moderate and early", () => {
+  const product = baseProduct({
+    evidence: [
+      { claim: "a", grade: "early", summary: "s", citations: [] },
+      { claim: "b", grade: "strong", summary: "s", citations: [] },
+      { claim: "c", grade: "moderate", summary: "s", citations: [] },
+    ],
+  });
+  assert.equal(topGrade(product), "strong");
+});
+
+test("topGrade picks moderate over early when there is no strong claim", () => {
+  const product = baseProduct({
+    evidence: [
+      { claim: "a", grade: "early", summary: "s", citations: [] },
+      { claim: "b", grade: "moderate", summary: "s", citations: [] },
+    ],
+  });
+  assert.equal(topGrade(product), "moderate");
+});
+
+test("topGrade matches the real magnesium product's best claim (real data)", () => {
+  const product = products.find((p) => p.slug === "thorne-magnesium-glycinate");
+  assert.ok(product, "fixture assumption: the magnesium product exists");
+  assert.equal(topGrade(product as Product), "strong");
+});
+
+// ---------------------------------------------------------------------------
+// totalDailyCost
+// ---------------------------------------------------------------------------
+
+test("totalDailyCost equals the sum of costPerServing across the real products (real data)", () => {
+  const expected = products.reduce((sum, p) => {
+    const c = costPerServing(p);
+    assert.ok(c !== null, `fixture assumption: ${p.slug} has a known cost per serving`);
+    return sum + c;
+  }, 0);
+  assert.equal(totalDailyCost(), expected);
+});
+
+test("totalDailyCost returns null the moment any pick's price is unverified", () => {
+  const removed = products.pop();
+  assert.ok(removed, "fixture assumption: at least one real product exists to remove");
+  products.push(baseProduct({ slug: "fixture-unpriced", priceUsd: null }));
+  try {
+    assert.equal(totalDailyCost(), null);
+  } finally {
+    products.pop();
+    products.push(removed);
+  }
 });
 
 // ---------------------------------------------------------------------------
@@ -473,6 +543,18 @@ for (const goal of goals) {
 
   test(`goal "${goal.id}" hook uses US spelling`, () => {
     assert.equal(findBritishSpelling(goal.hook), undefined);
+  });
+
+  test(`goal "${goal.id}" eyebrowDetail has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(goal.eyebrowDetail), undefined);
+  });
+
+  test(`goal "${goal.id}" eyebrowDetail has no banned marketing words`, () => {
+    assert.equal(findBannedWord(goal.eyebrowDetail), undefined);
+  });
+
+  test(`goal "${goal.id}" eyebrowDetail uses US spelling`, () => {
+    assert.equal(findBritishSpelling(goal.eyebrowDetail), undefined);
   });
 }
 

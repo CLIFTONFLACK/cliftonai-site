@@ -34,6 +34,21 @@
   --brand-gold-hover: #a87b2a;  /* CTA hover fill, 4.7:1 vs --fg */
   --brand-gold-deep: #8a6520;   /* small gold text, 5.3:1 */
   --brand-gold-light: #e0b84f;  /* gold on navy grounds only */
+
+  /* ---------------------------------------------------------------------
+     Kinetic Longevity ramp — /healthy only. Additive: nothing above is
+     renamed or reused, so the rest of the site (main GetBrian pages, which
+     also import this file) is untouched. Values taken from the "Kinetic
+     Longevity" design brief's own implemented palette.
+     --------------------------------------------------------------------- */
+  --kinetic-primary: #002db3;
+  --kinetic-primary-electric: #0d47ff;
+  --kinetic-primary-light: #eef2ff;
+  --kinetic-amber: #d97706;
+  --kinetic-amber-hover: #b45309;
+  --kinetic-evidence-strong: #059669;
+  --kinetic-evidence-moderate: #2563eb;
+  --kinetic-cyan-glow: #00d2f0;
 }
 
 @theme inline {
@@ -59,6 +74,20 @@
 
   --font-heading: var(--font-heading);
   --font-body: var(--font-body);
+
+  --color-kinetic-primary: var(--kinetic-primary);
+  --color-kinetic-primary-electric: var(--kinetic-primary-electric);
+  --color-kinetic-primary-light: var(--kinetic-primary-light);
+  --color-kinetic-amber: var(--kinetic-amber);
+  --color-kinetic-amber-hover: var(--kinetic-amber-hover);
+  --color-kinetic-evidence-strong: var(--kinetic-evidence-strong);
+  --color-kinetic-evidence-moderate: var(--kinetic-evidence-moderate);
+  --color-kinetic-cyan-glow: var(--kinetic-cyan-glow);
+
+  /* Set by healthy/layout.tsx via next/font/google; declared here only so
+     Tailwind emits font-kinetic-heading / font-kinetic-body utilities. */
+  --font-kinetic-heading: var(--font-kinetic-heading);
+  --font-kinetic-body: var(--font-kinetic-body);
 }
 
 html {
@@ -159,6 +188,16 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 
 .blob-deep {
   background: radial-gradient(circle at 60% 40%, rgba(10, 29, 59, 0.38), transparent 70%);
+}
+
+/* /healthy "Kinetic Longevity" section only — same blur-blob mechanism as
+   above, new colors so it doesn't collide with the site's navy/gold blobs. */
+.blob-kinetic-primary {
+  background: radial-gradient(circle at 30% 30%, rgba(13, 71, 255, 0.35), transparent 70%);
+}
+
+.blob-kinetic-cyan {
+  background: radial-gradient(circle at 60% 40%, rgba(0, 210, 240, 0.3), transparent 70%);
 }
 
 @keyframes float {

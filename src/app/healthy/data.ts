@@ -153,30 +153,69 @@ export const supplements: Supplement[] = [
  * situation and ends in an honest answer, never a promise: no invented
  * numbers, no urgency, no "clinically proven".
  */
-export const goals: { id: Goal; label: string; hook: string; supplement: Supplement["id"] }[] = [
+export type GoalAccent = "amber" | "primary" | "purple" | "cyan";
+
+export const goals: {
+  id: Goal;
+  label: string;
+  hook: string;
+  supplement: Supplement["id"];
+  /** Material Symbols Outlined icon name for the goal tile's icon chip. */
+  icon: string;
+  /**
+   * Short eyebrow for the goal tile ("Cellular Energy"), distinct from the
+   * supplement's own tagline — needed because creatine covers two different
+   * goals (strength, focus) and each tile's eyebrow should name *this*
+   * angle, not repeat the supplement's blanket tagline on both tiles.
+   */
+  eyebrowDetail: string;
+  accent: GoalAccent;
+  image: string;
+  imageAlt: string;
+}[] = [
   {
     id: "energy",
     label: "Support your energy",
     hook: "Low on magnesium? Many US adults do not eat enough of it, and your body uses it to turn food into energy.",
     supplement: "magnesium",
+    icon: "bolt",
+    eyebrowDetail: "Cellular Energy",
+    accent: "amber",
+    image: "/healthy/goals/energy.jpg",
+    imageAlt: "A woman stretching outdoors at sunrise",
   },
   {
     id: "strength",
     label: "Strengthen your body",
     hook: "Lifting after 40? Meet one of the most-studied supplements for getting more from the work.",
     supplement: "creatine",
+    icon: "fitness_center",
+    eyebrowDetail: "Physical Power",
+    accent: "primary",
+    image: "/healthy/goals/strength.jpg",
+    imageAlt: "A man mid-lift in a gym",
   },
   {
     id: "focus",
     label: "Support your focus",
     hook: "Creatine for your brain? Promising, not proven. Here is what the research really shows.",
     supplement: "creatine",
+    icon: "psychology",
+    eyebrowDetail: "Cognition",
+    accent: "purple",
+    image: "/healthy/goals/focus.jpg",
+    imageAlt: "A woman calmly focused at a desk",
   },
   {
     id: "calm",
     label: "Find your calm",
     hook: "Still wired at 10pm? Meet the compound from tea that people take to wind down.",
     supplement: "l-theanine",
+    icon: "bedtime",
+    eyebrowDetail: "Wind-Down",
+    accent: "cyan",
+    image: "/healthy/goals/calm.jpg",
+    imageAlt: "A man reading by lamplight in the evening",
   },
 ];
 
@@ -205,6 +244,17 @@ export const gradeLabels: Record<EvidenceGrade, { label: string; meaning: string
     meaning: "Small, short or mixed studies. Worth watching, not worth relying on.",
   },
 };
+
+const GRADE_RANK: Record<EvidenceGrade, number> = { strong: 2, moderate: 1, early: 0 };
+
+/** The strongest grade among a product's evidence claims, for a single card-level badge. */
+export function topGrade(p: Product): EvidenceGrade | null {
+  if (p.evidence.length === 0) return null;
+  return p.evidence.reduce<EvidenceGrade>(
+    (best, ev) => (GRADE_RANK[ev.grade] > GRADE_RANK[best] ? ev.grade : best),
+    p.evidence[0].grade,
+  );
+}
 
 export type Faq = { question: string; answer: string };
 
@@ -498,6 +548,21 @@ export function getProduct(slug: string): Product | undefined {
 export function costPerServing(p: Product): number | null {
   if (p.priceUsd === null || !p.servingsPerContainer) return null;
   return p.priceUsd / p.servingsPerContainer;
+}
+
+/**
+ * Combined cost of one serving of every current pick, i.e. what a day costs
+ * if you took all three. Null the moment any pick's cost per serving is
+ * unverified, rather than silently summing over a gap.
+ */
+export function totalDailyCost(): number | null {
+  let total = 0;
+  for (const p of products) {
+    const c = costPerServing(p);
+    if (c === null) return null;
+    total += c;
+  }
+  return total;
 }
 
 /** Where a shopper ends up: the affiliate link once approved, else the brand. */

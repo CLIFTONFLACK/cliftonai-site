@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { healthyOpenGraph } from "../layout";
 import Link from "next/link";
 import { PageHeading, Prose } from "../components";
@@ -26,6 +27,16 @@ export default function MethodPage() {
           title="Research, evaluation, selection"
           lead="Most supplement advice starts with the product. Brian starts with the research, and only then looks for a product that matches it."
         />
+
+        <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-2xl">
+          <Image
+            src="/healthy/research-desk.jpg"
+            alt="A desk with research papers, handwritten notes and reading glasses under warm lamp light"
+            fill
+            sizes="(min-width: 768px) 48rem, 100vw"
+            className="object-cover"
+          />
+        </div>
 
         <div className="mt-12">
           <Prose>

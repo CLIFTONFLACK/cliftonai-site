@@ -1,7 +1,27 @@
 import type { Metadata } from "next";
+import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { LAUNCHED, PROGRAM_NAME } from "./data";
+
+/**
+ * "Kinetic Longevity" type system, scoped to /healthy only — loaded here
+ * rather than the root layout so the rest of the site keeps its own
+ * Space Grotesk / DM Sans fonts untouched. Exposed as font-kinetic-heading /
+ * font-kinetic-body Tailwind utilities via the matching entries in
+ * globals.css's @theme block.
+ */
+const syne = Syne({
+  variable: "--font-kinetic-heading",
+  subsets: ["latin"],
+  weight: ["700", "800"],
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-kinetic-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 const description =
   "Brian's Human Longevity Program for adults over 40: support your energy, strengthen your body, support your focus and find your calm, with supplement picks explained from the clinical research.";
@@ -31,10 +51,11 @@ export const metadata: Metadata = {
 };
 
 const nav = [
-  { href: "/healthy#picks", label: "Picks" },
-  { href: "/healthy/method", label: "How we choose" },
-  { href: "/healthy/why-these-picks", label: "Why these picks" },
-  { href: "/healthy/about", label: "About" },
+  { href: "/healthy#picks", label: "3 Pillars" },
+  { href: "/healthy/method", label: "How We Choose" },
+  { href: "/healthy/why-these-picks", label: "Why These Picks" },
+  { href: "/healthy/about", label: "Research & About" },
+  { href: "/healthy#faq", label: "FAQ" },
 ];
 
 const linkClass =
@@ -42,16 +63,43 @@ const linkClass =
 
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg">
-      {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold. */}
-      <p className="bg-brand-navy px-4 py-2 text-center text-sm text-white">
-        Brian may earn a commission when you buy through links on these pages.{" "}
-        <Link href="/healthy/disclosures" className="underline underline-offset-2">
-          How that works
-        </Link>
-      </p>
+    <div
+      className={`${syne.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
+    >
+      {/* Material Symbols Outlined, used only within /healthy markup. Next
+          hoists this <link> into <head> automatically. */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet"
+      />
 
-      <header className="border-b border-border bg-bg">
+      {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
+          The legal sentence and its link are unchanged from before this reskin. */}
+      <div className="bg-slate-900 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-emerald-400" aria-hidden="true" />
+            <span>Brian may earn a commission when you buy through links on these pages.</span>
+            <Link href="/healthy/disclosures" className="font-semibold text-white underline hover:text-amber-400">
+              How that works
+            </Link>
+            <span className="text-slate-600">&middot;</span>
+            <Link href="/healthy/method" className="font-semibold text-white underline hover:text-amber-400">
+              Evidence-first pledge
+            </Link>
+          </div>
+          <div className="hidden items-center gap-3 text-[11px] font-bold uppercase tracking-wider text-slate-300 lg:flex">
+            <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-950/80 px-2.5 py-0.5 text-emerald-300">
+              <span className="material-symbols-outlined text-[13px]">verified</span> Peer-Reviewed Thresholds
+            </span>
+            <span className="inline-flex items-center gap-1 text-cyan-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" aria-hidden="true" /> Protocol Live 2026
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link
             href="/healthy"
@@ -74,6 +122,14 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
               ))}
             </ul>
           </nav>
+
+          <Link
+            href="/healthy#start"
+            className="hidden items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(217,119,6,0.35)] transition-all hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-700 hover:shadow-[0_6px_20px_rgba(217,119,6,0.45)] sm:inline-flex"
+          >
+            Find Where to Start
+            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </Link>
 
           {/* No-JS disclosure menu for small screens. */}
           <details className="group relative md:hidden">
@@ -100,34 +156,55 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-border bg-bg-panel">
-        <div className="mx-auto max-w-6xl px-4 py-10 text-base text-fg-muted sm:px-6">
-          <p className="max-w-3xl leading-relaxed">
-            General information only, not medical advice. Supplements are not a substitute for a
-            varied diet or for care from your doctor. Statements about supplements have not been
-            evaluated by the Food and Drug Administration.
-          </p>
-          <ul className="mt-6 flex flex-wrap gap-x-2 gap-y-1">
-            <li>
-              <Link href="/healthy/disclosures" className={linkClass}>
-                Disclosures
-              </Link>
-            </li>
-            <li>
-              <Link href="/healthy/about" className={linkClass}>
-                About and contact
-              </Link>
-            </li>
-            <li>
-              <Link href="/" className={linkClass}>
-                GetBrian home
-              </Link>
-            </li>
-          </ul>
-          <p className="mt-6 text-sm text-fg-subtle">
-            &copy; {new Date().getFullYear()} GetBrian. An independent project, not affiliated with
-            Human Longevity, Inc.
-          </p>
+      <footer className="border-t border-border bg-slate-950 text-slate-300">
+        <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
+          <div className="mb-8 flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-5">
+            <span className="material-symbols-outlined mt-0.5 shrink-0 text-[22px] text-amber-400">shield</span>
+            <div className="space-y-1">
+              <p className="font-kinetic-heading text-xs font-extrabold uppercase tracking-wider text-white">
+                Statutory disclaimers &amp; clinical context
+              </p>
+              <p className="text-sm leading-relaxed text-slate-400">
+                General information only, not medical advice. Supplements are not a substitute for a
+                varied diet or for care from your doctor. Statements about supplements have not been
+                evaluated by the Food and Drug Administration.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-between gap-6 border-b border-slate-800 pb-8 md:flex-row md:items-center">
+            <div className="space-y-1">
+              <span className="font-kinetic-heading text-xl font-extrabold text-white">GetBrian Healthy</span>
+              <p className="text-sm text-slate-400">An independent, evidence-first review of longevity supplements.</p>
+            </div>
+            <ul className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <li>
+                <Link href="/healthy/disclosures" className={`${linkClass} text-slate-300! hover:text-white!`}>
+                  Disclosures
+                </Link>
+              </li>
+              <li>
+                <Link href="/healthy/about" className={`${linkClass} text-slate-300! hover:text-white!`}>
+                  About and contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/" className={`${linkClass} text-slate-300! hover:text-white!`}>
+                  GetBrian home
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-slate-500 sm:flex-row">
+            <p>
+              &copy; {new Date().getFullYear()} GetBrian. An independent project, not affiliated with
+              Human Longevity, Inc.
+            </p>
+            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <span>Re-checked every 6 months</span>
+              <span className="text-slate-700">&middot;</span>
+              <span className="text-emerald-400">0% brand sponsorship</span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
