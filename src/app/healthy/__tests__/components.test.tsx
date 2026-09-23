@@ -36,7 +36,6 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     brandUrl: "https://brand.example.com",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "Fixture Retailer",
     lastReviewed: null,
     verified: false,
     ...overrides,
@@ -98,13 +97,15 @@ test("BuyButton link opens in a new tab with sponsored/nofollow rel", () => {
   assert.equal(link.props.rel, "sponsored nofollow noopener");
 });
 
-test("BuyButton label names the product's retailer", () => {
-  const product = baseProduct({ retailer: "Acme Supplements" });
+test("BuyButton label stays brand-agnostic, naming no retailer", () => {
+  // The button used to interpolate product.retailer ("Check price at Acme
+  // Supplements"); that field was removed so no brand name is rendered here.
+  const product = baseProduct();
   const [link] = children(renderButton(product)) as [{ props: { children: unknown[] } }];
   const visibleText = link.props.children
     .filter((child): child is string => typeof child === "string")
     .join("");
-  assert.equal(visibleText, "Check price at Acme Supplements");
+  assert.equal(visibleText, "Check current price");
 });
 
 test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {

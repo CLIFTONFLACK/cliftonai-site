@@ -72,7 +72,7 @@ export function BuyButton({ product, from }: { product: Product; from: string })
         rel="sponsored nofollow noopener"
         className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-white shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-700 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
       >
-        Check price at {product.retailer}
+        Check current price
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
       <p className="text-sm leading-relaxed text-fg-subtle" data-affiliate-disclosure>
@@ -173,7 +173,7 @@ export function ProductCard({ product }: { product: Product }) {
         </span>
         <h3 className="font-kinetic-heading text-xl font-bold tracking-tight text-slate-950">
           <Link href={`/healthy/products/${product.slug}`} className="hover:underline">
-            {product.brand} {product.name}
+            {product.name}
           </Link>
         </h3>
         <p className="mb-4 text-xs font-semibold text-slate-500">{product.format}</p>

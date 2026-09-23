@@ -78,8 +78,6 @@ export type Product = {
    * until the programme's written terms say otherwise.
    */
   redirectAllowed: boolean;
-  /** Label for the Buy button: "Check price at <retailer>". */
-  retailer: string;
   lastReviewed: string | null;
   verified: boolean;
 };
@@ -175,8 +173,8 @@ export const goals: {
 }[] = [
   {
     id: "energy",
-    label: "Support your energy",
-    hook: "Low on magnesium? Many US adults do not eat enough of it, and your body uses it to turn food into energy.",
+    label: "Energy Boost",
+    hook: "Low on magnesium? Many adults do not get enough, your body needs it to turn food into energy.",
     supplement: "magnesium",
     icon: "bolt",
     eyebrowDetail: "Cellular Energy",
@@ -186,7 +184,7 @@ export const goals: {
   },
   {
     id: "strength",
-    label: "Strengthen your body",
+    label: "Muscle Power",
     hook: "Lifting after 40? Meet one of the most-studied supplements for getting more from the work.",
     supplement: "creatine",
     icon: "fitness_center",
@@ -197,7 +195,7 @@ export const goals: {
   },
   {
     id: "focus",
-    label: "Support your focus",
+    label: "Elevate Focus",
     hook: "Creatine for your brain? Promising, not proven. Here is what the research really shows.",
     supplement: "creatine",
     icon: "psychology",
@@ -208,7 +206,7 @@ export const goals: {
   },
   {
     id: "calm",
-    label: "Find your calm",
+    label: "Activate Calm",
     hook: "Still wired at 10pm? Meet the compound from tea that people take to wind down.",
     supplement: "l-theanine",
     icon: "bedtime",
@@ -318,7 +316,7 @@ export const products: Product[] = [
     category: "Magnesium",
     format: "Capsules",
     image: "/healthy/products/thorne-magnesium-glycinate.png",
-    imageAlt: "Bottle of Thorne Magnesium Glycinate, 90 capsules",
+    imageAlt: "Bottle of magnesium glycinate capsules, 90 capsules",
     summary: "Single-ingredient magnesium glycinate, dosed one capsule at a time.",
     verdict:
       "Straightforward, well-absorbed magnesium at 120 mg per capsule, so you can build your dose up gradually. Costs more per milligram than a bulk powder, but the label is one ingredient, no blend.",
@@ -339,8 +337,8 @@ export const products: Product[] = [
     priceUsd: 26,
     priceCheckedAt: "September 17, 2026",
     testing: [
-      "Not NSF Certified for Sport. Thorne's own magnesium bisglycinate powder carries that mark; this glycinate capsule does not.",
-      "Thorne states the product is made under NSF-audited cGMP manufacturing, but publishes no independent certificate of analysis for this specific SKU.",
+      "Not NSF Certified for Sport. A separate magnesium bisglycinate powder from the same brand carries that mark; this glycinate capsule does not.",
+      "The brand states the product is made under NSF-audited cGMP manufacturing, but publishes no independent certificate of analysis for this specific SKU.",
     ],
     evidence: [
       {
@@ -386,17 +384,16 @@ export const products: Product[] = [
     ],
     pros: [
       "Single ingredient, easy to check against the label",
-      "Sold directly by Thorne, no marketplace resale risk",
+      "Sold direct from the brand, no marketplace resale risk",
       "One-capsule serving makes it easy to adjust your dose",
     ],
     cons: [
       "Higher cost per milligram of elemental magnesium than a bulk glycinate powder",
-      "Not NSF Certified for Sport, unlike Thorne's own creatine",
+      "Not NSF Certified for Sport, unlike the creatine pick",
     ],
     brandUrl: "https://www.thorne.com/products/dp/magnesium-glycinate",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "Thorne",
     lastReviewed: "September 17, 2026",
     verified: true,
   },
@@ -407,7 +404,7 @@ export const products: Product[] = [
     category: "Creatine",
     format: "Powder stick packs",
     image: "/healthy/products/thorne-creatine-stick-packs.png",
-    imageAlt: "Box of Thorne Creatine Travel Packs, 30 stick packs",
+    imageAlt: "Box of creatine monohydrate stick packs, 30 sticks",
     summary: "Pre-measured 5 g creatine monohydrate packets, NSF Certified for Sport.",
     verdict:
       "A single measured 5 g dose of plain creatine monohydrate per packet, no scoop needed, and NSF Certified for Sport so every batch is checked for banned substances. Costs more per gram than a bulk tub.",
@@ -466,7 +463,6 @@ export const products: Product[] = [
     brandUrl: "https://www.thorne.com/products/dp/creatine-sf903p",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "Thorne",
     lastReviewed: "September 17, 2026",
     verified: true,
   },
@@ -477,7 +473,7 @@ export const products: Product[] = [
     category: "L-theanine",
     format: "Capsules",
     image: "/healthy/products/thorne-theanine.png",
-    imageAlt: "Bottle of Thorne Theanine, 90 capsules",
+    imageAlt: "Bottle of L-theanine capsules, 90 capsules",
     summary: "200 mg of Suntheanine, a patented, purified form of L-theanine, one capsule at a time.",
     verdict:
       "200 mg of Suntheanine per capsule, the branded form used in most human L-theanine research, at a fixed dose. Costs more per capsule than generic L-theanine.",
@@ -492,7 +488,7 @@ export const products: Product[] = [
     priceUsd: 68,
     priceCheckedAt: "September 17, 2026",
     testing: [
-      "Thorne states this product is third-party tested to verify label accuracy and to screen for heavy metals, pesticides and microorganisms.",
+      "The brand states this product is third-party tested to verify label accuracy and to screen for heavy metals, pesticides and microorganisms.",
       "Not NSF Certified for Sport.",
     ],
     evidence: [
@@ -534,7 +530,6 @@ export const products: Product[] = [
     brandUrl: "https://www.thorne.com/products/dp/theanine",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "Thorne",
     lastReviewed: "September 17, 2026",
     verified: true,
   },

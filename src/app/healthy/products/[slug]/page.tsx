@@ -24,7 +24,7 @@ export async function generateMetadata(props: PageProps<"/healthy/products/[slug
   const { slug } = await props.params;
   const product = getProduct(slug);
   if (!product) return {};
-  const title = `${product.brand} ${product.name} review`;
+  const title = `${product.name} review`;
   return {
     title,
     description: product.summary,
@@ -66,7 +66,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${product.brand} ${product.name}`,
+    name: product.name,
     brand: { "@type": "Brand", name: product.brand },
     description: product.summary,
     url: `${siteUrl}/healthy/products/${product.slug}`,
@@ -95,7 +95,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 {product.category} &middot; {product.format}
               </p>
               <h1 className="mt-3 font-heading text-4xl font-semibold tracking-tight text-brand-navy text-balance sm:text-5xl">
-                {product.brand} {product.name}
+                {product.name}
               </h1>
               <p className="mt-6 text-xl leading-relaxed text-fg-muted text-pretty">{product.verdict}</p>
             </header>
@@ -307,7 +307,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-fg">{product.brand} {product.name}</p>
+            <p className="truncate text-sm font-semibold text-fg">{product.name}</p>
             {product.priceUsd !== null && (
               <p className="text-sm text-fg-muted">
                 {usd(product.priceUsd)}

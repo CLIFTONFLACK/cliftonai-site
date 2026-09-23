@@ -46,7 +46,6 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     brandUrl: "https://brand.example.com",
     affiliateUrl: null,
     redirectAllowed: false,
-    retailer: "Fixture Retailer",
     lastReviewed: null,
     verified: false,
     ...overrides,

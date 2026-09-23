@@ -40,15 +40,15 @@ const references: ProductReference[] = [
       {
         claim:
           "“9 out of 10 consumers reported sleeping better and feeling calmer in stressful moments”",
-        source: "Thorne, 28-day consumer perception study, 95 participants (company-run, not published or peer-reviewed)",
+        source: "Brand-run 28-day consumer perception study, 95 participants (company-run, not published or peer-reviewed)",
       },
       {
         claim: "As many as 75% of U.S. adults do not meet the FDA's recommended daily intake of 420 mg of magnesium",
-        source: "Thorne product page, citing World Health Organization statistics",
+        source: "Brand's product page, citing World Health Organization statistics",
       },
       {
         claim: "Magnesium is a cofactor in more than 600 of the body's enzymatic reactions",
-        source: "Thorne product page",
+        source: "Brand's product page",
       },
     ],
     ourRead:
@@ -129,7 +129,7 @@ function BrandCard({ entry: r }: { entry: ProductReference }) {
       <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">{product.category}</p>
       <h3 className="mt-1 font-heading text-xl font-semibold text-brand-navy">
         <Link href={`/healthy/products/${product.slug}`} className="underline-offset-4 hover:underline">
-          {product.brand} {product.name}
+          {product.name}
         </Link>
       </h3>
       <p className="mt-2 text-sm text-fg-subtle">

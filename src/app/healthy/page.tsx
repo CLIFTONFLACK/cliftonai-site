@@ -28,8 +28,6 @@ function usd(n: number) {
 
 const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(0,45,179,0.25)] transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-[0_12px_28px_rgba(0,45,179,0.35)]";
-const secondaryCta =
-  "inline-flex min-h-12 items-center rounded-xl border-2 border-slate-200 bg-white px-6 py-3.5 font-bold text-slate-900 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50";
 
 const PILLAR_TILE_TONE = "bg-amber-600";
 
@@ -74,7 +72,7 @@ export default function HealthyHome() {
               <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-blue-200/80 bg-gradient-to-r from-kinetic-primary-light to-blue-50 px-3.5 py-1.5">
                 <span className="h-2 w-2 animate-ping rounded-full bg-kinetic-primary-electric" aria-hidden="true" />
                 <span className="text-xs font-bold tracking-wider text-kinetic-primary uppercase">
-                  {PROGRAM_NAME} &middot; 40+ Protocol
+                  {PROGRAM_NAME}
                 </span>
               </div>
               <h1 className="font-kinetic-heading text-4xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[52px]">
@@ -94,22 +92,19 @@ export default function HealthyHome() {
                   Start Today
                   <span className="material-symbols-outlined ml-2 text-[20px] text-amber-400">arrow_forward</span>
                 </Link>
-                <Link href="#picks" className={secondaryCta}>
-                  Explore 3 Pillars
-                </Link>
               </div>
-              <div className="flex flex-wrap items-center gap-2.5 pt-2 text-xs font-bold text-slate-800">
-                <div className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-50 px-3.5 py-2 shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-emerald-600">verified</span>
-                  <span>0% Brand Sponsorships</span>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600 sm:flex-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <span className="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+                  <span>0% Sponsorships</span>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-50 px-3.5 py-2 shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-kinetic-primary-electric">biotech</span>
-                  <span>Studied Clinical Dosages</span>
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <span className="material-symbols-outlined text-[16px] text-kinetic-primary-electric">biotech</span>
+                  <span>Clinical Dosages</span>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-50 px-3.5 py-2 shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-amber-500">autorenew</span>
-                  <span>Re-evaluated Every 6 Mo</span>
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <span className="material-symbols-outlined text-[16px] text-amber-500">autorenew</span>
+                  <span>6-Month Re-checks</span>
                 </div>
               </div>
             </div>
