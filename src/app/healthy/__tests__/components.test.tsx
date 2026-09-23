@@ -223,6 +223,8 @@ function baseSupplement(overrides: Partial<Supplement> = {}): Supplement {
   return {
     id: "magnesium",
     name: "Fixture Supplement",
+    tagline: "Fixture tagline",
+    value: "Fixture value.",
     role: "Fixture role",
     contribution: "Fixture contribution.",
     category: null,

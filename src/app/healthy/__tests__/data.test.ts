@@ -11,6 +11,7 @@ import {
   supplementFor,
   supplements,
   TAGLINE,
+  TRIO_INTRO,
   usesRedirect,
   type Product,
   type Supplement,
@@ -383,7 +384,51 @@ for (const supplement of supplements) {
   test(`supplement "${supplement.id}" contribution uses US spelling`, () => {
     assert.equal(findBritishSpelling(supplement.contribution), undefined);
   });
+
+  test(`supplement "${supplement.id}" tagline has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(supplement.tagline), undefined);
+  });
+
+  test(`supplement "${supplement.id}" tagline has no banned marketing words`, () => {
+    assert.equal(findBannedWord(supplement.tagline), undefined);
+  });
+
+  test(`supplement "${supplement.id}" tagline uses US spelling`, () => {
+    assert.equal(findBritishSpelling(supplement.tagline), undefined);
+  });
+
+  test(`supplement "${supplement.id}" value has no disease-claim words`, () => {
+    assert.equal(findDiseaseClaimWord(supplement.value), undefined);
+  });
+
+  test(`supplement "${supplement.id}" value has no banned marketing words`, () => {
+    assert.equal(findBannedWord(supplement.value), undefined);
+  });
+
+  test(`supplement "${supplement.id}" value uses US spelling`, () => {
+    assert.equal(findBritishSpelling(supplement.value), undefined);
+  });
 }
+
+test("TRIO_INTRO body has no disease-claim words", () => {
+  assert.equal(findDiseaseClaimWord(TRIO_INTRO.body), undefined);
+});
+
+test("TRIO_INTRO body has no banned marketing words", () => {
+  assert.equal(findBannedWord(TRIO_INTRO.body), undefined);
+});
+
+test("TRIO_INTRO body uses US spelling", () => {
+  assert.equal(findBritishSpelling(TRIO_INTRO.body), undefined);
+});
+
+test("TRIO_INTRO headline uses US spelling", () => {
+  assert.equal(findBritishSpelling(TRIO_INTRO.headline), undefined);
+});
+
+test("TRIO_INTRO disclaimer has no disease-claim words", () => {
+  assert.equal(findDiseaseClaimWord(TRIO_INTRO.disclaimer), undefined);
+});
 
 const supplementsWithCaveat = supplements.filter((s) => s.caveat);
 

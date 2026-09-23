@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FdaDisclaimer, GoalChooser, ProductCard } from "./components";
-import { PROGRAM_NAME, TAGLINE, faqs, pillars, products } from "./data";
+import { PROGRAM_NAME, TAGLINE, TRIO_INTRO, faqs, pillars, products, supplements } from "./data";
 
 export const metadata: Metadata = {
   title: { absolute: `${PROGRAM_NAME} | GetBrian Healthy` },
@@ -60,8 +60,8 @@ export default function HealthyHome() {
           </div>
           <div className="relative hidden aspect-[16/10] overflow-hidden rounded-3xl shadow-[0_20px_60px_-20px_rgba(10,29,59,0.35)] sm:block">
             <Image
-              src="/healthy/hero-longevity.jpg"
-              alt="A healthy adult in her fifties on a coastal trail at golden hour, representing an active, well-researched approach to aging"
+              src="/healthy/hero-couple.jpg"
+              alt="A couple in their fifties hiking a coastal trail at sunrise, representing an active, well-researched approach to aging"
               fill
               sizes="(min-width: 1024px) 40vw, 90vw"
               className="object-cover"
@@ -71,7 +71,39 @@ export default function HealthyHome() {
         </div>
       </section>
 
-      <section id="start" aria-labelledby="start-heading" className="scroll-mt-6 px-4 py-14 sm:px-6 sm:py-16">
+      <section aria-labelledby="trio-heading" className="px-4 py-14 sm:px-6 sm:py-16">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+            <Image
+              src="/healthy/trio-lifestyle.jpg"
+              alt="Green tea, a glass of water and a dumbbell laid out on a sunlit terrace table"
+              fill
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+              {TRIO_INTRO.eyebrow}
+            </p>
+            <h2 id="trio-heading" className="mt-2 font-heading text-2xl font-semibold text-brand-navy text-balance sm:text-3xl">
+              {TRIO_INTRO.headline}
+            </h2>
+            <p className="mt-3 leading-relaxed text-fg-muted">{TRIO_INTRO.body}</p>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+              {supplements.map((s) => (
+                <li key={s.id} className="rounded-xl bg-bg-tint p-4">
+                  <p className="font-heading font-semibold text-brand-navy">{s.tagline}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-fg-muted">{s.value}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm leading-relaxed text-fg-subtle">{TRIO_INTRO.disclaimer}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="start" aria-labelledby="start-heading" className="scroll-mt-6 bg-bg-panel px-4 py-14 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-6xl">
           <h2 id="start-heading" className="font-heading text-2xl font-semibold text-brand-navy sm:text-3xl">
             What do you want more of?
@@ -85,7 +117,7 @@ export default function HealthyHome() {
         </div>
       </section>
 
-      <section id="picks" aria-labelledby="picks-heading" className="bg-bg-panel px-4 py-14 sm:px-6 sm:py-16">
+      <section id="picks" aria-labelledby="picks-heading" className="px-4 py-14 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-6xl">
           <h2 id="picks-heading" className="font-heading text-2xl font-semibold text-brand-navy sm:text-3xl">
             Current picks
@@ -104,7 +136,7 @@ export default function HealthyHome() {
         </div>
       </section>
 
-      <section aria-labelledby="why-heading" className="px-4 py-14 sm:px-6 sm:py-16">
+      <section aria-labelledby="why-heading" className="bg-bg-panel px-4 py-14 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-3xl text-center">
           <h2 id="why-heading" className="font-heading text-2xl font-semibold text-brand-navy sm:text-3xl">
             Why these picks
@@ -122,7 +154,7 @@ export default function HealthyHome() {
         </div>
       </section>
 
-      <section aria-labelledby="method-heading" className="bg-bg-panel px-4 py-14 sm:px-6 sm:py-16">
+      <section aria-labelledby="method-heading" className="px-4 py-14 sm:px-6 sm:py-16">
         <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="relative hidden aspect-[4/5] overflow-hidden rounded-3xl lg:block">
             <Image
@@ -158,7 +190,7 @@ export default function HealthyHome() {
         </div>
       </section>
 
-      <section aria-labelledby="faq-heading" className="px-4 py-14 sm:px-6 sm:py-16">
+      <section aria-labelledby="faq-heading" className="bg-bg-panel px-4 py-14 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-3xl">
           <h2 id="faq-heading" className="font-heading text-2xl font-semibold text-brand-navy sm:text-3xl">
             Questions

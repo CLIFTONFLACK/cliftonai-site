@@ -87,11 +87,25 @@ export type Product = {
 /** The hero headline. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
 export const TAGLINE = "Choose supplements with more confidence.";
 
+/** Intro copy for the homepage's "why three" band, sitting above the individual picks. */
+export const TRIO_INTRO = {
+  eyebrow: "Magnesium + L-theanine + Creatine",
+  headline: "A purposeful trio for your healthy aging routine.",
+  body: "Support your nutritional foundations. Make space to unwind. Get more from your strength training. Three complementary ingredients, each with a clear role.",
+  /** Guards against the one overclaim this framing invites: that three together beat one alone. */
+  disclaimer:
+    "Each ingredient has research behind it on its own. Taking all three together hasn't been shown to work better than any one alone, or to extend lifespan.",
+};
+
 export type Goal = "energy" | "strength" | "focus" | "calm";
 
 export type Supplement = {
   id: "magnesium" | "creatine" | "l-theanine";
   name: string;
+  /** Short, benefit-led label for cards and tiles ("Cover the essentials"). */
+  tagline: string;
+  /** One-line takeaway for the trio section ("A thoughtful addition to your evening routine."). */
+  value: string;
   role: string;
   /** What it contributes to healthy aging. Structure/function wording only. */
   contribution: string;
@@ -105,6 +119,8 @@ export const supplements: Supplement[] = [
   {
     id: "magnesium",
     name: "Magnesium",
+    tagline: "Cover the essentials",
+    value: "Essential nutritional support for an active life.",
     role: "Muscle function and energy metabolism",
     contribution:
       "Supports normal muscle contraction, nerve signaling and cellular energy production.",
@@ -113,6 +129,8 @@ export const supplements: Supplement[] = [
   {
     id: "creatine",
     name: "Creatine",
+    tagline: "Make your strength work count",
+    value: "Extra support for the effort you put into getting stronger.",
     role: "Strength, physical performance and cognitive support, including focus",
     contribution: "Supports strength and lean-mass gains alongside resistance training.",
     caveat:
@@ -122,6 +140,8 @@ export const supplements: Supplement[] = [
   {
     id: "l-theanine",
     name: "L-theanine",
+    tagline: "Support your wind-down",
+    value: "A thoughtful addition to your evening routine.",
     role: "Calm and relaxation",
     contribution: "May support relaxation, managing everyday stress and winding down.",
     category: "L-theanine",
