@@ -11,7 +11,6 @@ import {
   products,
   supplements,
   topGrade,
-  totalDailyCost,
 } from "./data";
 
 export const metadata: Metadata = {
@@ -21,10 +20,6 @@ export const metadata: Metadata = {
     "impact-site-verification": "76ada0e2-8897-4f30-b9ef-80aebec89d38",
   },
 };
-
-function usd(n: number) {
-  return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
-}
 
 const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(0,45,179,0.25)] transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-[0_12px_28px_rgba(0,45,179,0.35)]";
@@ -41,8 +36,6 @@ export default function HealthyHome() {
       acceptedAnswer: { "@type": "Answer", text: f.answer },
     })),
   };
-
-  const dailyCost = totalDailyCost();
 
   // Splits TAGLINE once, right after " with ", to highlight its back half in
   // the hero. Falls back to the whole line with no highlight if TAGLINE ever
@@ -161,16 +154,6 @@ export default function HealthyHome() {
                     );
                   })}
                 </div>
-                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
-                  <div className="flex items-center gap-1.5 font-semibold text-slate-600">
-                    <span className="material-symbols-outlined text-[18px] text-amber-500">attach_money</span>
-                    <span>Daily cost, all three:</span>
-                  </div>
-                  <span className="rounded-lg border border-amber-200 bg-amber-100 px-2.5 py-0.5 text-sm font-extrabold text-amber-900">
-                    {dailyCost !== null ? `${usd(dailyCost)}/day` : "Pending"}
-                  </span>
-                </div>
-                <p className="mt-3 text-[11px] leading-relaxed text-slate-500">{TRIO_INTRO.disclaimer}</p>
               </div>
             </div>
           </div>
