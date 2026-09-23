@@ -174,7 +174,7 @@ export const goals: {
   {
     id: "energy",
     label: "Energy Boost",
-    hook: "Low on magnesium? Many adults do not get enough, your body needs it to turn food into energy.",
+    hook: "Low on magnesium? Many don't get enough, our bodies need it to turn food into energy.",
     supplement: "magnesium",
     icon: "bolt",
     eyebrowDetail: "Cellular Energy",
