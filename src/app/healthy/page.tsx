@@ -76,8 +76,8 @@ export default function HealthyHome() {
                 )}
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-                Three supplements, each with a single job. Each one carefully researched and
-                reasoned. Brian&apos;s done the work so you don&apos;t have to.
+                Three supplements, one job each. Carefully researched and honestly reasoned.
+                Brian&apos;s done the work so you don&apos;t have to.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link href="#picks" className={primaryCta}>
