@@ -539,6 +539,24 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   animation-play-state: paused;
 }
 
+/* Pick loop (healthy/pick-loop.tsx): pulses that travel the ring for good, so
+   the process reads as never finished. Pure decoration: hidden under reduced
+   motion, where the ring, chevrons and re-check label still show the loop. */
+.healthy-loop-dot {
+  --healthy-loop-lap: 14s;
+  offset-rotate: 0deg;
+  animation: healthy-loop-travel var(--healthy-loop-lap) linear infinite;
+}
+
+@keyframes healthy-loop-travel {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
 @keyframes healthy-trace {
   0% {
     stroke-dashoffset: 1;
@@ -710,6 +728,10 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
      keyframe once in 0.01ms and leave the mark on its faded-out last frame. */
   .healthy-anim * {
     animation: none !important;
+  }
+
+  .healthy-loop-dot {
+    display: none;
   }
 
   /* RailReveal doesn't arm under reduced motion; this covers a preference

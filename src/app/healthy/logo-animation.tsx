@@ -29,7 +29,8 @@ const TRACES = [
 
 const STAGGER_S = 0.25;
 
-export function LogoAnimation({ className = "" }: { className?: string }) {
+/** `showSteps` adds the two captions under the mark; the pick loop draws its own steps and turns it off. */
+export function LogoAnimation({ className = "", showSteps = true }: { className?: string; showSteps?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Pause the loop while it is off screen; it resumes where it left off.
@@ -109,6 +110,7 @@ export function LogoAnimation({ className = "" }: { className?: string }) {
         </svg>
       </div>
 
+      {showSteps && (
       <ol className="mt-4 grid gap-2 text-center text-xs font-bold text-slate-700 sm:text-sm">
         <li className="healthy-anim-step rounded-lg bg-kinetic-primary-light px-2 py-1.5 text-kinetic-primary-electric">
           AI gathers the research
@@ -117,6 +119,7 @@ export function LogoAnimation({ className = "" }: { className?: string }) {
           A person checks and signs off
         </li>
       </ol>
+      )}
     </div>
   );
 }
