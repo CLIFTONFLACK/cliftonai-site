@@ -11,6 +11,9 @@
  * header mark on 2x screens) the raster keeps its traces and cross legible.
  * Outputs, all under public/healthy/brand/:
  *   healthy-mark.png     transparent, tightly cropped, 3x the header size
+ *   healthy-mark-lg.png  the same at 3x the landing-page hero lockup
+ *   healthy-mark-solo.png  the mark with its traces, terminals and cross painted
+ *                        out, for logo-animation.tsx to redraw them as SVG
  *   favicon-16.png, favicon-32.png, icon-512.png, apple-touch-icon.png
  *                        the mark on a white tile
  *   og-image.png         1200x630 share image
@@ -44,10 +47,21 @@ const OUT = path.join(root, "public", "healthy", "brand");
  */
 const ALPHA_FLOOR = 8;
 
-/** Height of the web mark: the header draws it 44px tall, and this is 3x that.
- *  The site serves it `unoptimized`, because next/image would re-encode a flat
+/** Heights of the web marks, each 3x its display size: the header draws the mark
+ *  56px tall, the landing-page hero lockup 112px, the logo animation 160px. The
+ *  site serves them `unoptimized`, because next/image would re-encode a flat
  *  logo at quality 75 and soften its edges. */
-const MARK_H = 132;
+const MARK_H = 168;
+const MARK_LG_H = 336;
+const SOLO_H = 480;
+
+/** The swoosh starts below this source row; everything teal above it (traces,
+ *  terminals, cross) is what the solo cut removes. */
+const SWOOSH_TOP = 800;
+
+/** The counter's own white, sampled (#FCFCFC). Pure white would leave the
+ *  removed shapes faintly brighter than the paper around them. */
+const COUNTER_WHITE = 0xfc;
 
 const ICON_GROUND = "#FFFFFF";
 
@@ -159,10 +173,42 @@ function compactCut() {
   return out;
 }
 
+/**
+ * The mark with its traces, terminals and cross painted out. Every teal-tinted
+ * pixel above the swoosh, the soft glow around the traces included, grown by
+ * five pixels to catch the anti-aliased rim, takes the counter's white (its
+ * alpha kept, so the trail behind the traces stays as soft as before). Navy is
+ * never touched. logo-animation.tsx redraws what this removes as SVG, in this
+ * crop's coordinates, so it is cropped to the display cut's box, not its own.
+ */
+function soloCut() {
+  const tint = new Uint8Array(N);
+  const navy = new Uint8Array(N);
+  for (let p = 0; p < N; p++) {
+    const i = p * CH;
+    const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    if (a === 0) continue;
+    if (r < 70 && g < 90 && b < 130 && b > r && a > 128) navy[p] = 1;
+    else if (p / W < SWOOSH_TOP && g - r > 15 && b - r > 15) tint[p] = 1;
+  }
+  const cover = dilate(tint, 5);
+  const out = Buffer.from(data);
+  for (let p = 0; p < N; p++) {
+    if (!cover[p] || navy[p] || out[p * CH + 3] === 0) continue;
+    out.fill(COUNTER_WHITE, p * CH, p * CH + 3);
+  }
+  return out;
+}
+
 const display = await cropToContent(data);
 const compact = await cropToContent(compactCut());
+const soloPng = await sharp(soloCut(), { raw: { width: W, height: H, channels: CH } })
+  .extract(display.box)
+  .png()
+  .toBuffer();
 
-const mark = await sharp(display.png).resize({ height: MARK_H }).png({ compressionLevel: 9 }).toBuffer();
+const png = (buf, height) => sharp(buf).resize({ height }).png({ compressionLevel: 9 }).toBuffer();
+const mark = await png(display.png, MARK_H);
 
 // ----------------------------------------------------------------- icons
 
@@ -238,6 +284,13 @@ const record = (name, buf) => {
 };
 
 record("healthy-mark.png", mark);
+record("healthy-mark-lg.png", await png(display.png, MARK_LG_H));
+// Palette-quantised: the full-colour file is ~230KB for a below-the-fold image,
+// and the solo cut is flat navy/white with soft edges that 256 colours hold.
+record(
+  "healthy-mark-solo.png",
+  await sharp(soloPng).resize({ height: SOLO_H }).png({ palette: true, colours: 256, compressionLevel: 9 }).toBuffer()
+);
 record("favicon-16.png", await icon(16));
 record("favicon-32.png", await icon(32));
 record("icon-512.png", await icon(512));

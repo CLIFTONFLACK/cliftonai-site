@@ -461,6 +461,248 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   transform: translateY(0);
 }
 
+/* ---------------------------------------------------------------------------
+   /healthy logo animation (logo-animation.tsx): "AI-assisted, human verified"
+   told with the Healthy mark. One 6s loop: the circuit traces draw in (the AI
+   gathering research), a pulse runs each one into the letterform, the cross
+   lights, a check seal stamps on, everything fades and it starts again.
+   Every element's resting style is its finished state and the loop only runs
+   on top of that, so with animations off (reduced motion below, or a UA that
+   skips them) the mark shows complete: traces, cross and seal all present. */
+.healthy-anim {
+  --healthy-loop: 6s;
+}
+
+.healthy-anim-trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: healthy-trace var(--healthy-loop) ease-in-out infinite both;
+}
+
+.healthy-anim-node,
+.healthy-anim-cross,
+.healthy-anim-seal {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.healthy-anim-node {
+  animation: healthy-node var(--healthy-loop) ease-out infinite both;
+}
+
+.healthy-anim-cross {
+  animation: healthy-cross var(--healthy-loop) ease-out infinite both;
+}
+
+.healthy-anim-seal {
+  animation: healthy-seal var(--healthy-loop) cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+}
+
+/* The pulse is decoration on top of the finished mark, so its resting state is
+   hidden rather than drawn. */
+.healthy-anim-pulse {
+  opacity: 0;
+  offset-rotate: 0deg;
+  animation: healthy-pulse var(--healthy-loop) ease-in-out infinite both;
+}
+
+/* Both captions are always readable; the loop only moves the emphasis. */
+.healthy-anim-step {
+  animation: healthy-step-ai var(--healthy-loop) ease-in-out infinite both;
+}
+
+.healthy-anim-step + .healthy-anim-step {
+  animation-name: healthy-step-human;
+}
+
+.healthy-anim[data-paused] * {
+  animation-play-state: paused;
+}
+
+@keyframes healthy-trace {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  22%,
+  86% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  96%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes healthy-node {
+  0%,
+  16% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  26%,
+  86% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes healthy-pulse {
+  0%,
+  24% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  27% {
+    offset-distance: 4%;
+    opacity: 1;
+  }
+  44% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  48%,
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes healthy-cross {
+  0%,
+  40% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  47% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  52%,
+  86% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes healthy-seal {
+  0%,
+  56% {
+    opacity: 0;
+    transform: scale(1.6) rotate(-14deg);
+  }
+  64%,
+  88% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes healthy-step-ai {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  56%,
+  94% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes healthy-step-human {
+  0%,
+  56% {
+    opacity: 0.4;
+  }
+  62%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   /healthy "One job each" rail above the current picks. Transitions, not
+   keyframes: it runs once. Each part's resting style is its finished state,
+   and the hidden start applies only under .rail-armed, which RailReveal adds
+   when JavaScript runs and removes as the row comes on screen. So without
+   JavaScript the picks show complete rather than as blank space. Delays come
+   from inline transition-delay so the stagger follows the card count. */
+.healthy-rail-line {
+  transform-origin: left;
+  transition: transform 900ms ease-out 150ms;
+}
+
+.healthy-rail-node {
+  transition:
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
+}
+
+.healthy-rail-drop {
+  transform-origin: top;
+  transition: transform 450ms ease-out;
+}
+
+.healthy-rail-stud {
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rail-armed .healthy-rail-line {
+  transform: scaleX(0);
+}
+
+.rail-armed .healthy-rail-node {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.rail-armed .healthy-rail-drop {
+  transform: scaleY(0);
+}
+
+.rail-armed .healthy-rail-stud {
+  transform: scale(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Finished frame, no loop: the global rule below would otherwise play each
+     keyframe once in 0.01ms and leave the mark on its faded-out last frame. */
+  .healthy-anim * {
+    animation: none !important;
+  }
+
+  /* RailReveal doesn't arm under reduced motion; this covers a preference
+     switched on after it did. */
+  .rail-armed .healthy-rail-line,
+  .rail-armed .healthy-rail-node,
+  .rail-armed .healthy-rail-drop,
+  .rail-armed .healthy-rail-stud {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

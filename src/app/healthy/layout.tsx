@@ -106,13 +106,13 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
               src="/healthy/brand/healthy-mark.png"
               alt=""
               aria-hidden="true"
-              width={51}
-              height={44}
+              width={66}
+              height={56}
               loading="eager"
               unoptimized
-              className="h-11 w-auto"
+              className="h-12 w-auto sm:h-14"
             />
-            <span className="font-heading text-lg leading-tight font-semibold text-brand-navy">
+            <span className="font-kinetic-heading text-xl leading-tight font-extrabold tracking-tight text-brand-navy sm:text-2xl">
               GetBrian <span className="text-kinetic-primary-electric">Healthy</span>
             </span>
           </Link>

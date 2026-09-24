@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FdaDisclaimer, GoalChooser, ProductCard, GradeBadge } from "./components";
+import { FdaDisclaimer, GoalChooser } from "./components";
 import { Icon } from "./icons";
+import { JobRail } from "./job-rail";
+import { LogoAnimation } from "./logo-animation";
 import { signupEnabled } from "./newsletter";
 import { Signup } from "./signup";
 import {
@@ -11,8 +13,6 @@ import {
   faqs,
   pillars,
   products,
-  supplements,
-  topGrade,
 } from "./data";
 
 export const metadata: Metadata = {
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(10,29,59,0.25)] transition-all hover:-translate-y-0.5 hover:bg-kinetic-primary-hover hover:shadow-[0_12px_28px_rgba(10,29,59,0.35)]";
 
-const PILLAR_TILE_TONE = "bg-kinetic-primary";
 
 export default function HealthyHome() {
   const faqJsonLd = {
@@ -64,13 +63,31 @@ export default function HealthyHome() {
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="flex flex-col space-y-6 lg:col-span-6">
+              {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
+                  wordmark is text, so it stays readable and selectable; the H1
+                  below is still the page's headline. */}
+              <div className="animate-fade-in-up flex items-center gap-4 sm:gap-5">
+                <Image
+                  src="/healthy/brand/healthy-mark-lg.png"
+                  alt=""
+                  aria-hidden="true"
+                  width={131}
+                  height={112}
+                  loading="eager"
+                  unoptimized
+                  className="h-20 w-auto sm:h-28"
+                />
+                <p className="font-kinetic-heading text-4xl leading-none font-extrabold tracking-tight text-kinetic-primary sm:text-6xl">
+                  GetBrian <span className="block text-kinetic-primary-electric sm:inline">Healthy</span>
+                </p>
+              </div>
               <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-kinetic-teal/25 bg-kinetic-primary-light px-3.5 py-1.5">
                 <span className="h-2 w-2 animate-ping rounded-full bg-kinetic-primary-electric" aria-hidden="true" />
                 <span className="text-xs font-bold tracking-wider text-kinetic-primary uppercase">
                   {PROGRAM_NAME}
                 </span>
               </div>
-              <h1 className="font-kinetic-heading text-4xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[52px]">
+              <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
                 {taglineLead}
                 {taglineHighlight && (
                   <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
@@ -106,14 +123,16 @@ export default function HealthyHome() {
 
             <div className="lg:col-span-6">
               <div className="group animate-fade-in-up relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
-                {/* Photo header — one continuous card with the content below, not a separate box */}
-                <div className="relative h-52 overflow-hidden sm:h-60">
+                {/* The hero photo on its own; "One job each" now lives with the picks. The
+                    couple stand in the right half of the frame, so the crop anchors
+                    right to keep both of them in at this taller size. */}
+                <div className="relative h-72 overflow-hidden sm:h-96 lg:h-[30rem]">
                   <Image
                     src="/healthy/hero-couple.jpg"
                     alt="A couple in their fifties hiking a coastal trail at sunrise"
                     fill
-                    sizes="(min-width: 1024px) 40vw, 90vw"
-                    className="animate-kinetic-hero-zoom object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(min-width: 1024px) 854px, (min-width: 640px) 683px, 512px"
+                    className="animate-kinetic-hero-zoom object-cover object-right transition-transform duration-500 group-hover:scale-105"
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent" />
@@ -121,42 +140,6 @@ export default function HealthyHome() {
                     <span className="text-sm font-semibold text-slate-100">
                       An active, evidence-checked routine for the decades ahead
                     </span>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                    <span className="flex items-center gap-1.5 font-kinetic-heading text-xs font-extrabold tracking-wider text-kinetic-primary uppercase">
-                      <Icon name="flask" size={20} className="text-kinetic-primary-electric" />
-                      One job each
-                    </span>
-                    <span className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-                      Evidence grade
-                    </span>
-                  </div>
-                  <div className="mt-4 space-y-2.5">
-                    {supplements.map((s, i) => {
-                      const product = products.find((p) => p.category === s.category);
-                      const grade = product ? topGrade(product) : null;
-                      return (
-                        <div
-                          key={s.id}
-                          className="animate-fade-in-up flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-kinetic-primary-light/60"
-                          style={{ animationDelay: `${420 + i * 130}ms` }}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${PILLAR_TILE_TONE}`}>
-                              {String(i + 1).padStart(2, "0")}
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-slate-900">{s.tagline}</div>
-                              <div className="text-xs font-medium text-slate-500">{s.name}</div>
-                            </div>
-                          </div>
-                          {grade && <GradeBadge grade={grade} />}
-                        </div>
-                      );
-                    })}
                   </div>
                 </div>
               </div>
@@ -204,13 +187,7 @@ export default function HealthyHome() {
               <span>Re-checked every 6 months</span>
             </div>
           </div>
-          <ul className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
-            {products.map((product) => (
-              <li key={product.slug}>
-                <ProductCard product={product} />
-              </li>
-            ))}
-          </ul>
+          <JobRail products={products} />
         </div>
       </section>
 
@@ -242,7 +219,8 @@ export default function HealthyHome() {
               <Icon name="arrow" size={18} className="ml-1 transition-transform group-hover:translate-x-1.5" />
             </Link>
             <div className="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-emerald-700 uppercase">
+              <LogoAnimation className="mb-5 border-b border-slate-100 pb-5" />
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-kinetic-primary-electric uppercase">
                 <Icon name="shieldCheck" size={18} />
                 <span>AI-Assisted, Human Verified</span>
               </div>
