@@ -5,6 +5,7 @@ import { FdaDisclaimer, GoalChooser } from "./components";
 import { Icon } from "./icons";
 import { JobRail } from "./job-rail";
 import { LogoAnimation } from "./logo-animation";
+import { RailReveal } from "./rail-reveal";
 import { signupEnabled } from "./newsletter";
 import { Signup } from "./signup";
 import {
@@ -196,58 +197,64 @@ export default function HealthyHome() {
         </section>
       )}
 
-      {/* WHY THESE PICKS + METHODOLOGY */}
+      {/* HOW BRIAN PICKS: one left-to-right flow. Three checks, then the human
+          sign-off as step four, with the animated mark as its finale, so
+          "AI-assisted, human verified" reads as where the process ends rather
+          than a note beside it. The numbered tiles ride the same teal rail as
+          the picks, drawn in once by RailReveal. */}
       <section aria-labelledby="why-heading" className="border-b border-slate-200 bg-slate-50 py-16 sm:py-24">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12">
-          <div className="flex flex-col space-y-5 lg:col-span-5">
-            <span className="text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
-              How Brian picks
-            </span>
-            <h2 id="why-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-              Why these picks
-            </h2>
-            <p className="text-base leading-relaxed text-slate-600">
-              Every pick is graded on the ingredient first, the label second. See the brand&apos;s own
-              claims next to the independent evidence, and the named alternatives each pick beat.
-            </p>
-            <Link href="/healthy/why-these-picks" className="group inline-flex items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-primary-electric">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div className="max-w-2xl">
+              <span className="mb-1 block text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
+                How Brian picks
+              </span>
+              <h2 id="why-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+                Three checks. Then a person signs off.
+              </h2>
+              <p className="mt-2 text-base text-slate-600">Ingredient first, label second.</p>
+            </div>
+            <Link href="/healthy/why-these-picks" className="group inline-flex min-h-11 items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-primary-electric">
               See the full comparison
               <Icon name="arrow" size={18} className="ml-1 transition-transform group-hover:translate-x-1.5" />
             </Link>
-            <div className="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <LogoAnimation className="mb-5 border-b border-slate-100 pb-5" />
-              <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-kinetic-primary-electric uppercase">
-                <Icon name="shieldCheck" size={18} />
-                <span>AI-Assisted, Human Verified</span>
-              </div>
-              <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
-                Research is gathered with the help of AI tools, then checked and signed off by a
-                person before anything publishes.{" "}
-                <Link href="/healthy/about" className="font-bold text-kinetic-primary underline hover:text-kinetic-primary-electric">
-                  Read the full policy
-                </Link>
-                .
-              </p>
-            </div>
           </div>
 
-          <div className="space-y-4 lg:col-span-7">
-            <h3 className="font-kinetic-heading mb-4 text-xl font-bold text-slate-950">
-              Three steps before anything makes the list
-            </h3>
-            {pillars.map((pillar, i) => (
-              <div key={pillar.title} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="rounded-lg border border-kinetic-teal/20 bg-kinetic-primary-light px-2.5 py-0.5 text-xs font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
-                    Step {String(i + 1).padStart(2, "0")}
+          <RailReveal className="relative mt-10">
+            {/* Through the tile centres: four columns and gap-6 put the outer
+                centres (100% - 4.5rem) / 8 in from each edge. */}
+            <span
+              className="healthy-rail-line pointer-events-none absolute top-6 hidden h-[3px] -translate-y-1/2 rounded-full bg-kinetic-teal lg:block"
+              style={{ left: "calc((100% - 4.5rem) / 8)", right: "calc((100% - 4.5rem) / 8)" }}
+              aria-hidden="true"
+            />
+            <ol className="relative grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {pillars.map((pillar, i) => (
+                <li key={pillar.title} className="healthy-rail-node flex flex-col" style={{ transitionDelay: `${250 + i * 180}ms` }}>
+                  <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-kinetic-primary font-kinetic-heading text-sm font-extrabold text-white shadow-sm ring-4 ring-slate-50">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <Icon name={(["book", "clipboardCheck", "listChecks"] as const)[i % 3]} size={22} className="text-slate-400" />
+                  <div className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <Icon name={(["book", "clipboardCheck", "listChecks"] as const)[i % 3]} size={22} className="text-kinetic-primary-electric" />
+                    <h3 className="font-kinetic-heading mt-3 text-lg font-bold text-slate-950">{pillar.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">{pillar.description}</p>
+                  </div>
+                </li>
+              ))}
+              <li className="healthy-rail-node flex flex-col" style={{ transitionDelay: `${250 + pillars.length * 180}ms` }}>
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-kinetic-primary-electric text-white shadow-sm ring-4 ring-slate-50">
+                  <Icon name="shieldCheck" size={22} />
+                </span>
+                <div className="mt-4 flex flex-col rounded-xl border-2 border-kinetic-teal/30 bg-white p-6 shadow-sm">
+                  <h3 className="font-kinetic-heading text-lg font-bold text-slate-950">Human sign-off</h3>
+                  <LogoAnimation className="mt-4" />
+                  <Link href="/healthy/about" className="mt-4 inline-flex min-h-11 items-center text-sm font-bold text-kinetic-primary underline hover:text-kinetic-primary-electric">
+                    Read the policy
+                  </Link>
                 </div>
-                <h4 className="font-kinetic-heading mb-2 text-lg font-bold text-slate-950">{pillar.title}</h4>
-                <p className="text-sm leading-relaxed text-slate-600">{pillar.description}</p>
-              </div>
-            ))}
-          </div>
+              </li>
+            </ol>
+          </RailReveal>
         </div>
       </section>
 

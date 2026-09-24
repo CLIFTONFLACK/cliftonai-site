@@ -109,12 +109,12 @@ export function LogoAnimation({ className = "" }: { className?: string }) {
         </svg>
       </div>
 
-      <ol className="mt-4 grid grid-cols-2 gap-2 text-center text-xs font-bold text-slate-700 sm:text-sm">
+      <ol className="mt-4 grid gap-2 text-center text-xs font-bold text-slate-700 sm:text-sm">
         <li className="healthy-anim-step rounded-lg bg-kinetic-primary-light px-2 py-1.5 text-kinetic-primary-electric">
-          1. AI gathers the research
+          AI gathers the research
         </li>
         <li className="healthy-anim-step rounded-lg bg-slate-100 px-2 py-1.5 text-kinetic-primary">
-          2. A person checks and signs off
+          A person checks and signs off
         </li>
       </ol>
     </div>

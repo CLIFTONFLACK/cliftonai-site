@@ -303,17 +303,17 @@ export const pillars = [
   {
     title: "Research",
     description:
-      "Brian reads the clinical research first: systematic reviews, meta-analyses and randomized trials. Each claim gets a plain grade, so you can see how much weight it can carry.",
+      "Reviews and trials first. Every claim gets a plain grade.",
   },
   {
     title: "Evaluation",
     description:
-      "Then the product itself: the dose on the label against the dose that was studied, independent testing, the price per effective serving, and who should check with a doctor first.",
+      "Label dose against studied dose, independent testing, cost per serving, safety.",
   },
   {
     title: "Selection",
     description:
-      "Only products that pass make the list, and the list stays short on purpose. Each pick is re-checked at least every six months, and dropped if it stops earning its place.",
+      "Only passes make the list. Re-checked at least every six months.",
   },
 ];
 

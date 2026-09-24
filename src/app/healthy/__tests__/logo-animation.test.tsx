@@ -61,9 +61,9 @@ test("renders both the medical cross and the check-seal group", () => {
   assert.match(source, /className="healthy-anim-seal"/);
 });
 
-test("renders both captions with their step numbers", () => {
-  assert.match(source, />\s*1\. AI gathers the research\s*</);
-  assert.match(source, />\s*2\. A person checks and signs off\s*</);
+test("renders both captions", () => {
+  assert.match(source, />\s*AI gathers the research\s*</);
+  assert.match(source, />\s*A person checks and signs off\s*</);
 });
 
 // ---------------------------------------------------------------------------
