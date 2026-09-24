@@ -280,7 +280,8 @@ export function GoalChooser() {
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 90vw"
                 className="absolute inset-0 object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              {/* Shade only the lower half, where the text sits; the photo stays clear above it. */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 from-10% via-slate-950/45 via-40% to-transparent to-70%" />
               <div className="relative z-10">
                 <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-sm backdrop-blur-md ${GOAL_ACCENT_CHIP[goal.accent]}`}>
                   <Icon name={goal.icon} size={20} />
@@ -289,7 +290,8 @@ export function GoalChooser() {
                   {s.name} &middot; {goal.eyebrowDetail}
                 </span>
                 <span className="mb-2 block font-kinetic-heading text-xl font-bold leading-tight text-white">{goal.label}</span>
-                <p className="mb-4 text-sm leading-relaxed text-slate-300">{goal.hook}</p>
+                {/* Two lines on every tile, so icons, labels and links line up across the row. */}
+                <p className="mb-4 min-h-[2lh] text-sm leading-relaxed text-slate-200">{goal.hook}</p>
                 <span className={`inline-flex items-center text-xs font-bold uppercase tracking-wider transition-colors ${GOAL_ACCENT_TEXT[goal.accent]}`}>
                   {s.name} Review
                   <Icon name="arrow" size={16} className="ml-1 transition-transform group-hover:translate-x-1.5" />

@@ -208,7 +208,7 @@ export const goals: {
   {
     id: "strength",
     label: "Strength",
-    hook: "Lifting after 40? Meet one of the most-studied supplements for getting more from the work.",
+    hook: "Lifting after 40? Meet one of the most-studied supplements for strength.",
     supplement: "creatine",
     icon: "dumbbell",
     eyebrowDetail: "Physical Power",
