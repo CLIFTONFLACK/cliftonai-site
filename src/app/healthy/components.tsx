@@ -14,6 +14,7 @@ import {
   type Product,
   type Supplement,
 } from "./data";
+import { Icon } from "./icons";
 
 function usd(n: number) {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
@@ -70,7 +71,7 @@ export function BuyButton({ product, from }: { product: Product; from: string })
         href={buyHref(product, from)}
         target="_blank"
         rel="sponsored nofollow noopener"
-        className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-white shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-700 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+        className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-fg shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
       >
         Check current price
         <span className="sr-only"> (opens in a new tab)</span>
@@ -93,7 +94,7 @@ export function GradeBadge({ grade }: { grade: EvidenceGrade }) {
       className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-bold ${tone[grade]}`}
       title={gradeLabels[grade].meaning}
     >
-      <span className="material-symbols-outlined text-[15px]">verified</span>
+      <Icon name="badgeCheck" size={15} />
       {gradeLabels[grade].label}
     </span>
   );
@@ -151,7 +152,7 @@ export function ProductCard({ product }: { product: Product }) {
             <span
               className={`absolute top-4 left-4 z-10 flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-extrabold tracking-wide text-white shadow-sm ${gradeRibbonTone[grade]}`}
             >
-              <span className="material-symbols-outlined text-[15px]">verified</span>
+              <Icon name="badgeCheck" size={15} />
               {gradeLabels[grade].label}
             </span>
           )}
@@ -194,7 +195,7 @@ export function ProductCard({ product }: { product: Product }) {
         <dl className="space-y-2.5 rounded-xl border border-slate-200/80 bg-slate-50 p-4 text-xs">
           {product.pros[0] && (
             <div className="flex items-start gap-2">
-              <dt className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-extrabold text-emerald-700 uppercase">Why</dt>
+              <dt className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-extrabold text-emerald-700 uppercase">Why Brian picked it</dt>
               <dd className="font-medium text-slate-700">{product.pros[0]}</dd>
             </div>
           )}
@@ -202,7 +203,7 @@ export function ProductCard({ product }: { product: Product }) {
             <>
               <div className="h-px w-full bg-slate-200" />
               <div className="flex items-start gap-2">
-                <dt className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-extrabold text-amber-800 uppercase">Drawback</dt>
+                <dt className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-extrabold text-amber-800 uppercase">The catch</dt>
                 <dd className="font-medium text-slate-700">{product.cons[0]}</dd>
               </div>
             </>
@@ -217,7 +218,7 @@ export function ProductCard({ product }: { product: Product }) {
           className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-kinetic-primary hover:text-kinetic-amber-hover"
         >
           Read the full review
-          <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+          <Icon name="arrow" size={16} />
         </Link>
       </div>
     </article>
@@ -254,12 +255,13 @@ export function GoalChooser() {
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {goals.map((goal) => {
         const s = getSupplement(goal.supplement);
-        const href = supplementHref(s) ?? `#${s.id}`;
+        const review = supplementHref(s);
+        const href = review ? (goal.section ? `${review}#${goal.section}` : review) : `#${s.id}`;
         return (
           <li key={goal.id}>
             <Link
               href={href}
-              className="group relative flex min-h-[420px] flex-col justify-end overflow-hidden rounded-xl border border-slate-200 bg-slate-900 p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+              className="group relative flex min-h-[280px] flex-col sm:min-h-[420px] justify-end overflow-hidden rounded-xl border border-slate-200 bg-slate-900 p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
             >
               <Image
                 src={goal.image}
@@ -268,10 +270,10 @@ export function GoalChooser() {
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 90vw"
                 className="absolute inset-0 object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
               <div className="relative z-10">
                 <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-sm backdrop-blur-md ${GOAL_ACCENT_CHIP[goal.accent]}`}>
-                  <span className="material-symbols-outlined text-[20px]">{goal.icon}</span>
+                  <Icon name={goal.icon} size={20} />
                 </div>
                 <span className={`mb-1 block text-[11px] font-extrabold tracking-wider uppercase ${GOAL_ACCENT_TEXT[goal.accent]}`}>
                   {s.name} &middot; {goal.eyebrowDetail}
@@ -280,7 +282,7 @@ export function GoalChooser() {
                 <p className="mb-4 text-sm leading-relaxed text-slate-300">{goal.hook}</p>
                 <span className={`inline-flex items-center text-xs font-bold uppercase tracking-wider transition-colors ${GOAL_ACCENT_TEXT[goal.accent]}`}>
                   {s.name} Review
-                  <span className="material-symbols-outlined ml-1 text-[16px] transition-transform group-hover:translate-x-1.5">arrow_forward</span>
+                  <Icon name="arrow" size={16} className="ml-1 transition-transform group-hover:translate-x-1.5" />
                 </span>
               </div>
             </Link>

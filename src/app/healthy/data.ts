@@ -11,6 +11,8 @@
  *   treat, prevent, cure or reverse.
  */
 
+import type { IconName } from "./icons";
+
 export const PROGRAM_NAME = "Brian's Human Longevity Program";
 export const PROGRAM_SHORT = "Human Longevity Program";
 export const CONTACT_EMAIL = "hello@getbrian.xyz";
@@ -129,7 +131,7 @@ export const supplements: Supplement[] = [
     name: "Creatine",
     tagline: "Make your strength work count",
     value: "Extra support for the effort you put into getting stronger.",
-    role: "Strength, physical performance and cognitive support, including focus",
+    role: "Strength and physical performance, with early promise for focus",
     contribution: "Supports strength and lean-mass gains alongside resistance training.",
     caveat:
       "Cognitive benefits are promising, but reliable improvements in everyday focus are not yet established.",
@@ -158,8 +160,13 @@ export const goals: {
   label: string;
   hook: string;
   supplement: Supplement["id"];
-  /** Material Symbols Outlined icon name for the goal tile's icon chip. */
-  icon: string;
+  /** Icon for the goal tile's chip (see icons.tsx). */
+  icon: IconName;
+  /**
+   * Optional section id on the review page to land on, when the goal is a
+   * secondary angle of that supplement (focus is creatine's caveated one).
+   */
+  section?: string;
   /**
    * Short eyebrow for the goal tile ("Cellular Energy"), distinct from the
    * supplement's own tagline — needed because creatine covers two different
@@ -173,10 +180,10 @@ export const goals: {
 }[] = [
   {
     id: "energy",
-    label: "Energy Boost",
+    label: "Energy",
     hook: "Low on magnesium? Many don't get enough, our bodies need it to turn food into energy.",
     supplement: "magnesium",
-    icon: "bolt",
+    icon: "zap",
     eyebrowDetail: "Cellular Energy",
     accent: "amber",
     image: "/healthy/goals/energy.jpg",
@@ -184,10 +191,10 @@ export const goals: {
   },
   {
     id: "strength",
-    label: "Muscle Power",
+    label: "Strength",
     hook: "Lifting after 40? Meet one of the most-studied supplements for getting more from the work.",
     supplement: "creatine",
-    icon: "fitness_center",
+    icon: "dumbbell",
     eyebrowDetail: "Physical Power",
     accent: "primary",
     image: "/healthy/goals/strength.jpg",
@@ -195,10 +202,11 @@ export const goals: {
   },
   {
     id: "focus",
-    label: "Elevate Focus",
+    label: "Focus",
     hook: "Creatine for your brain? Promising, not proven. Here is what the research really shows.",
     supplement: "creatine",
-    icon: "psychology",
+    icon: "target",
+    section: "creatine",
     eyebrowDetail: "Cognition",
     accent: "purple",
     image: "/healthy/goals/focus.jpg",
@@ -206,10 +214,10 @@ export const goals: {
   },
   {
     id: "calm",
-    label: "Activate Calm",
+    label: "Calm",
     hook: "Still wired at 10pm? Meet the compound from tea that people take to wind down.",
     supplement: "l-theanine",
-    icon: "bedtime",
+    icon: "moon",
     eyebrowDetail: "Wind-Down",
     accent: "cyan",
     image: "/healthy/goals/calm.jpg",

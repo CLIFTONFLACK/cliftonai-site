@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FdaDisclaimer, GoalChooser, ProductCard, GradeBadge } from "./components";
+import { Icon } from "./icons";
 import {
   PROGRAM_NAME,
   TAGLINE,
@@ -81,22 +82,22 @@ export default function HealthyHome() {
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link href="#picks" className={primaryCta}>
-                  Start Today
-                  <span className="material-symbols-outlined ml-2 text-[20px] text-amber-400">arrow_forward</span>
+                  Get Brian&apos;s picks
+                  <Icon name="arrow" size={20} className="ml-2 text-amber-400" />
                 </Link>
               </div>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600 sm:flex-nowrap">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600">
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
-                  <span>0% Sponsorships</span>
+                  <Icon name="badgeCheck" size={16} className="text-emerald-600" />
+                  <span>No paid placements</span>
                 </div>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="material-symbols-outlined text-[16px] text-kinetic-primary-electric">biotech</span>
-                  <span>Clinical Dosages</span>
+                  <Icon name="flask" size={16} className="text-kinetic-primary-electric" />
+                  <span>Dose checked against the research</span>
                 </div>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="material-symbols-outlined text-[16px] text-amber-500">autorenew</span>
-                  <span>6-Month Re-checks</span>
+                  <Icon name="refresh" size={16} className="text-amber-500" />
+                  <span>Re-checked every 6 months</span>
                 </div>
               </div>
             </div>
@@ -124,11 +125,11 @@ export default function HealthyHome() {
                 <div className="p-6">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <span className="flex items-center gap-1.5 font-kinetic-heading text-xs font-extrabold tracking-wider text-kinetic-primary uppercase">
-                      <span className="material-symbols-outlined text-[20px] text-kinetic-primary-electric">science</span>
-                      Why 3 Pillars?
+                      <Icon name="flask" size={20} className="text-kinetic-primary-electric" />
+                      One job each
                     </span>
                     <span className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
-                      Evidence-First Protocol
+                      Evidence grade
                     </span>
                   </div>
                   <div className="mt-4 space-y-2.5">
@@ -166,13 +167,13 @@ export default function HealthyHome() {
       <section id="start" aria-labelledby="start-heading" className="scroll-mt-6 border-b border-slate-200 bg-slate-50 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <span className="mb-1 block text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
-            Interactive Diagnostic
+            Start with your goal
           </span>
           <h2 id="start-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             What do you want more of?
           </h2>
           <p className="mt-2 max-w-2xl text-base text-slate-600">
-            Pick the one that matters most right now. Each answer links straight to that verified review.
+            Pick the one that matters most right now. Each answer links straight to Brian&apos;s review.
           </p>
           <div className="mt-8">
             <GoalChooser />
@@ -186,7 +187,7 @@ export default function HealthyHome() {
           <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div className="max-w-2xl">
               <span className="mb-1 block text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
-                Verified Selections
+                Brian&apos;s picks
               </span>
               <h2 id="picks-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
                 Current picks
@@ -216,7 +217,7 @@ export default function HealthyHome() {
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12">
           <div className="flex flex-col space-y-5 lg:col-span-5">
             <span className="text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
-              Scientific Rigor &amp; Vetting
+              How Brian picks
             </span>
             <h2 id="why-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
               Why these picks
@@ -227,11 +228,11 @@ export default function HealthyHome() {
             </p>
             <Link href="/healthy/why-these-picks" className="group inline-flex items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-amber-hover">
               See the full comparison
-              <span className="material-symbols-outlined ml-1 text-[18px] transition-transform group-hover:translate-x-1.5">arrow_forward</span>
+              <Icon name="arrow" size={18} className="ml-1 transition-transform group-hover:translate-x-1.5" />
             </Link>
             <div className="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-emerald-700 uppercase">
-                <span className="material-symbols-outlined text-[18px]">verified_user</span>
+                <Icon name="shieldCheck" size={18} />
                 <span>AI-Assisted, Human Verified</span>
               </div>
               <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
@@ -255,9 +256,7 @@ export default function HealthyHome() {
                   <span className="rounded-lg border border-blue-100 bg-blue-50 px-2.5 py-0.5 text-xs font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
                     Step {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="material-symbols-outlined text-[22px] text-slate-400">
-                    {["menu_book", "fact_check", "rule"][i % 3]}
-                  </span>
+                  <Icon name={(["book", "clipboardCheck", "listChecks"] as const)[i % 3]} size={22} className="text-slate-400" />
                 </div>
                 <h4 className="font-kinetic-heading mb-2 text-lg font-bold text-slate-950">{pillar.title}</h4>
                 <p className="text-sm leading-relaxed text-slate-600">{pillar.description}</p>
@@ -272,13 +271,13 @@ export default function HealthyHome() {
         <div className="mx-auto max-w-[840px] px-4 sm:px-6">
           <div className="mb-12 text-center">
             <span className="mb-1 block text-xs font-extrabold tracking-widest text-kinetic-primary-electric uppercase">
-              Direct Answers
+              Straight answers
             </span>
             <h2 id="faq-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
               Questions
             </h2>
             <p className="mt-2 text-base text-slate-600">
-              Clear, candid answers regarding medical boundaries, compensation and review standards.
+              Medical advice, commission, and how picks are checked.
             </p>
           </div>
           <dl className="space-y-3">
@@ -286,9 +285,7 @@ export default function HealthyHome() {
               <details key={f.question} className="group rounded-xl border border-slate-200 bg-slate-50 p-5 transition-all hover:bg-slate-100/80">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left marker:content-none focus:outline-none">
                   <span className="font-kinetic-heading text-base font-bold text-slate-900 sm:text-lg">{f.question}</span>
-                  <span aria-hidden="true" className="material-symbols-outlined shrink-0 text-[22px] text-slate-400 transition-transform duration-200 group-open:rotate-45">
-                    add
-                  </span>
+                  <Icon name="plus" size={22} className="text-slate-400 transition-transform duration-200 group-open:rotate-45" />
                 </summary>
                 <dd className="pt-3 text-sm leading-relaxed text-slate-600">{f.answer}</dd>
               </details>
@@ -302,9 +299,6 @@ export default function HealthyHome() {
         <div className="blob blob-kinetic-primary pointer-events-none absolute -top-32 -left-32 h-96 w-96" aria-hidden="true" />
         <div className="blob blob-kinetic-cyan pointer-events-none absolute -bottom-32 -right-32 h-96 w-96" aria-hidden="true" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 text-center sm:px-6">
-          <span className="mb-3 block text-xs font-extrabold tracking-widest text-cyan-300 uppercase">
-            Streamline Your Routine
-          </span>
           <h2 id="close-heading" className="mx-auto max-w-3xl font-kinetic-heading text-3xl leading-tight font-extrabold text-balance text-white sm:text-5xl lg:text-6xl">
             Ready? Pick the one that matches your goal.
           </h2>
@@ -313,11 +307,12 @@ export default function HealthyHome() {
             medication.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="#picks" className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 font-bold text-white shadow-[0_4px_20px_rgba(217,119,6,0.4)] transition-all hover:scale-105 hover:from-amber-600 hover:to-amber-700">
-              Start Today
-              <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+            {/* Orange is kept for retailer (Buy) buttons only; this one moves around the page. */}
+            <Link href="#start" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-8 py-4 font-bold text-slate-950 transition-colors hover:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+              Find my pick
+              <Icon name="arrow" size={18} className="ml-2" />
             </Link>
-            <Link href="/healthy/disclosures" className="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900 px-7 py-4 font-bold text-white transition-colors hover:bg-slate-800">
+            <Link href="/healthy/disclosures" className="inline-flex min-h-11 items-center px-2 text-sm font-semibold text-slate-300 underline underline-offset-4 hover:text-white">
               How we earn money
             </Link>
           </div>

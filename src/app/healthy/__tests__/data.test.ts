@@ -6,6 +6,7 @@ import {
   getProduct,
   getSupplement,
   goals,
+  gradeLabels,
   outboundUrl,
   products,
   supplementFor,
@@ -15,6 +16,7 @@ import {
   totalDailyCost,
   TRIO_INTRO,
   usesRedirect,
+  type EvidenceGrade,
   type Product,
   type Supplement,
 } from "../data.ts";
@@ -570,3 +572,83 @@ for (const supplement of focusOrCognitiveSupplements) {
     assert.ok(supplement.caveat && supplement.caveat.trim().length > 0);
   });
 }
+
+/**
+ * A caveat living elsewhere on the card is not enough: the rule is that the
+ * `role` string itself must never claim focus without hedging right there,
+ * since `role` is what renders in the ProductCard's one-line category
+ * strapline (`{category} · {role}`), a place the caveat is never shown.
+ */
+const HEDGE_WORDS = ["early", "promising", "preliminary", "emerging", "not yet established", "may"];
+
+function hasHedgeWord(text: string): boolean {
+  const lower = text.toLowerCase();
+  return HEDGE_WORDS.some((word) => lower.includes(word));
+}
+
+for (const supplement of focusOrCognitiveSupplements) {
+  test(`supplement "${supplement.id}" role never mentions focus/cognitive without a hedging word in the same sentence`, () => {
+    assert.ok(
+      hasHedgeWord(supplement.role),
+      `role "${supplement.role}" mentions focus/cognitive but has no hedging word`,
+    );
+  });
+}
+
+test("creatine's role specifically pairs its focus claim with 'early'", () => {
+  // Pins the exact wording, not just "some hedge word is present somewhere" —
+  // this is the one supplement the rule exists for.
+  const creatine = getSupplement("creatine");
+  assert.match(creatine.role, /focus/i);
+  assert.match(creatine.role, /early/i);
+});
+
+// ---------------------------------------------------------------------------
+// goal.section always names a real supplement (so the anchor exists)
+// ---------------------------------------------------------------------------
+
+for (const goal of goals.filter((g) => g.section !== undefined)) {
+  test(`goal "${goal.id}"'s section ("${goal.section}") is a real supplement id`, () => {
+    const ids = supplements.map((s) => s.id);
+    assert.ok(
+      ids.includes(goal.section as Supplement["id"]),
+      `section "${goal.section}" does not match any supplement id: ${ids.join(", ")}`,
+    );
+  });
+}
+
+test("the focus goal's section is the creatine id (its href must land on SupplementCard's creatine anchor)", () => {
+  const focusGoal = goals.find((g) => g.id === "focus");
+  assert.ok(focusGoal, "fixture assumption: a 'focus' goal exists");
+  assert.equal(focusGoal?.section, "creatine");
+});
+
+test("goals without a section field don't accidentally point at a nonexistent anchor", () => {
+  const withoutSection = goals.filter((g) => g.section === undefined);
+  assert.ok(withoutSection.length > 0, "fixture assumption: at least one goal has no section");
+  for (const g of withoutSection) {
+    assert.equal(g.section, undefined);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// why-these-picks grade vocabulary: no leftover "strong evidence" / "moderate
+// evidence" wording now that gradeLabels use robust/promising/early.
+// ---------------------------------------------------------------------------
+
+test("gradeLabels for 'strong' says 'Robust evidence', not 'Strong evidence'", () => {
+  assert.doesNotMatch(gradeLabels.strong.label, /strong evidence/i);
+  assert.match(gradeLabels.strong.label, /robust evidence/i);
+});
+
+test("gradeLabels for 'moderate' says 'Promising evidence', not 'Moderate evidence'", () => {
+  assert.doesNotMatch(gradeLabels.moderate.label, /moderate evidence/i);
+  assert.match(gradeLabels.moderate.label, /promising evidence/i);
+});
+
+test("no gradeLabels entry uses the retired 'strong evidence' or 'moderate evidence' wording", () => {
+  for (const grade of Object.keys(gradeLabels) as EvidenceGrade[]) {
+    const text = `${gradeLabels[grade].label} ${gradeLabels[grade].meaning}`;
+    assert.doesNotMatch(text.toLowerCase(), /strong evidence|moderate evidence/);
+  }
+});

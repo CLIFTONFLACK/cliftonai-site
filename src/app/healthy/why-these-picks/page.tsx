@@ -52,10 +52,10 @@ const references: ProductReference[] = [
       },
     ],
     ourRead:
-      "The deficiency statistic and the enzyme-cofactor claim line up with the independent NIH fact sheet cited on the product page, so we treat those as strong evidence. The “9 out of 10” figure is the brand's own unpublished consumer survey of 95 people, not a controlled trial — it belongs in marketing copy as a customer-satisfaction note, not as clinical evidence. The actual randomized trial on magnesium and sleep found sleep improved on both magnesium and placebo, so the evidence grade for sleep stays “early” either way.",
+      "The deficiency statistic and the enzyme-cofactor claim line up with the independent NIH fact sheet cited on the product page, so we treat those as robust evidence. The “9 out of 10” figure is the brand's own unpublished consumer survey of 95 people, not a controlled trial — it belongs in marketing copy as a customer-satisfaction note, not as clinical evidence. The actual randomized trial on magnesium and sleep found sleep improved on both magnesium and placebo, so the evidence grade for sleep stays “early” either way.",
     say: [
-      "Supports normal muscle and nerve function (strong evidence — NIH)",
-      "Supports normal energy metabolism (strong evidence — NIH)",
+      "Supports normal muscle and nerve function (robust evidence — NIH)",
+      "Supports normal energy metabolism (robust evidence — NIH)",
       "May support sleep quality in adults who fall short on dietary magnesium (early evidence)",
     ],
     dontSay: [
@@ -80,8 +80,8 @@ const references: ProductReference[] = [
     ourRead:
       "The NSF Certified for Sport claim is independently verifiable through NSF's own program, not just the brand's word, so we treat it as a fact rather than a marketing claim. The strength and lean-mass benefits are backed by real meta-analyses in older adults. The cognitive claim is the weakest of the three: promising early research, nothing settled.",
     say: [
-      "Supports muscle strength when combined with resistance training (strong evidence)",
-      "Supports lean muscle mass with regular training (moderate evidence)",
+      "Supports muscle strength when combined with resistance training (robust evidence)",
+      "Supports lean muscle mass with regular training (promising evidence)",
       "NSF Certified for Sport, independently verifiable batch testing",
     ],
     dontSay: [
@@ -109,7 +109,7 @@ const references: ProductReference[] = [
     ourRead:
       "“At least 50 studies” is the brand's tally across the ingredient (not this specific product), and it mixes human trials, animal studies and manufacturer-funded work. The independent research we cite below is a systematic review of 9 human randomized controlled trials on stress and anxiety, and a separate crossover trial measuring brain activity directly — real, but smaller and narrower than “50 studies” implies. The alpha-wave effect showed up only in people who ran higher in trait anxiety to begin with.",
     say: [
-      "May support relaxation and a calmer response to everyday stress (moderate evidence, 9-RCT systematic review)",
+      "May support relaxation and a calmer response to everyday stress (promising evidence, 9-RCT systematic review)",
       "May increase alpha brain-wave activity linked to relaxed wakefulness (early evidence)",
       "Suntheanine is the branded form most human studies actually use",
     ],
