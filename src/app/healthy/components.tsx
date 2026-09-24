@@ -22,7 +22,7 @@ function usd(n: number) {
 /** Shared reading column for prose pages. */
 export function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <div className="space-y-5 text-fg-muted [&_a]:text-brand-navy-bright [&_a]:underline [&_h2]:mt-12 [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-fg [&_h3]:mt-8 [&_h3]:font-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg [&_li]:leading-relaxed [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6">
+    <div className="space-y-5 text-fg-muted [&_a]:text-kinetic-primary-electric [&_a]:underline [&_h2]:mt-12 [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-fg [&_h3]:mt-8 [&_h3]:font-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-fg [&_li]:leading-relaxed [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6">
       {children}
     </div>
   );
@@ -40,7 +40,7 @@ export function PageHeading({
   return (
     <div className="max-w-3xl">
       {eyebrow && (
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">{eyebrow}</p>
+        <p className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">{eyebrow}</p>
       )}
       <h1 className="mt-3 font-heading text-4xl font-semibold tracking-tight text-brand-navy text-balance sm:text-5xl">
         {title}
@@ -84,8 +84,8 @@ export function BuyButton({ product, from }: { product: Product; from: string })
 
 export function GradeBadge({ grade }: { grade: EvidenceGrade }) {
   const tone: Record<EvidenceGrade, string> = {
-    strong: "bg-emerald-100 text-emerald-800 border border-emerald-200",
-    moderate: "bg-blue-100 text-blue-800 border border-blue-200",
+    strong: "bg-green-100 text-green-800 border border-green-200",
+    moderate: "bg-slate-100 text-brand-navy border border-slate-300",
     early: "bg-amber-100 text-amber-900 border border-amber-200",
   };
   return (
@@ -108,7 +108,7 @@ export function DraftBanner() {
   return (
     <div
       role="note"
-      className="rounded-xl border border-brand-gold/40 bg-brand-gold/10 px-5 py-4 text-base text-fg"
+      className="rounded-xl border border-kinetic-teal/40 bg-kinetic-primary-light px-5 py-4 text-base text-fg"
     >
       <strong className="font-semibold">Draft review.</strong> Label figures, prices and citations
       on this page are still being checked against the manufacturer and the published research.
@@ -139,9 +139,9 @@ export function ProductCard({ product }: { product: Product }) {
   const role = supplementFor(product)?.role;
   const grade = topGrade(product);
   const gradeRibbonTone: Record<EvidenceGrade, string> = {
-    strong: "bg-emerald-600",
-    moderate: "bg-kinetic-primary-electric",
-    early: "bg-amber-600",
+    strong: "bg-kinetic-evidence-strong",
+    moderate: "bg-kinetic-evidence-moderate",
+    early: "bg-kinetic-evidence-early",
   };
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
@@ -214,7 +214,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <Link
           href={`/healthy/products/${product.slug}`}
-          className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-kinetic-primary hover:text-kinetic-amber-hover"
+          className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-kinetic-primary hover:text-kinetic-primary-electric"
         >
           Read the full review
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -234,18 +234,25 @@ export function supplementHref(s: Supplement): string | null {
   return picks.length >= 1 ? `/healthy/products/${picks[0].slug}` : null;
 }
 
+/*
+ * Every goal tile takes the logo teal: the Healthy palette has one accent, and
+ * amber is kept for Buy buttons. The per-goal `accent` values in data.ts date
+ * from the earlier four-colour brief. They stay, and these maps stay keyed on
+ * them, only until the healthy-ux-review branch (which rewrites the goal
+ * entries and the tile markup) has landed; then drop both.
+ */
 const GOAL_ACCENT_CHIP: Record<GoalAccent, string> = {
-  amber: "bg-amber-500/90",
-  primary: "bg-kinetic-primary-electric/90",
-  purple: "bg-purple-600/90",
-  cyan: "bg-cyan-600/90",
+  amber: "bg-kinetic-teal/90",
+  primary: "bg-kinetic-teal/90",
+  purple: "bg-kinetic-teal/90",
+  cyan: "bg-kinetic-teal/90",
 };
 
 const GOAL_ACCENT_TEXT: Record<GoalAccent, string> = {
-  amber: "text-amber-400 group-hover:text-amber-200",
-  primary: "text-blue-400 group-hover:text-blue-200",
-  purple: "text-purple-300 group-hover:text-purple-200",
-  cyan: "text-cyan-300 group-hover:text-cyan-200",
+  amber: "text-kinetic-teal-on-dark group-hover:text-white",
+  primary: "text-kinetic-teal-on-dark group-hover:text-white",
+  purple: "text-kinetic-teal-on-dark group-hover:text-white",
+  cyan: "text-kinetic-teal-on-dark group-hover:text-white",
 };
 
 /** "What do you want more of?" Each tile links straight to that goal's review. */
@@ -309,11 +316,11 @@ export function SupplementCard({
       <Heading className="font-heading text-2xl font-semibold text-brand-navy">{supplement.name}</Heading>
       <dl className="mt-4 flex-1 space-y-4">
         <div>
-          <dt className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">Primary role</dt>
+          <dt className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">Primary role</dt>
           <dd className="mt-1 font-medium text-fg">{supplement.role}</dd>
         </div>
         <div>
-          <dt className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+          <dt className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">
             Contribution to healthy aging
           </dt>
           <dd className="mt-1 leading-relaxed text-fg-muted">{supplement.contribution}</dd>
@@ -327,7 +334,7 @@ export function SupplementCard({
       {isSelf ? null : href ? (
         <a
           href={href}
-          className="mt-6 inline-flex min-h-11 items-center font-semibold text-brand-navy-bright underline underline-offset-4"
+          className="mt-6 inline-flex min-h-11 items-center font-semibold text-kinetic-primary-electric underline underline-offset-4"
         >
           Read the {supplement.name.toLowerCase()} review
         </a>

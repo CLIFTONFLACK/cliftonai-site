@@ -81,7 +81,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
       />
       <div className="mx-auto max-w-6xl">
         <nav aria-label="Breadcrumb" className="text-base">
-          <Link href="/healthy#picks" className="text-brand-navy-bright underline underline-offset-4">
+          <Link href="/healthy#picks" className="text-kinetic-primary-electric underline underline-offset-4">
             All picks
           </Link>
         </nav>
@@ -91,7 +91,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
             {!product.verified && <DraftBanner />}
 
             <header>
-              <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+              <p className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">
                 {product.category} &middot; {product.format}
               </p>
               <h1 className="mt-3 font-heading text-4xl font-semibold tracking-tight text-brand-navy text-balance sm:text-5xl">
@@ -132,7 +132,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                           <strong className="font-semibold text-fg">{hook?.label ?? o.name}:</strong>{" "}
                           <span className="text-fg-muted">{hook?.hook ?? o.contribution}</span>{" "}
                           {href ? (
-                            <Link href={href} className="font-semibold text-brand-navy-bright underline underline-offset-4">
+                            <Link href={href} className="font-semibold text-kinetic-primary-electric underline underline-offset-4">
                               {o.name}
                             </Link>
                           ) : (
@@ -185,7 +185,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                       <ul className="mt-3 space-y-1 text-base">
                         {ev.citations.map((c) => (
                           <li key={c.url}>
-                            <a href={c.url} className="text-brand-navy-bright underline underline-offset-4" rel="noopener">
+                            <a href={c.url} className="text-kinetic-primary-electric underline underline-offset-4" rel="noopener">
                               {c.label}
                             </a>
                           </li>
@@ -199,7 +199,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
               </ul>
               <p className="mt-4 text-base text-fg-subtle">
                 What the grades mean is explained in{" "}
-                <Link href="/healthy/method" className="text-brand-navy-bright underline">how we choose</Link>.
+                <Link href="/healthy/method" className="text-kinetic-primary-electric underline">how we choose</Link>.
               </p>
             </Section>
 
@@ -212,7 +212,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 <p className="text-fg-muted"><Pending /></p>
               )}
               <p className="mt-4 text-base">
-                <Link href="/healthy/why-these-picks" className="text-brand-navy-bright underline underline-offset-4">
+                <Link href="/healthy/why-these-picks" className="text-kinetic-primary-electric underline underline-offset-4">
                   See what the brand itself claims about this ingredient, and how Brian grades each claim
                 </Link>
               </p>
@@ -248,7 +248,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
             <div className="rounded-2xl border border-border bg-bg p-6 shadow-[0_4px_28px_rgba(20,23,43,0.06)]">
               {jobs.length > 0 && (
                 <p className="mb-5 border-b border-border pb-5 text-base text-fg-muted">
-                  <span className="block text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">
+                  <span className="block text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">
                     Its job in the program
                   </span>
                   {jobs.map((j) => (
@@ -319,7 +319,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
             href={buyHref(product, "product-mobile-bar")}
             target="_blank"
             rel="sponsored nofollow noopener"
-            className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-brand-gold px-4 font-semibold text-fg transition-colors duration-200 hover:bg-brand-gold-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy-bright"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-kinetic-amber px-4 font-semibold text-fg transition-colors duration-200 hover:bg-kinetic-amber-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
           >
             Check price
           </a>

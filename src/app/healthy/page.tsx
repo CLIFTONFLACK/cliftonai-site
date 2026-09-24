@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 };
 
 const primaryCta =
-  "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(0,45,179,0.25)] transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-[0_12px_28px_rgba(0,45,179,0.35)]";
+  "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(10,29,59,0.25)] transition-all hover:-translate-y-0.5 hover:bg-kinetic-primary-hover hover:shadow-[0_12px_28px_rgba(10,29,59,0.35)]";
 
-const PILLAR_TILE_TONE = "bg-amber-600";
+const PILLAR_TILE_TONE = "bg-kinetic-primary";
 
 export default function HealthyHome() {
   const faqJsonLd = {
@@ -55,13 +55,13 @@ export default function HealthyHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 pb-16">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "radial-gradient(#002db3 1px, transparent 1px)", backgroundSize: "24px 24px" }}
+          style={{ backgroundImage: "radial-gradient(var(--kinetic-primary) 1px, transparent 1px)", backgroundSize: "24px 24px" }}
           aria-hidden="true"
         />
         <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="flex flex-col space-y-6 lg:col-span-6">
-              <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-blue-200/80 bg-gradient-to-r from-kinetic-primary-light to-blue-50 px-3.5 py-1.5">
+              <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-kinetic-teal/25 bg-kinetic-primary-light px-3.5 py-1.5">
                 <span className="h-2 w-2 animate-ping rounded-full bg-kinetic-primary-electric" aria-hidden="true" />
                 <span className="text-xs font-bold tracking-wider text-kinetic-primary uppercase">
                   {PROGRAM_NAME}
@@ -70,7 +70,7 @@ export default function HealthyHome() {
               <h1 className="font-kinetic-heading text-4xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[52px]">
                 {taglineLead}
                 {taglineHighlight && (
-                  <span className="bg-gradient-to-r from-[#0033c9] via-kinetic-primary-electric to-blue-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
                     {taglineHighlight}
                   </span>
                 )}
@@ -138,7 +138,7 @@ export default function HealthyHome() {
                       return (
                         <div
                           key={s.id}
-                          className="animate-fade-in-up flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-blue-50/40"
+                          className="animate-fade-in-up flex items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 transition-colors hover:bg-kinetic-primary-light/60"
                           style={{ animationDelay: `${420 + i * 130}ms` }}
                         >
                           <div className="flex items-center gap-3">
@@ -197,7 +197,7 @@ export default function HealthyHome() {
               </p>
             </div>
             <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-700">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
+              <span className="h-2 w-2 rounded-full bg-kinetic-teal" aria-hidden="true" />
               <span>Re-checked every 6 months</span>
             </div>
           </div>
@@ -225,7 +225,7 @@ export default function HealthyHome() {
               Every pick is graded on the ingredient first, the label second. See the brand&apos;s own
               claims next to the independent evidence, and the named alternatives each pick beat.
             </p>
-            <Link href="/healthy/why-these-picks" className="group inline-flex items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-amber-hover">
+            <Link href="/healthy/why-these-picks" className="group inline-flex items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-primary-electric">
               See the full comparison
               <span className="material-symbols-outlined ml-1 text-[18px] transition-transform group-hover:translate-x-1.5">arrow_forward</span>
             </Link>
@@ -237,7 +237,7 @@ export default function HealthyHome() {
               <p className="text-xs leading-relaxed text-slate-600 sm:text-sm">
                 Research is gathered with the help of AI tools, then checked and signed off by a
                 person before anything publishes.{" "}
-                <Link href="/healthy/about" className="font-bold text-kinetic-primary underline hover:text-kinetic-amber-hover">
+                <Link href="/healthy/about" className="font-bold text-kinetic-primary underline hover:text-kinetic-primary-electric">
                   Read the full policy
                 </Link>
                 .
@@ -252,7 +252,7 @@ export default function HealthyHome() {
             {pillars.map((pillar, i) => (
               <div key={pillar.title} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="rounded-lg border border-blue-100 bg-blue-50 px-2.5 py-0.5 text-xs font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
+                  <span className="rounded-lg border border-kinetic-teal/20 bg-kinetic-primary-light px-2.5 py-0.5 text-xs font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
                     Step {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="material-symbols-outlined text-[22px] text-slate-400">

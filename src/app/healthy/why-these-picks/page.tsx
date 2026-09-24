@@ -126,7 +126,7 @@ function BrandCard({ entry: r }: { entry: ProductReference }) {
   if (!product) return null;
   return (
     <div className="rounded-2xl border border-border p-6">
-      <p className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">{product.category}</p>
+      <p className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">{product.category}</p>
       <h3 className="mt-1 font-heading text-xl font-semibold text-brand-navy">
         <Link href={`/healthy/products/${product.slug}`} className="underline-offset-4 hover:underline">
           {product.name}
@@ -151,7 +151,7 @@ function BrandCard({ entry: r }: { entry: ProductReference }) {
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl bg-bg-tint p-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-gold-deep">Safe to say</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">Safe to say</h4>
           <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-relaxed text-fg-muted">
             {r.say.map((s) => <li key={s}>{s}</li>)}
           </ul>

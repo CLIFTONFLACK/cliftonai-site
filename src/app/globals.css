@@ -36,19 +36,32 @@
   --brand-gold-light: #e0b84f;  /* gold on navy grounds only */
 
   /* ---------------------------------------------------------------------
-     Kinetic Longevity ramp — /healthy only. Additive: nothing above is
-     renamed or reused, so the rest of the site (main GetBrian pages, which
-     also import this file) is untouched. Values taken from the "Kinetic
-     Longevity" design brief's own implemented palette.
+     GetBrian Healthy ramp — /healthy only. Nothing above is renamed or
+     changed, so the rest of the site (main GetBrian pages, which also import
+     this file) is untouched.
+
+     The colours follow the Healthy logo (docs/GetBrian_Healthy_Logo.png): the
+     masterbrand navy, which the logo samples within noise of, and teal where
+     the masterbrand has gold. The kinetic-* names date from the "Kinetic
+     Longevity" brief this section was first built to. They were kept when the
+     values moved to the logo so that work in flight on other branches picks
+     the new colours up, and several no longer describe their colour:
+     -primary-electric is now the text-safe teal. Rename once that work has
+     landed. Roles are documented in the sub-brand's design-system.md, and
+     src/app/healthy/__tests__/palette.test.ts holds every ratio below to its
+     minimum. Contrast is against white unless noted.
      --------------------------------------------------------------------- */
-  --kinetic-primary: #002db3;
-  --kinetic-primary-electric: #0d47ff;
-  --kinetic-primary-light: #eef2ff;
-  --kinetic-amber: #d97706;
-  --kinetic-amber-hover: #b45309;
-  --kinetic-evidence-strong: #059669;
-  --kinetic-evidence-moderate: #2563eb;
-  --kinetic-cyan-glow: #00d2f0;
+  --kinetic-primary: var(--brand-navy);           /* navigation buttons, number tiles, 16.8:1 */
+  --kinetic-primary-hover: var(--brand-navy-mid); /* navy button hover, white text 13.1:1 */
+  --kinetic-primary-electric: #046d7c;            /* teal text, links, icons, focus rings, 6.0:1 */
+  --kinetic-primary-light: #ebf6f7;               /* teal tint for pills and chips, teal text on it 5.5:1 */
+  --kinetic-teal: #028f96;                        /* logo teal: fills and icons only, 3.9:1, never small text */
+  --kinetic-teal-on-dark: #4eb1b6;                /* teal on slate-900/950, 7.0:1+; only 2.5:1 on white */
+  --kinetic-amber: #d97706;                       /* retailer Buy buttons only, ink text 5.6:1 */
+  --kinetic-amber-hover: #f59e0b;                 /* Buy hover goes lighter: ink text 8.2:1 */
+  --kinetic-evidence-strong: #15803d;             /* "Robust" grade fill, white text 5.0:1 */
+  --kinetic-evidence-moderate: var(--brand-navy); /* "Promising" grade fill */
+  --kinetic-evidence-early: #b45309;              /* "Early" grade fill, white text 5.0:1 */
 }
 
 @theme inline {
@@ -76,13 +89,16 @@
   --font-body: var(--font-body);
 
   --color-kinetic-primary: var(--kinetic-primary);
+  --color-kinetic-primary-hover: var(--kinetic-primary-hover);
   --color-kinetic-primary-electric: var(--kinetic-primary-electric);
   --color-kinetic-primary-light: var(--kinetic-primary-light);
+  --color-kinetic-teal: var(--kinetic-teal);
+  --color-kinetic-teal-on-dark: var(--kinetic-teal-on-dark);
   --color-kinetic-amber: var(--kinetic-amber);
   --color-kinetic-amber-hover: var(--kinetic-amber-hover);
   --color-kinetic-evidence-strong: var(--kinetic-evidence-strong);
   --color-kinetic-evidence-moderate: var(--kinetic-evidence-moderate);
-  --color-kinetic-cyan-glow: var(--kinetic-cyan-glow);
+  --color-kinetic-evidence-early: var(--kinetic-evidence-early);
 
   /* Set by healthy/layout.tsx via next/font/google; declared here only so
      Tailwind emits font-kinetic-heading / font-kinetic-body utilities. */
@@ -190,14 +206,15 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   background: radial-gradient(circle at 60% 40%, rgba(10, 29, 59, 0.38), transparent 70%);
 }
 
-/* /healthy "Kinetic Longevity" section only — same blur-blob mechanism as
-   above, new colors so it doesn't collide with the site's navy/gold blobs. */
+/* /healthy only — same blur-blob mechanism as above, in the Healthy logo's
+   colours: a navy-blue glow (navy itself vanishes on the slate-950 ground,
+   so this is navy-bright, as .blob-navy does) and the logo teal. */
 .blob-kinetic-primary {
-  background: radial-gradient(circle at 30% 30%, rgba(13, 71, 255, 0.35), transparent 70%);
+  background: radial-gradient(circle at 30% 30%, rgba(53, 98, 159, 0.4), transparent 70%);
 }
 
 .blob-kinetic-cyan {
-  background: radial-gradient(circle at 60% 40%, rgba(0, 210, 240, 0.3), transparent 70%);
+  background: radial-gradient(circle at 60% 40%, rgba(2, 143, 150, 0.35), transparent 70%);
 }
 
 /* /healthy hero photo — a one-time settle-into-focus zoom on load, not a
