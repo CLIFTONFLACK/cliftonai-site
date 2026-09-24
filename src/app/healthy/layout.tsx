@@ -64,6 +64,7 @@ export const metadata: Metadata = {
 };
 
 const nav = [
+  { href: "/healthy", label: "Home" },
   { href: "/healthy#picks", label: "Brian's picks" },
   { href: "/healthy/method", label: "How Brian picks" },
   { href: "/healthy/about", label: "About" },

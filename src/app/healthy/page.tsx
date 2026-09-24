@@ -26,6 +26,10 @@ export const metadata: Metadata = {
 const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(10,29,59,0.25)] transition-all hover:-translate-y-0.5 hover:bg-kinetic-primary-hover hover:shadow-[0_12px_28px_rgba(10,29,59,0.35)]";
 
+/** The quieter partner to primaryCta: white, navy text, teal on hover. */
+const secondaryCta =
+  "inline-flex min-h-12 items-center rounded-xl border-2 border-kinetic-primary/15 bg-white/90 px-5 py-3 font-bold text-kinetic-primary transition-colors hover:border-kinetic-teal hover:bg-kinetic-primary-light";
+
 
 export default function HealthyHome() {
   const faqJsonLd = {
@@ -53,98 +57,90 @@ export default function HealthyHome() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
       />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 pb-16">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "radial-gradient(var(--kinetic-primary) 1px, transparent 1px)", backgroundSize: "24px 24px" }}
-          aria-hidden="true"
-        />
-        <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
-            <div className="flex flex-col space-y-6 lg:col-span-6">
-              {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
-                  wordmark is text, so it stays readable and selectable; the H1
-                  below is still the page's headline. */}
-              <div className="animate-fade-in-up flex items-center gap-4 sm:gap-5">
-                <Image
-                  src="/healthy/brand/healthy-mark-lg.png"
-                  alt=""
-                  aria-hidden="true"
-                  width={131}
-                  height={112}
-                  loading="eager"
-                  unoptimized
-                  className="h-20 w-auto sm:h-28"
-                />
-                <p className="font-kinetic-heading text-4xl leading-none font-extrabold tracking-tight text-kinetic-primary sm:text-6xl">
-                  GetBrian <span className="block text-kinetic-primary-electric sm:inline">Healthy</span>
-                </p>
-              </div>
-              <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-kinetic-teal/25 bg-kinetic-primary-light px-3.5 py-1.5">
-                <span className="h-2 w-2 animate-ping rounded-full bg-kinetic-primary-electric" aria-hidden="true" />
-                <span className="text-xs font-bold tracking-wider text-kinetic-primary uppercase">
-                  {PROGRAM_NAME}
-                </span>
-              </div>
-              <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
-                {taglineLead}
-                {taglineHighlight && (
-                  <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
-                    {taglineHighlight}
-                  </span>
-                )}
-              </h1>
-              <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-                Three supplements, one job each. Carefully researched and honestly reasoned.
-                Brian&apos;s done the work so you don&apos;t have to.
+      {/* HERO: the photo runs full-bleed behind the section on large screens,
+          feathered to white on the left so the lockup and copy read over it.
+          On small screens it sits as a band under the copy, feathered at the
+          top. One <Image> serves both, repositioned by breakpoint. */}
+      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:-mt-16 lg:flex lg:min-h-[680px] lg:items-center lg:pt-28 lg:pb-20">
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col space-y-6 lg:max-w-[36rem]">
+            {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
+                wordmark is text, so it stays readable and selectable; the H1
+                below is still the page's headline. */}
+            <div className="animate-fade-in-up flex items-center gap-4 sm:gap-5">
+              <Image
+                src="/healthy/brand/healthy-mark-lg.png"
+                alt=""
+                aria-hidden="true"
+                width={131}
+                height={112}
+                loading="eager"
+                unoptimized
+                className="h-20 w-auto sm:h-28"
+              />
+              <p className="font-kinetic-heading text-4xl leading-none font-extrabold tracking-tight text-kinetic-primary sm:text-6xl">
+                GetBrian <span className="block text-kinetic-primary-electric sm:inline">Healthy</span>
               </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link href="#picks" className={primaryCta}>
-                  Get Brian&apos;s picks
-                  <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
-                </Link>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600">
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Icon name="badgeCheck" size={16} className="text-kinetic-primary-electric" />
-                  <span>No paid placements</span>
-                </div>
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Icon name="flask" size={16} className="text-kinetic-primary-electric" />
-                  <span>Dose checked against the research</span>
-                </div>
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Icon name="refresh" size={16} className="text-kinetic-primary-electric" />
-                  <span>Re-checked every 6 months</span>
-                </div>
-              </div>
             </div>
-
-            <div className="lg:col-span-6">
-              <div className="group animate-fade-in-up relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
-                {/* The hero photo on its own; "One job each" now lives with the picks. The
-                    couple stand in the right half of the frame, so the crop anchors
-                    right to keep both of them in at this taller size. */}
-                <div className="relative h-72 overflow-hidden sm:h-96 lg:h-[30rem]">
-                  <Image
-                    src="/healthy/hero-couple.jpg"
-                    alt="A couple in their fifties hiking a coastal trail at sunrise"
-                    fill
-                    sizes="(min-width: 1024px) 854px, (min-width: 640px) 683px, 512px"
-                    className="animate-kinetic-hero-zoom object-cover object-right transition-transform duration-500 group-hover:scale-105"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="text-sm font-semibold text-slate-100">
-                      An active, evidence-checked routine for the decades ahead
-                    </span>
-                  </div>
-                </div>
+            <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
+              {taglineLead}
+              {taglineHighlight && (
+                <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
+                  {taglineHighlight}
+                </span>
+              )}
+            </h1>
+            <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+              Three supplements, one job each. Carefully researched and honestly reasoned.
+              Brian&apos;s done the work so you don&apos;t have to.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href="#picks" className={primaryCta}>
+                Get Brian&apos;s picks
+                <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
+              </Link>
+              <Link href="/healthy/about" className={secondaryCta}>
+                {PROGRAM_NAME}
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600">
+              <div className="flex items-center gap-1.5 whitespace-nowrap">
+                <Icon name="badgeCheck" size={16} className="text-kinetic-primary-electric" />
+                <span>No paid placements</span>
+              </div>
+              <div className="flex items-center gap-1.5 whitespace-nowrap">
+                <Icon name="flask" size={16} className="text-kinetic-primary-electric" />
+                <span>Dose checked against the research</span>
+              </div>
+              <div className="flex items-center gap-1.5 whitespace-nowrap">
+                <Icon name="refresh" size={16} className="text-kinetic-primary-electric" />
+                <span>Re-checked every 6 months</span>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* The couple stand in the right half of the frame, so the crop anchors
+            right to keep both of them clear of the feathered side. */}
+        <div className="relative mt-10 h-72 sm:h-96 lg:absolute lg:inset-0 lg:mt-0 lg:h-auto">
+          <Image
+            src="/healthy/hero-couple.jpg"
+            alt="A couple in their fifties hiking a coastal trail at sunrise"
+            fill
+            sizes="100vw"
+            className="animate-kinetic-hero-zoom object-cover object-right"
+            priority
+          />
+          <div
+            className="healthy-hero-feather absolute inset-0 bg-gradient-to-b from-white via-white/0 via-35% to-transparent"
+            aria-hidden="true"
+          />
+          {/* Caption legibility: a scrim on the small-screen band; on large screens a text
+              shadow instead, since a scrim there would grey the feathered copy side. */}
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/60 to-transparent lg:hidden" aria-hidden="true" />
+          <p className="absolute right-4 bottom-4 left-4 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6 lg:right-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]">
+            An active, evidence-checked routine for the decades ahead
+          </p>
         </div>
       </section>
 
