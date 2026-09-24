@@ -172,16 +172,11 @@ export default function HealthyHome() {
                 Brian&apos;s picks
               </span>
               <h2 id="picks-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-                Current picks
+                A pick for every goal
               </h2>
               <p className="mt-2 text-base text-slate-600">
-                One pick per job. Price, cost per serving, why it&apos;s the pick and its drawback,
-                right on the card.
+                Price, the reason and the catch, on every card.
               </p>
-            </div>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-700">
-              <span className="h-2 w-2 rounded-full bg-kinetic-teal" aria-hidden="true" />
-              <span>Re-checked every 6 months</span>
             </div>
           </div>
           <JobRail products={products} />

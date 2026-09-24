@@ -174,6 +174,11 @@ export const goals: {
    */
   section?: string;
   /**
+   * Short caveat shown wherever this goal is named alongside its supplement's
+   * main one (the picks rail), so a secondary angle never travels without it.
+   */
+  caveat?: string;
+  /**
    * Short eyebrow for the goal tile ("Cellular Energy"), distinct from the
    * supplement's own tagline — needed because creatine covers two different
    * goals (strength, focus) and each tile's eyebrow should name *this*
@@ -213,6 +218,7 @@ export const goals: {
     supplement: "creatine",
     icon: "target",
     section: "creatine",
+    caveat: "promising, not proven",
     eyebrowDetail: "Cognition",
     accent: "purple",
     image: "/healthy/goals/focus.jpg",
