@@ -41,3 +41,8 @@ test("still includes the home page and legal pages regardless of LAUNCHED", () =
   assert.ok(urls.includes(`${FAKE_SITE_URL}/legal/getbrianapp/privacy`));
   assert.ok(urls.includes(`${FAKE_SITE_URL}/legal/getbrianapp/terms`));
 });
+
+test("never lists the noindexed creator-notes page", () => {
+  const urls = sitemap().map((entry) => entry.url);
+  assert.ok(urls.every((url) => !url.includes("creator-notes")));
+});

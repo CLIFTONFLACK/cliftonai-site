@@ -3,6 +3,7 @@ import { Sora, Plus_Jakarta_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { LAUNCHED, PROGRAM_NAME } from "./data";
+import { Icon } from "./icons";
 
 /**
  * "Kinetic Longevity" type system, scoped to /healthy only — loaded here
@@ -63,9 +64,9 @@ export const metadata: Metadata = {
 };
 
 const nav = [
-  { href: "/healthy#picks", label: "3 Pillars" },
-  { href: "/healthy/method", label: "How We Choose" },
-  { href: "/healthy/about", label: "Research & About" },
+  { href: "/healthy#picks", label: "Brian's picks" },
+  { href: "/healthy/method", label: "How Brian picks" },
+  { href: "/healthy/about", label: "About" },
 ];
 
 const linkClass =
@@ -76,13 +77,6 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
     <div
       className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
-      {/* Material Symbols Outlined, used only within /healthy markup. Next
-          hoists this <link> into <head> automatically. */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet"
-      />
-
       {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
           The legal sentence and its link are unchanged from before this reskin. */}
       <div className="bg-slate-900 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
@@ -93,18 +87,6 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
             <Link href="/healthy/disclosures" className="font-semibold text-white underline hover:text-kinetic-teal-on-dark">
               How that works
             </Link>
-            <span className="text-slate-600">&middot;</span>
-            <Link href="/healthy/method" className="font-semibold text-white underline hover:text-amber-400">
-              Evidence-first pledge
-            </Link>
-          </div>
-          <div className="hidden items-center gap-3 text-[11px] font-bold uppercase tracking-wider text-slate-300 lg:flex">
-            <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-950/80 px-2.5 py-0.5 text-emerald-300">
-              <span className="material-symbols-outlined text-[13px]">verified</span> Peer-Reviewed Thresholds
-            </span>
-            <span className="inline-flex items-center gap-1 text-cyan-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" aria-hidden="true" /> Protocol Live 2026
-            </span>
           </div>
         </div>
       </div>
@@ -147,13 +129,8 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
             </ul>
           </nav>
 
-          <Link
-            href="/healthy#picks"
-            className="hidden items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(217,119,6,0.35)] transition-all hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-700 hover:shadow-[0_6px_20px_rgba(217,119,6,0.45)] sm:inline-flex"
-          >
-            Start Today
-            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-          </Link>
+          {/* No orange header button: orange is reserved for retailer (Buy) buttons, and on a
+              product page a second call to action here competed with Buy. */}
 
           {/* No-JS disclosure menu for small screens. */}
           <details className="group relative md:hidden">
@@ -183,10 +160,10 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
       <footer className="border-t border-border bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
           <div className="mb-8 flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-5">
-            <span className="material-symbols-outlined mt-0.5 shrink-0 text-[22px] text-amber-400">shield</span>
+            <Icon name="shield" size={22} className="mt-0.5 text-amber-400" />
             <div className="space-y-1">
               <p className="font-kinetic-heading text-xs font-extrabold uppercase tracking-wider text-white">
-                Statutory disclaimers &amp; clinical context
+                The small print
               </p>
               <p className="text-sm leading-relaxed text-slate-400">
                 General information only, not medical advice. Supplements are not a substitute for a
@@ -232,7 +209,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">
               <span>Re-checked every 6 months</span>
               <span className="text-slate-700">&middot;</span>
-              <span className="text-emerald-400">0% brand sponsorship</span>
+              <span className="text-emerald-400">No paid placements</span>
             </div>
           </div>
         </div>

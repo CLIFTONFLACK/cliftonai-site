@@ -5,6 +5,7 @@ import {
   BuyButton,
   FdaDisclaimer,
   GoalChooser,
+  ProductCard,
   SupplementCard,
   supplementHref,
 } from "../components.tsx";
@@ -97,15 +98,19 @@ test("BuyButton link opens in a new tab with sponsored/nofollow rel", () => {
   assert.equal(link.props.rel, "sponsored nofollow noopener");
 });
 
-test("BuyButton label stays brand-agnostic, naming no retailer", () => {
-  // The button used to interpolate product.retailer ("Check price at Acme
-  // Supplements"); that field was removed so no brand name is rendered here.
-  const product = baseProduct();
+// Clifton's call (2026-09-24, D2): the button names where it sends the reader,
+// taken from the data so a lineup change needs no code change.
+function buttonLabel(product: Product): string {
   const [link] = children(renderButton(product)) as [{ props: { children: unknown[] } }];
-  const visibleText = link.props.children
-    .filter((child): child is string => typeof child === "string")
-    .join("");
-  assert.equal(visibleText, "Check current price");
+  return link.props.children.filter((child) => typeof child === "string").join("");
+}
+
+test("BuyButton label names the brand when the link goes to the brand's own site", () => {
+  assert.equal(buttonLabel(baseProduct()), "Check price at Fixture Brand");
+});
+
+test("BuyButton label names the retailer when one is set, not the brand", () => {
+  assert.equal(buttonLabel(baseProduct({ retailer: "iHerb" })), "Check price at iHerb");
 });
 
 test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {
@@ -114,6 +119,37 @@ test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {
     el.props.children as string,
     /not intended to diagnose, treat, cure, or prevent any disease/,
   );
+});
+
+// ---------------------------------------------------------------------------
+// ProductCard — the "Read the full review" link's icon must not leak into
+// its accessible name (icons.tsx's whole reason for existing: see its file
+// comment about ligature words like "arrow_forward" being announced).
+// ---------------------------------------------------------------------------
+
+test('ProductCard "Read the full review" link has no text besides the label itself (icon excluded)', () => {
+  const product = baseProduct({ pros: ["Good"], cons: ["Bad"] });
+  const el = ProductCard({ product });
+  const articleKids = (el.props as { children: unknown[] }).children;
+  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
+  const readLink = contentDiv.props.children[contentDiv.props.children.length - 1] as {
+    props: { children: unknown[] };
+  };
+  const visibleText = readLink.props.children
+    .filter((child): child is string => typeof child === "string")
+    .join("");
+  assert.equal(visibleText, "Read the full review");
+});
+
+test("ProductCard shows the brand and format beneath the product name", () => {
+  const product = baseProduct({ brand: "Thorne", format: "Capsules" });
+  const el = ProductCard({ product });
+  const articleKids = (el.props as { children: unknown[] }).children;
+  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
+  // contentDiv children: [category span, h3 name, brand/format p, price row, summary, dl, buy button div, read-more link]
+  const brandFormatP = contentDiv.props.children[2] as { type: string; props: { children: unknown[] } };
+  assert.equal(brandFormatP.type, "p");
+  assert.deepEqual(brandFormatP.props.children, ["Thorne", " · ", "Capsules"]);
 });
 
 // ---------------------------------------------------------------------------
@@ -198,7 +234,10 @@ for (const [i, goal] of goals.entries()) {
     const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
     const anchor = items[i].props.children;
     const s = getSupplement(goal.supplement);
-    assert.equal(anchor.props.href, supplementHref(s) ?? `#${s.id}`);
+    const review = supplementHref(s);
+    // A goal with a `section` lands on that part of the review (focus lands on creatine's caveat).
+    const expected = review ? (goal.section ? `${review}#${goal.section}` : review) : `#${s.id}`;
+    assert.equal(anchor.props.href, expected);
   });
 
   test(`GoalChooser tile for goal "${goal.id}" shows its own label and hook text`, () => {
@@ -214,6 +253,40 @@ for (const [i, goal] of goals.entries()) {
     assert.equal(hookParagraph.props.children, goal.hook);
   });
 }
+
+/**
+ * Concrete hrefs against the real data, rather than re-deriving the
+ * implementation's own href formula (the loop above does that, and would
+ * pass even if both GoalChooser and the test flipped the same bug the same
+ * way). These pin the actual strings a shopper's browser would navigate to.
+ */
+test('GoalChooser "focus" goal links to the creatine review with a #creatine anchor', () => {
+  const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
+  const focusIndex = goals.findIndex((g) => g.id === "focus");
+  const anchor = items[focusIndex].props.children;
+  assert.equal(anchor.props.href, "/healthy/products/thorne-creatine-stick-packs#creatine");
+});
+
+test('GoalChooser "strength" goal links to the same creatine review with no hash', () => {
+  const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
+  const strengthIndex = goals.findIndex((g) => g.id === "strength");
+  const anchor = items[strengthIndex].props.children;
+  assert.equal(anchor.props.href, "/healthy/products/thorne-creatine-stick-packs");
+});
+
+test('GoalChooser "energy" goal links to the magnesium review with no hash', () => {
+  const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
+  const energyIndex = goals.findIndex((g) => g.id === "energy");
+  const anchor = items[energyIndex].props.children;
+  assert.equal(anchor.props.href, "/healthy/products/thorne-magnesium-glycinate");
+});
+
+test('GoalChooser "calm" goal links to the l-theanine review with no hash', () => {
+  const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
+  const calmIndex = goals.findIndex((g) => g.id === "calm");
+  const anchor = items[calmIndex].props.children;
+  assert.equal(anchor.props.href, "/healthy/products/thorne-theanine");
+});
 
 // ---------------------------------------------------------------------------
 // SupplementCard
