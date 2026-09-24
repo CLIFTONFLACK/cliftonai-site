@@ -464,9 +464,10 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 /* /healthy hero photo, large screens: solid white under the copy column, then a
    fade to the photo. The fade is anchored to the column's real right edge, not a
    share of the viewport: max-w-6xl container, sm:px-6 gutter and a 36rem column
-   put that edge at max(37.5rem, 50vw + 1.5rem). Percentage stops let the fade
-   creep under the copy between widths (paragraph 4.3:1, trust line 3.6:1 at
-   1280-1600px, measured), so the copy never sits on the photo at any width. */
+   put that edge at max(37.5rem, 50vw + 1.5rem). An earlier version used
+   percentage stops, which let the fade creep under the copy (paragraph 4.3:1,
+   trust line 3.6:1 at 1280-1600px); anchored to the edge, the copy sits on
+   solid white at every width (7.6:1, measured 1024-2560px). */
 @media (min-width: 64rem) {
   .healthy-hero-feather {
     --copy-edge: max(37.5rem, calc(50vw + 1.5rem));
