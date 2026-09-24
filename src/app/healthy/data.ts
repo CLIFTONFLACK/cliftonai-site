@@ -74,6 +74,12 @@ export type Product = {
   /** Set when a programme approves us. Takes precedence over brandUrl. */
   affiliateUrl: string | null;
   /**
+   * Who the Buy button sends the reader to, when that is not the brand itself
+   * (for example an iHerb affiliate link replacing brandUrl). Leave unset while
+   * the button goes to the brand's own site.
+   */
+  retailer?: string;
+  /**
    * Whether this programme's terms allow the affiliate link to sit behind our
    * own /healthy/go redirect. Some forbid it outright (iHerb's terms, Nov 2025:
    * "You may not use redirect links", with commission forfeited). Leave false
@@ -581,6 +587,11 @@ export function outboundUrl(p: Product): string {
  */
 export function usesRedirect(p: Product): boolean {
   return p.affiliateUrl === null || p.redirectAllowed;
+}
+
+/** The shop the Buy button leads to, named on the button: the brand unless `retailer` says otherwise. */
+export function retailerName(p: Product): string {
+  return p.retailer ?? p.brand;
 }
 
 /** The href the Buy button renders. */

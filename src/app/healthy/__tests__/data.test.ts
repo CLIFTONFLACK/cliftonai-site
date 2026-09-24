@@ -9,6 +9,7 @@ import {
   gradeLabels,
   outboundUrl,
   products,
+  retailerName,
   supplementFor,
   supplements,
   TAGLINE,
@@ -178,6 +179,28 @@ test("totalDailyCost returns null the moment any pick's price is unverified", ()
     products.pop();
     products.push(removed);
   }
+});
+
+// ---------------------------------------------------------------------------
+// retailerName
+// ---------------------------------------------------------------------------
+
+test("retailerName falls back to the brand when no retailer is set", () => {
+  const product = baseProduct({ brand: "Thorne", retailer: undefined });
+  assert.equal(retailerName(product), "Thorne");
+});
+
+test("retailerName uses the retailer when one is set, overriding the brand", () => {
+  const product = baseProduct({ brand: "Thorne", retailer: "iHerb" });
+  assert.equal(retailerName(product), "iHerb");
+});
+
+test("retailerName treats an empty string retailer as unset and falls back to the brand", () => {
+  // "" is falsy but not null/undefined; `??` only falls back on null/undefined,
+  // so this pins that an empty-string retailer is *not* silently coerced —
+  // it would render as "Check price at " if the fallback used `||` instead.
+  const product = baseProduct({ brand: "Thorne", retailer: "" });
+  assert.equal(retailerName(product), "");
 });
 
 // ---------------------------------------------------------------------------

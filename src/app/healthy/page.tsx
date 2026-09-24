@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FdaDisclaimer, GoalChooser, ProductCard, GradeBadge } from "./components";
 import { Icon } from "./icons";
+import { signupEnabled } from "./newsletter";
+import { Signup } from "./signup";
 import {
   PROGRAM_NAME,
   TAGLINE,
@@ -211,6 +213,15 @@ export default function HealthyHome() {
           </ul>
         </div>
       </section>
+
+      {/* EMAIL UPDATES: shown only once the Resend variables are set (see newsletter.ts). */}
+      {signupEnabled() && (
+        <section aria-labelledby="updates-heading" className="border-b border-slate-200 bg-white pb-16 sm:pb-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <Signup />
+          </div>
+        </section>
+      )}
 
       {/* WHY THESE PICKS + METHODOLOGY */}
       <section aria-labelledby="why-heading" className="border-b border-slate-200 bg-slate-50 py-16 sm:py-24">

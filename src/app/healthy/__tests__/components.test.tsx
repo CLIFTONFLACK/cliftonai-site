@@ -98,15 +98,19 @@ test("BuyButton link opens in a new tab with sponsored/nofollow rel", () => {
   assert.equal(link.props.rel, "sponsored nofollow noopener");
 });
 
-test("BuyButton label stays brand-agnostic, naming no retailer", () => {
-  // The button used to interpolate product.retailer ("Check price at Acme
-  // Supplements"); that field was removed so no brand name is rendered here.
-  const product = baseProduct();
+// Clifton's call (2026-09-24, D2): the button names where it sends the reader,
+// taken from the data so a lineup change needs no code change.
+function buttonLabel(product: Product): string {
   const [link] = children(renderButton(product)) as [{ props: { children: unknown[] } }];
-  const visibleText = link.props.children
-    .filter((child): child is string => typeof child === "string")
-    .join("");
-  assert.equal(visibleText, "Check current price");
+  return link.props.children.filter((child) => typeof child === "string").join("");
+}
+
+test("BuyButton label names the brand when the link goes to the brand's own site", () => {
+  assert.equal(buttonLabel(baseProduct()), "Check price at Fixture Brand");
+});
+
+test("BuyButton label names the retailer when one is set, not the brand", () => {
+  assert.equal(buttonLabel(baseProduct({ retailer: "iHerb" })), "Check price at iHerb");
 });
 
 test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {
@@ -135,6 +139,17 @@ test('ProductCard "Read the full review" link has no text besides the label itse
     .filter((child): child is string => typeof child === "string")
     .join("");
   assert.equal(visibleText, "Read the full review");
+});
+
+test("ProductCard shows the brand and format beneath the product name", () => {
+  const product = baseProduct({ brand: "Thorne", format: "Capsules" });
+  const el = ProductCard({ product });
+  const articleKids = (el.props as { children: unknown[] }).children;
+  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
+  // contentDiv children: [category span, h3 name, brand/format p, price row, summary, dl, buy button div, read-more link]
+  const brandFormatP = contentDiv.props.children[2] as { type: string; props: { children: unknown[] } };
+  assert.equal(brandFormatP.type, "p");
+  assert.deepEqual(brandFormatP.props.children, ["Thorne", " · ", "Capsules"]);
 });
 
 // ---------------------------------------------------------------------------

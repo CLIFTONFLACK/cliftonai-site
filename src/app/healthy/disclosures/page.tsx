@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: { ...healthyOpenGraph, title, description, url: "/healthy/disclosures" },
 };
 
-const UPDATED = "September 17, 2026";
+const UPDATED = "September 24, 2026";
 
 export default function DisclosuresPage() {
   return (
@@ -65,12 +65,19 @@ export default function DisclosuresPage() {
               company using similar names. Product and brand names belong to their owners.
             </p>
 
-            <h2>Privacy</h2>
+            <h2 id="privacy">Privacy</h2>
             <p>
-              These pages do not ask for personal information. When you click a link to a retailer,
-              we count the click against the product, without recording who you are. Retailers and
-              affiliate networks set their own cookies once you reach their sites, under their own
-              privacy policies.
+              When you click a link to a retailer, we count the click against the product, without
+              recording who you are. Retailers and affiliate networks set their own cookies once you
+              reach their sites, under their own privacy policies.
+            </p>
+            <p>
+              The only personal information these pages ask for is an email address, and only if you
+              sign up to hear when a pick changes. It is used for nothing else: at most two emails a
+              year, sent through our email provider, Resend, which stores the address for us. You are
+              added only after you confirm from the email we send, every update has an unsubscribe
+              link, and you can ask us to delete your address at any time by emailing{" "}
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
 
             <h2>Contact</h2>

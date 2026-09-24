@@ -7,6 +7,7 @@ import {
   goals,
   gradeLabels,
   products,
+  retailerName,
   supplementFor,
   topGrade,
   type EvidenceGrade,
@@ -73,7 +74,7 @@ export function BuyButton({ product, from }: { product: Product; from: string })
         rel="sponsored nofollow noopener"
         className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-fg shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
       >
-        Check current price
+        Check price at {retailerName(product)}
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
       <p className="text-sm leading-relaxed text-fg-subtle" data-affiliate-disclosure>
@@ -177,7 +178,9 @@ export function ProductCard({ product }: { product: Product }) {
             {product.name}
           </Link>
         </h3>
-        <p className="mb-4 text-xs font-semibold text-slate-500">{product.format}</p>
+        <p className="mb-4 text-xs font-semibold text-slate-500">
+          {product.brand} &middot; {product.format}
+        </p>
 
         <div className="mb-4 flex items-baseline gap-2 rounded-xl border border-slate-200/80 bg-slate-50 p-3">
           {product.priceUsd !== null ? (
