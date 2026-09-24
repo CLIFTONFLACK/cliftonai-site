@@ -9,7 +9,7 @@ import {
   SupplementCard,
   supplementHref,
 } from "../components.tsx";
-import { buyHref, getSupplement, goals, products, type Product, type Supplement } from "../data.ts";
+import { buyHref, getSupplement, goals, products, tileGoals, type Product, type Supplement } from "../data.ts";
 
 function baseProduct(overrides: Partial<Product> = {}): Product {
   return {
@@ -224,12 +224,20 @@ function listItems(ul: ReturnType<typeof GoalChooser>): unknown[] {
   return Array.isArray(kids) ? kids : [kids];
 }
 
-test("GoalChooser renders exactly one list item per goal", () => {
+test("GoalChooser renders one tile per shown goal: energy, strength, calm", () => {
   const items = listItems(GoalChooser());
-  assert.equal(items.length, goals.length);
+  assert.equal(items.length, tileGoals.length);
+  assert.deepEqual(tileGoals.map((g) => g.id), ["energy", "strength", "calm"]);
 });
 
-for (const [i, goal] of goals.entries()) {
+test("Focus has no homepage tile but stays a creatine goal (rail and review page)", () => {
+  assert.equal(tileGoals.some((g) => g.id === "focus"), false);
+  const focus = goals.find((g) => g.id === "focus");
+  assert.ok(focus, "focus goal still exists in data");
+  assert.equal(focus.supplement, "creatine");
+});
+
+for (const [i, goal] of tileGoals.entries()) {
   test(`GoalChooser link for goal "${goal.id}" points straight at that supplement's review`, () => {
     const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
     const anchor = items[i].props.children;
@@ -260,30 +268,23 @@ for (const [i, goal] of goals.entries()) {
  * pass even if both GoalChooser and the test flipped the same bug the same
  * way). These pin the actual strings a shopper's browser would navigate to.
  */
-test('GoalChooser "focus" goal links to the creatine review with a #creatine anchor', () => {
-  const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
-  const focusIndex = goals.findIndex((g) => g.id === "focus");
-  const anchor = items[focusIndex].props.children;
-  assert.equal(anchor.props.href, "/healthy/products/thorne-creatine-stick-packs#creatine");
-});
-
 test('GoalChooser "strength" goal links to the same creatine review with no hash', () => {
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
-  const strengthIndex = goals.findIndex((g) => g.id === "strength");
+  const strengthIndex = tileGoals.findIndex((g) => g.id === "strength");
   const anchor = items[strengthIndex].props.children;
   assert.equal(anchor.props.href, "/healthy/products/thorne-creatine-stick-packs");
 });
 
 test('GoalChooser "energy" goal links to the magnesium review with no hash', () => {
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
-  const energyIndex = goals.findIndex((g) => g.id === "energy");
+  const energyIndex = tileGoals.findIndex((g) => g.id === "energy");
   const anchor = items[energyIndex].props.children;
   assert.equal(anchor.props.href, "/healthy/products/thorne-magnesium-glycinate");
 });
 
 test('GoalChooser "calm" goal links to the l-theanine review with no hash', () => {
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
-  const calmIndex = goals.findIndex((g) => g.id === "calm");
+  const calmIndex = tileGoals.findIndex((g) => g.id === "calm");
   const anchor = items[calmIndex].props.children;
   assert.equal(anchor.props.href, "/healthy/products/thorne-theanine");
 });

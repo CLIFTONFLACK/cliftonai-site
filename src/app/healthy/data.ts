@@ -179,6 +179,11 @@ export const goals: {
    */
   caveat?: string;
   /**
+   * False keeps the goal off the homepage tiles while it still appears on its
+   * review page and in the picks rail (Clifton, 2026-09-24: no Focus tile).
+   */
+  showTile?: boolean;
+  /**
    * Short eyebrow for the goal tile ("Cellular Energy"), distinct from the
    * supplement's own tagline — needed because creatine covers two different
    * goals (strength, focus) and each tile's eyebrow should name *this*
@@ -218,6 +223,7 @@ export const goals: {
     supplement: "creatine",
     icon: "target",
     section: "creatine",
+    showTile: false,
     caveat: "promising, not proven",
     eyebrowDetail: "Cognition",
     accent: "purple",
@@ -236,6 +242,9 @@ export const goals: {
     imageAlt: "A man reading by lamplight in the evening",
   },
 ];
+
+/** The goals shown as homepage tiles, in order. */
+export const tileGoals = goals.filter((g) => g.showTile !== false);
 
 export function getSupplement(id: Supplement["id"]): Supplement {
   const s = supplements.find((x) => x.id === id);

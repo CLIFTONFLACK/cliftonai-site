@@ -4,7 +4,7 @@ import {
   buyHref,
   costPerServing,
   getSupplement,
-  goals,
+  tileGoals,
   gradeLabels,
   products,
   retailerName,
@@ -262,8 +262,8 @@ const GOAL_ACCENT_TEXT: Record<GoalAccent, string> = {
 /** "What do you want more of?" Each tile links straight to that goal's review. */
 export function GoalChooser() {
   return (
-    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {goals.map((goal) => {
+    <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {tileGoals.map((goal) => {
         const s = getSupplement(goal.supplement);
         const review = supplementHref(s);
         const href = review ? (goal.section ? `${review}#${goal.section}` : review) : `#${s.id}`;
