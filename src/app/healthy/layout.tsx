@@ -72,6 +72,9 @@ const nav = [
 const linkClass =
   "inline-flex min-h-11 items-center rounded-lg px-3 text-base font-medium text-fg-muted transition-colors duration-200 hover:text-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric";
 
+/** Nav links inside the floating pill: rounded to match it, with a teal tint on hover. */
+const pillLinkClass = `${linkClass} rounded-full! hover:bg-kinetic-primary-light`;
+
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -91,76 +94,56 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </div>
       </div>
 
-      {/* Opaque, not frosted: the Healthy mark's counter is white, so over a
-          see-through header it showed as a white patch whenever the dark goal
-          tiles scrolled underneath. */}
-      <header className="sticky top-0 z-40 border-b border-border bg-bg">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link
-            href="/healthy"
-            className="flex min-h-11 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
-          >
-            {/* A pre-sized 3x PNG served as-is: next/image would re-encode the
-                flat logo at quality 75 and soften its edges. */}
-            <Image
-              src="/healthy/brand/healthy-mark.png"
-              alt=""
-              aria-hidden="true"
-              width={66}
-              height={56}
-              loading="eager"
-              unoptimized
-              className="h-12 w-auto sm:h-14"
-            />
-            <span className="font-kinetic-heading text-xl leading-tight font-extrabold tracking-tight text-brand-navy sm:text-2xl">
-              GetBrian <span className="text-kinetic-primary-electric">Healthy</span>
-            </span>
-          </Link>
-
-          <nav aria-label="Healthy" className="hidden md:block">
-            <ul className="flex items-center gap-1">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className={linkClass}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* No orange header button: orange is reserved for retailer (Buy) buttons, and on a
-              product page a second call to action here competed with Buy. */}
-
-          {/* No-JS disclosure menu for small screens. */}
-          <details className="group relative md:hidden">
-            <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-border-strong px-4 font-medium text-brand-navy [&::-webkit-details-marker]:hidden">
-              Menu
-            </summary>
-            <nav
-              aria-label="Healthy"
-              className="absolute right-0 z-50 mt-2 w-56 rounded-xl border border-border bg-bg p-2 shadow-lg"
-            >
-              <ul>
+      {/* Floating nav: the links only, in a pill that rides over the page. No
+          logo here on purpose: the landing hero carries the big brand lockup,
+          and a second one in a bar above it competed with it. The sticky
+          wrapper is zero-height so it takes no space; <main>'s top padding
+          keeps the pill clear of each page's first line. */}
+      <header className="pointer-events-none sticky top-0 z-40 h-0">
+        <div className="mx-auto mt-3 flex max-w-6xl justify-end px-4 sm:px-6">
+          <div className="pointer-events-auto flex items-center rounded-full border border-slate-200/80 bg-white/85 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md">
+            <nav aria-label="Healthy" className="hidden md:block">
+              <ul className="flex items-center gap-1">
                 {nav.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className={`${linkClass} w-full`}>
+                    <Link href={item.href} className={pillLinkClass}>
                       {item.label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
-          </details>
+
+            {/* No-JS disclosure menu for small screens. */}
+            <details className="group relative md:hidden">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-full px-5 font-semibold text-brand-navy [&::-webkit-details-marker]:hidden">
+                Menu
+              </summary>
+              <nav
+                aria-label="Healthy"
+                className="absolute right-0 z-50 mt-3 w-56 rounded-2xl border border-border bg-bg p-2 shadow-lg"
+              >
+                <ul>
+                  {nav.map((item) => (
+                    <li key={item.href}>
+                      <Link href={item.href} className={`${linkClass} w-full`}>
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </details>
+          </div>
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pt-16">{children}</main>
 
       <footer className="border-t border-border bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
           <div className="mb-8 flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-5">
-            <Icon name="shield" size={22} className="mt-0.5 text-amber-400" />
+            <Icon name="shield" size={22} className="mt-0.5 text-kinetic-teal-on-dark" />
             <div className="space-y-1">
               <p className="font-kinetic-heading text-xs font-extrabold uppercase tracking-wider text-white">
                 The small print
@@ -209,7 +192,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">
               <span>Re-checked every 6 months</span>
               <span className="text-slate-700">&middot;</span>
-              <span className="text-emerald-400">No paid placements</span>
+              <span className="text-kinetic-teal-on-dark">No paid placements</span>
             </div>
           </div>
         </div>

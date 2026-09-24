@@ -5,8 +5,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
- * Everywhere the /healthy/brand/*.png marks are declared: the sticky header
- * and footer (layout.tsx), the hero lockup (page.tsx), and the animated mark
+ * Everywhere the /healthy/brand/*.png marks are declared: the footer tile
+ * (layout.tsx), the hero lockup (page.tsx), and the animated mark
  * (logo-animation.tsx). Read as source text for the same reason
  * brand-assets.test.ts does (layout.tsx imports next/font/google, which the
  * plain node:test loader can't execute).

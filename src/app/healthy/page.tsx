@@ -102,12 +102,12 @@ export default function HealthyHome() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link href="#picks" className={primaryCta}>
                   Get Brian&apos;s picks
-                  <Icon name="arrow" size={20} className="ml-2 text-amber-400" />
+                  <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
                 </Link>
               </div>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600">
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Icon name="badgeCheck" size={16} className="text-emerald-600" />
+                  <Icon name="badgeCheck" size={16} className="text-kinetic-primary-electric" />
                   <span>No paid placements</span>
                 </div>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
@@ -115,7 +115,7 @@ export default function HealthyHome() {
                   <span>Dose checked against the research</span>
                 </div>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Icon name="refresh" size={16} className="text-amber-500" />
+                  <Icon name="refresh" size={16} className="text-kinetic-primary-electric" />
                   <span>Re-checked every 6 months</span>
                 </div>
               </div>

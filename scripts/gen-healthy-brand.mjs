@@ -7,10 +7,11 @@
  * The Healthy logo is the GetBrian B/G with teal circuit traces, a teal medical
  * cross and a teal swoosh where the masterbrand has gold. It was delivered as a
  * 1254px transparent raster (an app icon with its tile knocked out), and unlike
- * the masterbrand mark it is not traced: at the sizes /healthy shows it (a ~48px
- * header mark on 2x screens) the raster keeps its traces and cross legible.
+ * the masterbrand mark it is not traced: at the sizes /healthy shows it (a 34px
+ * footer tile up to the 112px hero lockup) the raster keeps its traces and cross
+ * legible.
  * Outputs, all under public/healthy/brand/:
- *   healthy-mark.png     transparent, tightly cropped, 3x the header size
+ *   healthy-mark.png     transparent, tightly cropped (used in the footer tile)
  *   healthy-mark-lg.png  the same at 3x the landing-page hero lockup
  *   healthy-mark-solo.png  the mark with its traces, terminals and cross painted
  *                        out, for logo-animation.tsx to redraw them as SVG
@@ -47,8 +48,9 @@ const OUT = path.join(root, "public", "healthy", "brand");
  */
 const ALPHA_FLOOR = 8;
 
-/** Heights of the web marks, each 3x its display size: the header draws the mark
- *  56px tall, the landing-page hero lockup 112px, the logo animation 160px. The
+/** Heights of the web marks. healthy-mark.png is now drawn only in the footer
+ *  tile (34px; it was sized for the old 56px header mark, since removed), the
+ *  landing-page hero lockup at 112px (3x here), the logo animation at 160px. The
  *  site serves them `unoptimized`, because next/image would re-encode a flat
  *  logo at quality 75 and soften its edges. */
 const MARK_H = 168;
@@ -284,7 +286,12 @@ const record = (name, buf) => {
 };
 
 record("healthy-mark.png", mark);
-record("healthy-mark-lg.png", await png(display.png, MARK_LG_H));
+// Palette-quantised like the solo cut: it loads eagerly above the fold, and at
+// full colour it was heavier (~150KB) than the hero photo it sits beside.
+record(
+  "healthy-mark-lg.png",
+  await sharp(display.png).resize({ height: MARK_LG_H }).png({ palette: true, colours: 256, compressionLevel: 9 }).toBuffer()
+);
 // Palette-quantised: the full-colour file is ~230KB for a below-the-fold image,
 // and the solo cut is flat navy/white with soft edges that 256 colours hold.
 record(

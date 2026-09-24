@@ -122,10 +122,17 @@ test("healthy-mark.png file exists in public/", () => {
   assert.ok(existsSync(absoluteFromPublic("/healthy/brand/healthy-mark.png")));
 });
 
-test("layout header and footer both reference the Healthy mark image", () => {
+test("layout shows the Healthy mark once, in the footer tile", () => {
   const occurrences = layoutSource.match(/\/healthy\/brand\/healthy-mark\.png/g) ?? [];
-  // Once for the sticky header <Image>, once for the footer tile <Image>.
-  assert.equal(occurrences.length, 2);
+  // The floating header is links only (the landing hero carries the lockup),
+  // so the footer tile is the layout's one mark.
+  assert.equal(occurrences.length, 1);
+});
+
+test("the floating header carries no logo image", () => {
+  const header = layoutSource.slice(layoutSource.indexOf("<header"), layoutSource.indexOf("</header>"));
+  assert.ok(header.length > 0, "expected a <header> in layout.tsx");
+  assert.doesNotMatch(header, /<Image\b/);
 });
 
 test("layout no longer references the masterbrand mark", () => {
