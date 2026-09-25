@@ -541,7 +541,7 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 
 /* Pick loop (healthy/pick-loop.tsx): pulses that travel the ring for good, so
    the process reads as never finished. Pure decoration: hidden under reduced
-   motion, where the ring, chevrons and re-check label still show the loop. */
+   motion, where the ring and chevrons still show the loop. */
 .healthy-loop-dot {
   --healthy-loop-lap: 14s;
   offset-rotate: 0deg;
@@ -554,6 +554,73 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   }
   to {
     offset-distance: 100%;
+  }
+}
+
+/* The mark feeding each step. One 10s round = 5 steps x SPOKE_STAGGER_S (2s)
+   in pick-loop.tsx; keep the two in step. Each spoke's pulse runs out from the
+   mark to its card, pauses while the card's icon lights, then runs back. The
+   hub glows each time a pulse leaves. Static spokes remain under reduced motion. */
+.healthy-spoke-dot {
+  offset-rotate: 0deg;
+  opacity: 0;
+  animation: healthy-spoke-travel 10s ease-in-out infinite both;
+}
+
+@keyframes healthy-spoke-travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  9%,
+  11% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  19% {
+    opacity: 1;
+  }
+  20%,
+  100% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+}
+
+.healthy-step-glow {
+  animation: healthy-step-glow 10s ease-out infinite both;
+}
+
+@keyframes healthy-step-glow {
+  0%,
+  7%,
+  24%,
+  100% {
+    background-color: var(--kinetic-primary);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  10%,
+  14% {
+    background-color: var(--kinetic-teal);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--kinetic-teal) 25%, transparent);
+  }
+}
+
+.healthy-hub-glow {
+  opacity: 0;
+  animation: healthy-hub-glow 2s ease-out infinite both;
+}
+
+@keyframes healthy-hub-glow {
+  0% {
+    opacity: 0.16;
+  }
+  60%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -732,6 +799,15 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 
   .healthy-loop-dot {
     display: none;
+  }
+
+  .healthy-spoke-dot,
+  .healthy-hub-glow {
+    display: none;
+  }
+
+  .healthy-step-glow {
+    animation: none !important;
   }
 
   /* RailReveal doesn't arm under reduced motion; this covers a preference

@@ -219,3 +219,53 @@ test(".healthy-loop-dot is set to display: none inside a prefers-reduced-motion 
   assert.ok(block, "expected a prefers-reduced-motion block mentioning .healthy-loop-dot");
   assert.match(block!, /\.healthy-loop-dot\s*\{\s*display:\s*none\s*;\s*\}/);
 });
+
+// ---------------------------------------------------------------------------
+// The mark feeds each step: one spoke and one travelling pulse per step, and
+// each card's icon glows on the same clock as its spoke's pulse.
+// ---------------------------------------------------------------------------
+
+function spokeGroup(): { glow: El; spokes: El[]; dots: El[] } {
+  const { svg } = desktopParts();
+  const g = (svg.props.children as unknown[])[3] as El;
+  const [glow, spokes, dots] = g.props.children as [El, El[], El[]];
+  return { glow, spokes, dots };
+}
+
+test("desktop ring draws a spoke from the mark to every step", () => {
+  const { glow, spokes } = spokeGroup();
+  assert.equal(glow.props.className, "healthy-hub-glow");
+  assert.equal(spokes.length, 5);
+  assert.equal(new Set(spokes.map((s) => s.props.d)).size, 5);
+});
+
+test("each spoke carries one pulse, staggered 2s apart in step order", () => {
+  const { spokes, dots } = spokeGroup();
+  assert.equal(dots.length, 5);
+  dots.forEach((dot, k) => {
+    const style = dot.props.style as { offsetPath: string; animationDelay: string };
+    assert.equal(dot.props.className, "healthy-spoke-dot");
+    assert.equal(style.offsetPath, `path('${spokes[k].props.d}')`);
+    assert.equal(style.animationDelay, `${k * 2}s`);
+  });
+});
+
+test("each step card's icon glows on its own spoke's clock, in both layouts", () => {
+  for (const cards of [desktopStepCardEls(), mobileStepCardEls()]) {
+    cards.forEach((card, k) => {
+      const iconRow = (card.props.children as El[])[0];
+      const badge = (iconRow.props.children as El[])[0];
+      assert.match(badge.props.className as string, /\bhealthy-step-glow\b/);
+      assert.equal((badge.props.style as { animationDelay: string }).animationDelay, `${k * 2}s`);
+    });
+  }
+});
+
+test("spoke pulses and the hub glow are hidden under reduced motion", () => {
+  const rule = /\.healthy-spoke-dot,\s*\.healthy-hub-glow\s*\{\s*display:\s*none;/.exec(css);
+  assert.ok(rule, "expected a rule hiding .healthy-spoke-dot and .healthy-hub-glow");
+  const mediaStart = css.lastIndexOf("@media (prefers-reduced-motion: reduce)", rule.index);
+  assert.ok(mediaStart >= 0, "rule must follow a prefers-reduced-motion block's opening");
+  // A closing brace at column 0 between the two would mean the media block ended first.
+  assert.doesNotMatch(css.slice(mediaStart, rule.index), /\n\}/);
+});

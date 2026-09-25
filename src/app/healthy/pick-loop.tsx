@@ -36,6 +36,20 @@ const pct = ({ x, y }: { x: number; y: number }) => ({ left: `${(x / W) * 100}%`
 // Clockwise on screen (y grows downward), starting at the top of the ring.
 const RING = `M ${CX} ${CY - RY} A ${RX} ${RY} 0 1 1 ${CX - 0.01} ${CY - RY} Z`;
 
+// Spokes: the mark feeds each step and hears back. Each runs from just outside
+// the mark (an ellipse roughly its size) to the step card's centre, where the
+// card itself covers the end of the line.
+const HUB_RX = 150;
+const HUB_RY = 125;
+const spoke = (k: number) => {
+  const a = angle(k);
+  const end = point(a);
+  return `M ${CX + HUB_RX * Math.cos(a)} ${CY + HUB_RY * Math.sin(a)} L ${end.x} ${end.y}`;
+};
+
+/** Seconds between one spoke's pulse and the next; the steps take turns, clockwise. */
+export const SPOKE_STAGGER_S = 2;
+
 /** A chevron on the ring halfway between step k and the next, pointing the way the loop runs. */
 function chevron(k: number) {
   const a = (angle(k) + angle(k + 1)) / 2;
@@ -78,6 +92,34 @@ export function PickLoop() {
               style={{ offsetPath: `path('${RING}')`, animationDelay: `calc(var(--healthy-loop-lap) * -${phase})` }}
             />
           ))}
+          {/* The mark feeding each step: a glow behind it, a spoke to every card,
+              and a pulse that runs out along each spoke and back, one step at a time. */}
+          <g>
+            <ellipse cx={CX} cy={CY} rx={HUB_RX} ry={HUB_RY} fill="var(--kinetic-teal)" className="healthy-hub-glow" />
+            {STEPS.map((_, k) => (
+              <path
+                key={`spoke-${k}`}
+                d={spoke(k)}
+                fill="none"
+                stroke="var(--kinetic-teal)"
+                strokeOpacity={0.3}
+                strokeWidth={2}
+                strokeDasharray="2 8"
+                strokeLinecap="round"
+              />
+            ))}
+            {STEPS.map((_, k) => (
+              <circle
+                key={`spoke-dot-${k}`}
+                r={6}
+                fill="var(--kinetic-teal)"
+                stroke="#fff"
+                strokeWidth={2.5}
+                className="healthy-spoke-dot"
+                style={{ offsetPath: `path('${spoke(k)}')`, animationDelay: `${k * SPOKE_STAGGER_S}s` }}
+              />
+            ))}
+          </g>
         </svg>
 
         {/* The mark in the middle. */}
@@ -123,7 +165,11 @@ function StepCard({ step, n }: { step: Step; n: number }) {
       className={`rounded-xl border bg-white p-4 shadow-sm ${step.human ? "border-2 border-kinetic-teal/50" : "border-slate-200"}`}
     >
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-kinetic-primary text-white">
+        {/* Lights up as the mark's pulse reaches this step (same timing as its spoke). */}
+        <span
+          className="healthy-step-glow flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-kinetic-primary text-white"
+          style={{ animationDelay: `${(n - 1) * SPOKE_STAGGER_S}s` }}
+        >
           <Icon name={step.icon} size={16} />
         </span>
         <span className="text-[11px] font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
