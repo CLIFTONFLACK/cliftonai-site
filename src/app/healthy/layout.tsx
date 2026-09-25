@@ -68,19 +68,46 @@ const nav = [
   { href: "/healthy#picks", label: "Brian's picks" },
   { href: "/healthy/method", label: "How Brian picks" },
   { href: "/healthy/about", label: "About" },
+  { href: "/healthy/about#contact", label: "Contact" },
 ];
 
 const linkClass =
   "inline-flex min-h-11 items-center rounded-lg px-3 text-base font-medium text-fg-muted transition-colors duration-200 hover:text-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric";
 
-/** Nav links inside the floating pill: rounded to match it, with a teal tint on hover. */
-const pillLinkClass = `${linkClass} rounded-full! hover:bg-kinetic-primary-light`;
+/** Links in the left sidebar: full-width rows with a teal tint on hover. */
+const sideLinkClass = `${linkClass} w-full px-4 hover:bg-kinetic-primary-light`;
 
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
+      {/* Large screens: a flat vertical menu fixed down the left edge; the rest
+          of the page sits to its right (lg:pl-56 below). */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-56 flex-col border-r border-slate-200 bg-white px-3 py-6 lg:flex">
+        <Link
+          href="/healthy"
+          className="mb-6 flex min-h-11 items-center gap-2 rounded-lg px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+        >
+          <Image src="/healthy/brand/healthy-mark.png" alt="" aria-hidden="true" width={40} height={34} unoptimized className="h-7 w-auto" />
+          <span className="font-kinetic-heading text-base leading-tight font-extrabold text-kinetic-primary">
+            GetBrian <span className="text-kinetic-primary-electric">Healthy</span>
+          </span>
+        </Link>
+        <nav aria-label="Healthy">
+          <ul className="space-y-1">
+            {nav.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className={sideLinkClass}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      <div className="flex flex-1 flex-col lg:pl-56">
       {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
           The legal sentence and its link are unchanged from before this reskin. */}
       <div className="bg-slate-900 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
@@ -95,28 +122,14 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </div>
       </div>
 
-      {/* Floating nav: the links only, in a pill that rides over the page. No
-          logo here on purpose: the landing hero carries the big brand lockup,
-          and a second one in a bar above it competed with it. The sticky
-          wrapper is zero-height so it takes no space; <main>'s top padding
-          keeps the pill clear of each page's first line. */}
-      <header className="pointer-events-none sticky top-0 z-40 h-0">
+      {/* Small screens: a floating Menu button (the sidebar above takes over
+          from lg). The sticky wrapper is zero-height so it takes no space;
+          <main>'s top padding keeps it clear of each page's first line. */}
+      <header className="pointer-events-none sticky top-0 z-40 h-0 lg:hidden">
         <div className="mx-auto mt-3 flex max-w-6xl justify-end px-4 sm:px-6">
           <div className="pointer-events-auto flex items-center rounded-full border border-slate-200/80 bg-white/85 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md">
-            <nav aria-label="Healthy" className="hidden md:block">
-              <ul className="flex items-center gap-1">
-                {nav.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className={pillLinkClass}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            {/* No-JS disclosure menu for small screens. */}
-            <details className="group relative md:hidden">
+            {/* No-JS disclosure menu. */}
+            <details className="group relative">
               <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-full px-5 font-semibold text-brand-navy [&::-webkit-details-marker]:hidden">
                 Menu
               </summary>
@@ -139,7 +152,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </div>
       </header>
 
-      <main className="flex-1 pt-16">{children}</main>
+      <main className="flex-1 pt-16 lg:pt-0">{children}</main>
 
       <footer className="border-t border-border bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
@@ -198,6 +211,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

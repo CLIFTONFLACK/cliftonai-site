@@ -48,7 +48,7 @@ export default function AboutPage() {
               update the page.
             </p>
 
-            <h2>Contact</h2>
+            <h2 id="contact" className="scroll-mt-20">Contact</h2>
             <p>
               Email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. We cannot give personal
               medical advice by email.

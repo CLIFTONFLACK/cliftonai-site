@@ -25,10 +25,6 @@ export const metadata: Metadata = {
 const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(10,29,59,0.25)] transition-all hover:-translate-y-0.5 hover:bg-kinetic-primary-hover hover:shadow-[0_12px_28px_rgba(10,29,59,0.35)]";
 
-/** The quieter partner to primaryCta: white, navy text, teal on hover. */
-const secondaryCta =
-  "inline-flex min-h-12 items-center rounded-xl border-2 border-kinetic-primary/15 bg-white/90 px-5 py-3 font-bold text-kinetic-primary transition-colors hover:border-kinetic-teal hover:bg-kinetic-primary-light";
-
 
 export default function HealthyHome() {
   const faqJsonLd = {
@@ -41,12 +37,12 @@ export default function HealthyHome() {
     })),
   };
 
-  // Splits TAGLINE once, right after " with ", to highlight its back half in
-  // the hero. Falls back to the whole line with no highlight if TAGLINE ever
-  // stops containing that phrase.
-  const withSplit = TAGLINE.indexOf(" with ");
-  const taglineLead = withSplit === -1 ? TAGLINE : TAGLINE.slice(0, withSplit + " with ".length);
-  const taglineHighlight = withSplit === -1 ? "" : TAGLINE.slice(withSplit + " with ".length);
+  // Splits TAGLINE after its last ", " so the closing phrase ("Choose Brian.")
+  // takes the highlight. Falls back to the whole line with no highlight if
+  // TAGLINE ever stops containing a comma.
+  const split = TAGLINE.lastIndexOf(", ");
+  const taglineLead = split === -1 ? TAGLINE : TAGLINE.slice(0, split + ", ".length);
+  const taglineHighlight = split === -1 ? "" : TAGLINE.slice(split + ", ".length);
 
   return (
     <>
@@ -60,7 +56,7 @@ export default function HealthyHome() {
           feathered to white on the left so the lockup and copy read over it.
           On small screens it sits as a band under the copy, feathered at the
           top. One <Image> serves both, repositioned by breakpoint. */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:-mt-16 lg:flex lg:min-h-[680px] lg:items-center lg:pt-28 lg:pb-20">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:flex lg:min-h-[680px] lg:items-start lg:pt-12 lg:pb-20">
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col space-y-6 lg:max-w-[36rem]">
             {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
@@ -90,31 +86,17 @@ export default function HealthyHome() {
               )}
             </h1>
             <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Three supplements, one job each. Carefully researched and honestly reasoned.
-              Brian&apos;s done the work so you don&apos;t have to.
+              3 Supplements, 3 Jobs. Carefully Researched, Honestly Reviewed. More Energy, Greater
+              Strength and Calm When You Need it.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link href="#picks" className={primaryCta}>
                 Get Brian&apos;s picks
                 <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
               </Link>
-              <Link href="/healthy/about" className={secondaryCta}>
-                {PROGRAM_NAME}
-              </Link>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pt-2 text-xs font-semibold text-slate-600">
-              <div className="flex items-center gap-1.5 whitespace-nowrap">
-                <Icon name="badgeCheck" size={16} className="text-kinetic-primary-electric" />
-                <span>No paid placements</span>
-              </div>
-              <div className="flex items-center gap-1.5 whitespace-nowrap">
-                <Icon name="flask" size={16} className="text-kinetic-primary-electric" />
-                <span>Dose checked against the research</span>
-              </div>
-              <div className="flex items-center gap-1.5 whitespace-nowrap">
-                <Icon name="refresh" size={16} className="text-kinetic-primary-electric" />
-                <span>Re-checked every 6 months</span>
-              </div>
+              <p className="max-w-[16rem] text-base leading-snug font-semibold text-kinetic-primary">
+                Brian&apos;s done the work so you don&apos;t have to.
+              </p>
             </div>
           </div>
         </div>

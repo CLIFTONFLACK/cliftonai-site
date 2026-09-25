@@ -122,11 +122,13 @@ test("healthy-mark.png file exists in public/", () => {
   assert.ok(existsSync(absoluteFromPublic("/healthy/brand/healthy-mark.png")));
 });
 
-test("layout shows the Healthy mark once, in the footer tile", () => {
+test("layout shows the Healthy mark twice: the desktop sidebar and the footer tile", () => {
   const occurrences = layoutSource.match(/\/healthy\/brand\/healthy-mark\.png/g) ?? [];
-  // The floating header is links only (the landing hero carries the lockup),
-  // so the footer tile is the layout's one mark.
-  assert.equal(occurrences.length, 1);
+  // The small-screen floating header stays links only; the left sidebar
+  // (lg and up) and the footer tile each carry one mark.
+  assert.equal(occurrences.length, 2);
+  const aside = layoutSource.slice(layoutSource.indexOf("<aside"), layoutSource.indexOf("</aside>"));
+  assert.match(aside, /\/healthy\/brand\/healthy-mark\.png/);
 });
 
 test("the floating header carries no logo image", () => {

@@ -91,7 +91,7 @@ export type Product = {
 };
 
 /** The hero headline. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
-export const TAGLINE = "Choose supplements with more confidence.";
+export const TAGLINE = "Choose Longevity, Choose Brian.";
 
 /** Intro copy for the homepage's "why three" band, sitting above the individual picks. */
 export const TRIO_INTRO = {
