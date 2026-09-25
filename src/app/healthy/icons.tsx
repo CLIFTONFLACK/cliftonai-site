@@ -86,6 +86,34 @@ const paths = {
       <path d="M13 18h8" />
     </>
   ),
+  // The next three are drawn from the GetBrian Healthy mark itself: its
+  // circuit traces with their terminals, its medical cross, and its check seal.
+  traces: (
+    <>
+      <circle cx="4" cy="6" r="2" />
+      <path d="M6 6h6l3 3h3" />
+      <circle cx="20" cy="9" r="1.6" fill="currentColor" />
+      <circle cx="4" cy="12.5" r="1.6" fill="currentColor" />
+      <path d="M5.6 12.5H11l2 2.5h5" />
+      <circle cx="20" cy="15" r="1.6" fill="currentColor" />
+      <circle cx="4" cy="19" r="2" />
+      <path d="M6 19h8l2.4-1.2" />
+      <circle cx="18.5" cy="17.4" r="1.6" fill="currentColor" />
+    </>
+  ),
+  crossSolid: (
+    <path
+      d="M10 3h4a1 1 0 0 1 1 1v5h5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-5v5a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-5H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h5V4a1 1 0 0 1 1-1z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  seal: (
+    <>
+      <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none" />
+      <path d="m7.5 12.2 3 3 6-6.4" stroke="#fff" strokeWidth={2.4} />
+    </>
+  ),
   plus: (
     <>
       <path d="M5 12h14" />

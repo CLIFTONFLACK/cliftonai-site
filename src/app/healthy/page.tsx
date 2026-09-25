@@ -26,6 +26,12 @@ const primaryCta =
   "inline-flex min-h-12 items-center rounded-xl bg-kinetic-primary px-6 py-3.5 font-bold text-white shadow-[0_8px_20px_rgba(10,29,59,0.25)] transition-all hover:-translate-y-0.5 hover:bg-kinetic-primary-hover hover:shadow-[0_12px_28px_rgba(10,29,59,0.35)]";
 
 
+const HERO_POINTS = [
+  { icon: "traces", text: "3 Supplements, 3 Jobs" },
+  { icon: "seal", text: "Carefully Researched, Honestly Reviewed" },
+  { icon: "crossSolid", text: "More Energy, Greater Strength and Calm When You Need It" },
+] as const;
+
 export default function HealthyHome() {
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -85,16 +91,25 @@ export default function HealthyHome() {
                 </span>
               )}
             </h1>
-            <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-              3 Supplements, 3 Jobs. Carefully Researched, Honestly Reviewed. More Energy, Greater
-              Strength and Calm When You Need it.
-            </p>
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Three points, each marked with a piece of the logo: the traces
+                (three supplements), the check seal (reviewed), the cross (the
+                benefit). */}
+            <ul className="space-y-3">
+              {HERO_POINTS.map((point) => (
+                <li key={point.text} className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-kinetic-primary text-kinetic-teal-on-dark shadow-sm">
+                    <Icon name={point.icon} size={22} />
+                  </span>
+                  <span className="text-lg leading-snug font-semibold text-slate-800 sm:text-xl">{point.text}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-col items-start gap-3 pt-2">
               <Link href="#picks" className={primaryCta}>
                 Get Brian&apos;s picks
                 <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
               </Link>
-              <p className="max-w-[16rem] text-base leading-snug font-semibold text-kinetic-primary">
+              <p className="font-kinetic-heading text-base font-semibold text-kinetic-primary-electric italic">
                 Brian&apos;s done the work so you don&apos;t have to.
               </p>
             </div>
