@@ -186,7 +186,7 @@ export default function HealthyHome() {
                 One loop, always running.
               </h2>
               <p className="mt-2 text-base text-slate-600">
-                AI gathers the research. A person signs it off. Then it goes round again.
+                Brian finds the clinical data. A human gives final approval. Then it goes round again.
               </p>
             </div>
             <Link href="/healthy/why-these-picks" className="group inline-flex min-h-11 items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-primary-electric">
