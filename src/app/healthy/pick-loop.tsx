@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Icon, type IconName } from "./icons";
 import { LogoAnimation } from "./logo-animation";
 
@@ -139,14 +138,6 @@ function StepCard({ step, n }: { step: Step; n: number }) {
         </span>
       </div>
       <h3 className="font-kinetic-heading mt-2 text-base leading-snug font-bold text-slate-950">{step.title}</h3>
-      {step.human && (
-        <Link
-          href="/healthy/about"
-          className="mt-1 inline-flex min-h-11 items-center text-sm font-bold text-kinetic-primary underline hover:text-kinetic-primary-electric"
-        >
-          Read the policy
-        </Link>
-      )}
     </div>
   );
 }

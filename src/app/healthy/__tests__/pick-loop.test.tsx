@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import Link from "next/link";
 import { PickLoop } from "../pick-loop.tsx";
 import { LogoAnimation } from "../logo-animation.tsx";
 
@@ -122,7 +121,7 @@ function renderStepCard(el: El): El {
 }
 
 function stepCardTitle(cardEl: El): string {
-  // StepCard: div > [icon row div, h3 title, optional Link]
+  // StepCard: div > [icon row div, h3 title]
   const kids = cardEl.props.children as El[];
   const h3 = kids[1];
   return h3.props.children as string;
@@ -157,37 +156,16 @@ test("mobile list shows all 5 steps in the same order as the desktop ring", () =
 });
 
 // ---------------------------------------------------------------------------
-// The only link in the loop is "Read the policy" -> /healthy/about, and it
-// appears exactly once per layout (on the human sign-off card only).
+// Step cards hold only the icon row and the title: no descriptions and no
+// links, in either layout.
 // ---------------------------------------------------------------------------
 
-function linksIn(cardEls: El[]): El[] {
-  return cardEls
-    .map((card) => (card.props.children as unknown[])[2])
-    .filter((c): c is El => typeof c === "object" && c !== null);
-}
-
-test("desktop: exactly one link across all step cards, on human sign-off, and it's next/link's Link", () => {
-  const links = linksIn(desktopStepCardEls());
-  assert.equal(links.length, 1);
-  assert.equal(links[0].type, Link);
-});
-
-test("desktop link text reads exactly 'Read the policy'", () => {
-  const links = linksIn(desktopStepCardEls());
-  assert.equal(links[0].props.children, "Read the policy");
-});
-
-test("desktop link href is /healthy/about", () => {
-  const links = linksIn(desktopStepCardEls());
-  assert.equal(links[0].props.href, "/healthy/about");
-});
-
-test("mobile: exactly one link across all step cards, on human sign-off, pointing to /healthy/about", () => {
-  const links = linksIn(mobileStepCardEls());
-  assert.equal(links.length, 1);
-  assert.equal(links[0].props.href, "/healthy/about");
-  assert.equal(links[0].props.children, "Read the policy");
+test("every step card, in both layouts, is just the icon row and the title", () => {
+  for (const card of [...desktopStepCardEls(), ...mobileStepCardEls()]) {
+    const kids = card.props.children as El[];
+    assert.equal(kids.length, 2);
+    assert.equal(kids[1].type, "h3");
+  }
 });
 
 // ---------------------------------------------------------------------------
