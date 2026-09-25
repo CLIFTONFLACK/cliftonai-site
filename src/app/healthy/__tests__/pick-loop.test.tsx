@@ -35,9 +35,9 @@ function loop() {
 function desktopParts() {
   const { desktop } = loop();
   const kids = desktop.props.children as El[];
-  // [svg, mark div, ol, recheck p]
-  const [svg, markDiv, ol, recheckP] = kids;
-  return { desktop, svg, markDiv, ol, recheckP };
+  // [svg, mark div, ol]
+  const [svg, markDiv, ol] = kids;
+  return { desktop, svg, markDiv, ol };
 }
 
 test("desktop ring is hidden below lg and shown at lg (hidden lg:block)", () => {
@@ -52,25 +52,21 @@ test("mobile list is hidden at lg and shown below it (lg:hidden)", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Chevrons: exactly STEPS.length - 1 (4), none for the last gap
-// (sign-off back to step 1).
+// Chevrons: one per gap (5), including sign-off back to step 1.
 // ---------------------------------------------------------------------------
 
-test("desktop ring renders exactly 4 chevrons (STEPS.length - 1)", () => {
+test("desktop ring renders a chevron in every gap, including sign-off back to step 1", () => {
   const { svg } = desktopParts();
   const svgKids = svg.props.children as unknown[];
-  // svgKids: [ring path, chevron array (one entry per step, last is null), dot array]
+  // svgKids: [ring path, chevron array (one per gap), dot array]
   const chevronArray = svgKids[1] as (El | null)[];
-  const rendered = chevronArray.filter((c) => c !== null);
-  assert.equal(rendered.length, 4);
+  assert.equal(chevronArray.length, 5);
+  for (const c of chevronArray) assert.equal((c as El).type, "path");
 });
 
-test("the last gap (sign-off back to step 1) has no chevron", () => {
-  const { svg } = desktopParts();
-  const svgKids = svg.props.children as unknown[];
-  const chevronArray = svgKids[1] as (El | null)[];
-  assert.equal(chevronArray.length, 5, "one array slot per step, including the skipped last gap");
-  assert.equal(chevronArray[chevronArray.length - 1], null);
+test("desktop ring has no 'Back to step 1' chip", () => {
+  const { desktop } = desktopParts();
+  assert.equal((desktop.props.children as El[]).length, 3);
 });
 
 test("desktop ring travels via exactly 2 .healthy-loop-dot circles", () => {
@@ -113,11 +109,11 @@ test("mobile mark passes showSteps={false} to LogoAnimation", () => {
 // ---------------------------------------------------------------------------
 
 const EXPECTED_TITLES = [
-  "AI gathers the research",
-  "Research graded",
-  "Evaluation",
-  "Selection",
-  "Human sign-off",
+  "Brian Finds Clinical Data",
+  "Information Gets Evaluated",
+  "Products Get Matched",
+  "Brian Creates Shortlist",
+  "Human Final Approval",
 ];
 
 function renderStepCard(el: El): El {
@@ -126,7 +122,7 @@ function renderStepCard(el: El): El {
 }
 
 function stepCardTitle(cardEl: El): string {
-  // StepCard: div > [icon row div, h3 title, p body, optional Link]
+  // StepCard: div > [icon row div, h3 title, optional Link]
   const kids = cardEl.props.children as El[];
   const h3 = kids[1];
   return h3.props.children as string;
@@ -150,7 +146,7 @@ function mobileStepCardEls(): El[] {
   });
 }
 
-test("desktop ring shows all 5 steps in order: AI first, human sign-off last", () => {
+test("desktop ring shows all 5 steps in order: Brian finds data first, human approval last", () => {
   const titles = desktopStepCardEls().map(stepCardTitle);
   assert.deepEqual(titles, EXPECTED_TITLES);
 });
@@ -167,7 +163,7 @@ test("mobile list shows all 5 steps in the same order as the desktop ring", () =
 
 function linksIn(cardEls: El[]): El[] {
   return cardEls
-    .map((card) => (card.props.children as unknown[])[3])
+    .map((card) => (card.props.children as unknown[])[2])
     .filter((c): c is El => typeof c === "object" && c !== null);
 }
 
@@ -216,14 +212,6 @@ test("all 5 step card positions on the desktop ring are distinct", () => {
 // ---------------------------------------------------------------------------
 // The re-check / "back to step 1" label, present in both layouts.
 // ---------------------------------------------------------------------------
-
-test("desktop ring shows a 'Back to step 1 / every six months at least' label on the last gap", () => {
-  const { recheckP } = desktopParts();
-  const spanKids = (recheckP.props.children as El[])[1].props.children as El[];
-  const [boldSpan, greySpan] = spanKids;
-  assert.equal(boldSpan.props.children, "Back to step 1");
-  assert.equal(greySpan.props.children, "every six months at least");
-});
 
 test("mobile list ends with the re-check label, back to step 1", () => {
   const { mobile } = loop();

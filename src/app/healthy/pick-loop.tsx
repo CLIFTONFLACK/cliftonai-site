@@ -12,27 +12,14 @@ import { LogoAnimation } from "./logo-animation";
  * be placed with plain percentages on the same geometry the SVG uses. Below
  * `lg` it becomes a numbered list with a loop-back line at the end.
  */
-type Step = { title: string; body: string; icon: IconName; human?: boolean };
+type Step = { title: string; icon: IconName; human?: boolean };
 
 const STEPS: Step[] = [
-  {
-    title: "AI gathers the research",
-    body: "Systematic reviews, meta-analyses and trials, pulled together fast.",
-    icon: "flask",
-  },
-  { title: "Research graded", body: "Every claim gets a plain grade: robust, promising or early.", icon: "book" },
-  {
-    title: "Evaluation",
-    body: "Label dose against studied dose, independent testing, cost per serving, safety.",
-    icon: "clipboardCheck",
-  },
-  { title: "Selection", body: "Only products that pass make the list.", icon: "listChecks" },
-  {
-    title: "Human sign-off",
-    body: "A person checks the lot and signs off before anything publishes.",
-    icon: "shieldCheck",
-    human: true,
-  },
+  { title: "Brian Finds Clinical Data", icon: "flask" },
+  { title: "Information Gets Evaluated", icon: "book" },
+  { title: "Products Get Matched", icon: "clipboardCheck" },
+  { title: "Brian Creates Shortlist", icon: "listChecks" },
+  { title: "Human Final Approval", icon: "shieldCheck", human: true },
 ];
 
 const RECHECK = "Re-checked at least every six months";
@@ -70,8 +57,6 @@ export function PickLoop() {
           <path d={RING} fill="none" stroke="var(--kinetic-teal)" strokeOpacity={0.35} strokeWidth={3} />
           {STEPS.map((_, k) => {
             const c = chevron(k);
-            // The last gap (sign-off back to the start) carries the re-check label instead.
-            if (k === STEPS.length - 1) return null;
             return (
               <path
                 key={k}
@@ -115,18 +100,6 @@ export function PickLoop() {
             </li>
           ))}
         </ol>
-
-        {/* The way back round: sign-off returns to the start. */}
-        <p
-          className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-2xl border border-kinetic-teal/40 bg-white px-3 py-2 text-xs leading-tight text-kinetic-primary shadow-sm"
-          style={pct(point((angle(STEPS.length - 1) + angle(STEPS.length)) / 2))}
-        >
-          <Icon name="refresh" size={16} className="text-kinetic-teal" />
-          <span>
-            <span className="block font-bold">Back to step 1</span>
-            <span className="block text-slate-600">every six months at least</span>
-          </span>
-        </p>
       </div>
 
       {/* Phones and tablets: the same loop as a list, closing back on step 1. */}
@@ -166,7 +139,6 @@ function StepCard({ step, n }: { step: Step; n: number }) {
         </span>
       </div>
       <h3 className="font-kinetic-heading mt-2 text-base leading-snug font-bold text-slate-950">{step.title}</h3>
-      <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.body}</p>
       {step.human && (
         <Link
           href="/healthy/about"
