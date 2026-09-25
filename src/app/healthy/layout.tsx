@@ -74,28 +74,27 @@ const nav = [
 const linkClass =
   "inline-flex min-h-11 items-center rounded-lg px-3 text-base font-medium text-fg-muted transition-colors duration-200 hover:text-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric";
 
-/** Links in the left sidebar: full-width rows with a teal tint on hover. */
-const sideLinkClass = `${linkClass} w-full px-4 hover:bg-kinetic-primary-light`;
+/** Links in the floating side menu: compact full-width rows with a teal tint on hover. */
+const sideLinkClass = `${linkClass} min-h-10 w-full px-3 text-sm hover:bg-kinetic-primary-light/70`;
 
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
-      {/* Large screens: a flat vertical menu fixed down the left edge; the rest
-          of the page sits to its right (lg:pl-56 below). */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-56 flex-col border-r border-slate-200 bg-white px-3 py-6 lg:flex">
+      {/* Large screens: a small frosted menu floating at the left edge, centred
+          vertically so it stays clear of each page's opening heading. The page
+          itself runs full width underneath it. */}
+      <aside className="fixed top-1/2 left-3 z-40 hidden w-40 -translate-y-1/2 flex-col rounded-2xl border border-white/60 bg-white/65 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md lg:flex">
         <Link
           href="/healthy"
-          className="mb-6 flex min-h-11 items-center gap-2 rounded-lg px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+          aria-label="GetBrian Healthy home"
+          className="mb-1 flex min-h-11 items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
         >
           <Image src="/healthy/brand/healthy-mark.png" alt="" aria-hidden="true" width={40} height={34} unoptimized className="h-7 w-auto" />
-          <span className="font-kinetic-heading text-base leading-tight font-extrabold text-kinetic-primary">
-            GetBrian <span className="text-kinetic-primary-electric">Healthy</span>
-          </span>
         </Link>
         <nav aria-label="Healthy">
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {nav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className={sideLinkClass}>
@@ -107,7 +106,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </nav>
       </aside>
 
-      <div className="flex flex-1 flex-col lg:pl-56">
+      <div className="flex flex-1 flex-col">
       {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
           The legal sentence and its link are unchanged from before this reskin. */}
       <div className="bg-slate-900 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">

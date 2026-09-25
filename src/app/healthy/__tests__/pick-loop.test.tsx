@@ -188,18 +188,14 @@ test("all 5 step card positions on the desktop ring are distinct", () => {
 });
 
 // ---------------------------------------------------------------------------
-// The re-check / "back to step 1" label, present in both layouts.
+// No re-check / "back to step 1" line under the mobile list.
 // ---------------------------------------------------------------------------
 
-test("mobile list ends with the re-check label, back to step 1", () => {
+test("mobile layout is just the mark and the step list, with no re-check line", () => {
   const { mobile } = loop();
   const kids = mobile.props.children as El[];
-  const recheckP = kids[2];
-  const text = (recheckP.props.children as unknown[])
-    .filter((c): c is string => typeof c === "string")
-    .join("");
-  assert.match(text, /Re-checked at least every six months/);
-  assert.match(text, /back to step 1\./);
+  assert.equal(kids.length, 2);
+  assert.equal(kids[1].type, "ol");
 });
 
 // ---------------------------------------------------------------------------

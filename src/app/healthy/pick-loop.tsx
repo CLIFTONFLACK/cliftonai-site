@@ -3,13 +3,12 @@ import { LogoAnimation } from "./logo-animation";
 
 /**
  * "How Brian picks" as one continuous loop rather than a list that ends:
- * AI gathers the research, the checks run, a person signs off, and the
- * six-month re-check sends it round again. The animated mark sits in the
- * middle of the ring.
+ * Brian finds the clinical data, the checks run, a human gives final approval,
+ * and it goes round again. The animated mark sits in the middle of the ring.
  *
  * Desktop draws the ring as an ellipse in a fixed-aspect box, so the steps can
  * be placed with plain percentages on the same geometry the SVG uses. Below
- * `lg` it becomes a numbered list with a loop-back line at the end.
+ * `lg` it becomes a numbered list.
  */
 type Step = { title: string; icon: IconName; human?: boolean };
 
@@ -20,8 +19,6 @@ const STEPS: Step[] = [
   { title: "Brian Creates Shortlist", icon: "listChecks" },
   { title: "Human Final Approval", icon: "shieldCheck", human: true },
 ];
-
-const RECHECK = "Re-checked at least every six months";
 
 // Ring geometry, in the SVG's own units. The box is W x H; the ring is an
 // ellipse centred in it. Steps sit on the ring, the first at the top, then
@@ -115,10 +112,6 @@ export function PickLoop() {
             </li>
           ))}
         </ol>
-        <p className="mt-4 flex items-center gap-2 pl-6 text-sm font-bold text-kinetic-primary">
-          <Icon name="refresh" size={16} className="text-kinetic-teal" />
-          {RECHECK}, back to step 1.
-        </p>
       </div>
     </>
   );
