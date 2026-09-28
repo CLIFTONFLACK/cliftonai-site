@@ -428,7 +428,7 @@ export const products: Product[] = [
   },
   {
     slug: "thorne-creatine-stick-packs",
-    name: "Creatine Monohydrate Stick Packs",
+    name: "Creatine Monohydrate",
     brand: "Thorne",
     category: "Creatine",
     format: "Powder stick packs",

@@ -83,6 +83,23 @@ test("BuyButton still renders the disclosure when the link bypasses the redirect
   assert.equal(disclosure.props["data-affiliate-disclosure"], true);
 });
 
+test("BuyButton renders the link but no disclosure paragraph when showDisclosure is false", () => {
+  const product = baseProduct();
+  const el = BuyButton({ product, from: "picks", showDisclosure: false });
+  const kids = children(el);
+  const [link, disclosure] = kids as [{ type: string }, unknown];
+  assert.equal(link.type, "a");
+  // The disclosure slot is `showDisclosure && (<p ... />)`, so with
+  // showDisclosure false it's the boolean `false`, not a <p> element —
+  // React renders nothing for it, but it's still present in the children
+  // array, which is why this doesn't just assert kids.length === 1.
+  assert.equal(disclosure, false);
+  assert.ok(
+    kids.every((k) => !(k as { props?: Record<string, unknown> })?.props?.["data-affiliate-disclosure"]),
+    "expected no element carrying data-affiliate-disclosure",
+  );
+});
+
 test("BuyButton link href matches buyHref for the given product and source", () => {
   const product = baseProduct({ slug: "abc", affiliateUrl: null });
   const [link] = children(renderButton(product, "compare-creatine")) as [
@@ -139,6 +156,17 @@ test('ProductCard "Read the full review" link has no text besides the label itse
     .filter((child): child is string => typeof child === "string")
     .join("");
   assert.equal(visibleText, "Read the full review");
+});
+
+test("ProductCard's Buy button omits the affiliate disclosure paragraph (the site-wide banner covers it there)", () => {
+  const product = baseProduct();
+  const el = ProductCard({ product });
+  const articleKids = (el.props as { children: unknown[] }).children;
+  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
+  // contentDiv children: [category span, h3 name, brand/format p, price row, summary, dl, buy button div, read-more link]
+  const buyButtonDiv = contentDiv.props.children[6] as { props: { children: unknown } };
+  const buyButtonEl = buyButtonDiv.props.children as { type: unknown; props: Record<string, unknown> };
+  assert.equal(buyButtonEl.props.showDisclosure, false);
 });
 
 test("ProductCard shows the brand and format beneath the product name", () => {

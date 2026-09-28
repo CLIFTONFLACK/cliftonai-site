@@ -53,8 +53,9 @@ export function PageHeading({
 }
 
 /**
- * Written out beside every Buy button, because FTC guidance expects the
- * disclosure where the endorsement is, not only in a footer.
+ * Written out beside the Buy button on product pages, because FTC guidance
+ * expects the disclosure where the endorsement is, not only in a footer. The
+ * homepage cards leave it out and rely on the site-wide banner in layout.tsx.
  */
 export const AFFILIATE_DISCLOSURE =
   "If you buy through this link, GetBrian may earn a commission at no extra cost to you. It never decides which products we pick.";
@@ -65,7 +66,15 @@ export const AFFILIATE_DISCLOSURE =
  * issues an affiliate link it goes direct, unless that programme's terms allow
  * redirects (see `usesRedirect` in data.ts).
  */
-export function BuyButton({ product, from }: { product: Product; from: string }) {
+export function BuyButton({
+  product,
+  from,
+  showDisclosure = true,
+}: {
+  product: Product;
+  from: string;
+  showDisclosure?: boolean;
+}) {
   return (
     <div className="flex flex-col gap-3">
       <a
@@ -77,9 +86,11 @@ export function BuyButton({ product, from }: { product: Product; from: string })
         Check price at {retailerName(product)}
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
-      <p className="text-sm leading-relaxed text-fg-subtle" data-affiliate-disclosure>
-        {AFFILIATE_DISCLOSURE}
-      </p>
+      {showDisclosure && (
+        <p className="text-sm leading-relaxed text-fg-subtle" data-affiliate-disclosure>
+          {AFFILIATE_DISCLOSURE}
+        </p>
+      )}
     </div>
   );
 }
@@ -214,7 +225,7 @@ export function ProductCard({ product }: { product: Product }) {
         </dl>
 
         <div className="mt-5">
-          <BuyButton product={product} from="picks" />
+          <BuyButton product={product} from="picks" showDisclosure={false} />
         </div>
         <Link
           href={`/healthy/products/${product.slug}`}

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mock } from "node:test";
 import Link from "next/link";
 import Image from "next/image";
+import { AFFILIATE_DISCLOSURE } from "../../../components.tsx";
 import { products, type Product } from "../../../data.ts";
 
 // page.tsx imports `siteUrl` from ../../../../layout (root layout) and
@@ -170,6 +171,19 @@ test("generateMetadata returns an empty object for an unknown slug", async () =>
 // ---------------------------------------------------------------------------
 // Mobile sticky bar: shows brand + name
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Affiliate disclosure: product pages, unlike the homepage's ProductCard,
+// must keep the full disclosure sentence beside the Buy button (FTC
+// guidance expects it where the endorsement is). This is the render-level
+// guard that catches the product page's BuyButton call ever picking up
+// showDisclosure={false} the way ProductCard's did.
+// ---------------------------------------------------------------------------
+
+test("product page still shows the full affiliate disclosure sentence beside the Buy button", async () => {
+  const text = await pageText(REAL_SLUG);
+  assert.match(text, new RegExp(AFFILIATE_DISCLOSURE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
 
 test("mobile sticky bar shows the product's brand and name", async () => {
   const product = products.find((p) => p.slug === REAL_SLUG) as Product;
