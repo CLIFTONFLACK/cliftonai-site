@@ -30,7 +30,7 @@ const primaryCta =
 const HERO_POINTS = [
   { icon: "traces", text: "3 Supplements, 3 Jobs" },
   { icon: "seal", text: "Carefully Researched, Honestly Reviewed" },
-  { icon: "crossSolid", text: "More Energy, Greater Strength and Calm When You Need It" },
+  { icon: "crossSolid", text: "Energy, Strength and Calm When You Need It Most" },
 ] as const;
 
 export default function HealthyHome() {
@@ -62,8 +62,11 @@ export default function HealthyHome() {
       {/* HERO: the photo runs full-bleed behind the section on large screens,
           feathered to white on the left so the lockup and copy read over it.
           On small screens it sits as a band under the copy, feathered at the
-          top. One <Image> serves both, repositioned by breakpoint. */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:flex lg:min-h-[680px] lg:items-start lg:pt-12 lg:pb-20">
+          top. One <Image> serves both, repositioned by breakpoint. On large
+          screens below 1544px the section pulls up over <main>'s pt-16 (the
+          floating Menu's clearance) so the photo starts at the top of the page,
+          and adds that 4rem back to its own padding to keep the copy clear. */}
+      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:-mt-16 lg:flex lg:min-h-[680px] lg:items-start lg:pt-28 lg:pb-20 min-[1544px]:mt-0 min-[1544px]:pt-12">
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col space-y-6 lg:max-w-[36rem]">
             {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
@@ -101,7 +104,10 @@ export default function HealthyHome() {
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-kinetic-teal/40 bg-white text-kinetic-teal shadow-sm">
                     <Icon name={point.icon} size={22} />
                   </span>
-                  <span className="text-lg leading-snug font-medium text-slate-800 sm:text-xl">{point.text}</span>
+                  {/* One line each: below sm the size tracks the viewport so the longest
+                      point fits beside its 52px tile (about 24px of width per px of
+                      font); from sm up 20px fits the narrowest column. */}
+                  <span className="text-[min(1.125rem,calc((100vw-5.5rem)/24))] leading-snug font-medium whitespace-nowrap text-slate-800 sm:text-xl">{point.text}</span>
                 </li>
               ))}
             </ul>
