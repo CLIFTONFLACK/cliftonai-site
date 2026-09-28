@@ -108,11 +108,11 @@ test("mobile mark passes showSteps={false} to LogoAnimation", () => {
 // ---------------------------------------------------------------------------
 
 const EXPECTED_TITLES = [
-  "Brian Finds Clinical Data",
-  "Information Gets Evaluated",
-  "Products Get Matched",
-  "Brian Creates Shortlist",
-  "Human Final Approval",
+  "Clinical Reviews",
+  "Evaluated Process",
+  "Products Matched",
+  "Shortlist Built",
+  "Final Approval",
 ];
 
 function renderStepCard(el: El): El {
