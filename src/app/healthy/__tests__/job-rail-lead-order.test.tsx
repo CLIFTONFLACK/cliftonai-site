@@ -77,10 +77,10 @@ test("lead goal is the first without a caveat, even when the caveated goal is li
   const [li] = (ul.props as { children: AnyEl[] | AnyEl }).children as AnyEl[];
   const [nodeDiv] = (li.props as { children: AnyEl[] }).children;
   const [, fragment] = (nodeDiv.props as { children: [AnyEl, AnyEl] }).children;
-  const [headingSpan, , alsoArray] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl[]] }).children;
+  const [headingSpan, , caveatSpan] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl | undefined] }).children;
 
   assert.equal((headingSpan.props as { children: string }).children, "Strength");
-  assert.equal(alsoArray.length, 1);
-  const alsoParts = (alsoArray[0].props as { children: (string | undefined)[] }).children;
-  assert.equal(alsoParts.join(""), "+ Focus: promising, not proven");
+  // Strength has no caveat, so no line beneath the name; picking focus
+  // (jobGoals[0]) instead would render its caveat here.
+  assert.ok(!caveatSpan, "expected no caveat line under an uncaveated lead");
 });

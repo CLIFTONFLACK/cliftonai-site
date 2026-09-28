@@ -888,6 +888,58 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   transform: scale(0);
 }
 
+/* Mascot shower (healthy/mascot-shower.tsx): under each pick's goal, the
+   mascot tosses the goal's icons down onto the card. Nine icons share one
+   2.7s fall, 0.3s apart (the delays in DROPS), so one leaves every 0.3s; the
+   mascot bobs twice a cycle, as if throwing. Each icon drifts from --x0 to
+   --x1 and spins to --r as it falls, speeding up like something dropped. */
+.healthy-shower-mascot {
+  transform-origin: 50% 100%;
+  animation: healthy-shower-toss 1.35s ease-in-out infinite;
+}
+
+.healthy-shower-icon {
+  /* Resting frame, shown under reduced motion: scattered down the column. */
+  transform: translate(var(--x1), var(--rest)) rotate(var(--r));
+  opacity: 0.8;
+  animation: healthy-shower-fall 2.7s cubic-bezier(0.35, 0, 0.75, 0.6) infinite both;
+}
+
+.healthy-shower[data-paused] * {
+  animation-play-state: paused;
+}
+
+@keyframes healthy-shower-toss {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  30% {
+    transform: translateY(0) scale(1.05, 0.93);
+  }
+  55% {
+    transform: translateY(-8%) scale(0.97, 1.04);
+  }
+}
+
+@keyframes healthy-shower-fall {
+  0% {
+    transform: translate(var(--x0), -6px) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  12% {
+    transform: translate(var(--x0), 2px) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x1), 104px) rotate(var(--r)) scale(0.9);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* Finished frame, no loop: the global rule below would otherwise play each
      keyframe once in 0.01ms and leave the mark on its faded-out last frame. */
@@ -910,6 +962,11 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 
   /* The mascot stands still on its shadow. */
   .healthy-mascot * {
+    animation: none !important;
+  }
+
+  /* The shower rests: icons scattered down the column, mascot still. */
+  .healthy-shower * {
     animation: none !important;
   }
 

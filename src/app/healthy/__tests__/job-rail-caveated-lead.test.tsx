@@ -71,17 +71,12 @@ test("when every goal of a supplement is caveated, the lead still renders its ow
   const [li] = (ul.props as { children: AnyEl[] | AnyEl }).children as AnyEl[];
   const [nodeDiv] = (li.props as { children: AnyEl[] }).children;
   const [, fragment] = (nodeDiv.props as { children: [AnyEl, AnyEl] }).children;
-  const [headingSpan, , linesArray] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl[]] }).children;
+  const [headingSpan, , caveatSpan] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl] }).children;
 
   // jobGoals.find(!caveat) now finds nothing, so lead falls back to
   // jobGoals[0] -- strength, first in goals' own order -- and its own caveat
-  // must still render, unprefixed, ahead of focus's "+ Focus: ..." line.
+  // must still render beneath the name. Focus gets no line of its own.
   assert.equal((headingSpan.props as { children: string }).children, "Strength");
-  assert.equal(linesArray.length, 2);
-
-  const leadCaveatParts = (linesArray[0].props as { children: (string | undefined)[] }).children;
-  assert.deepEqual(leadCaveatParts, ["results vary by starting fitness level"]);
-
-  const alsoParts = (linesArray[1].props as { children: (string | undefined)[] }).children;
-  assert.equal(alsoParts.join(""), "+ Focus: promising, not proven");
+  assert.ok(caveatSpan, "expected the lead's caveat line");
+  assert.equal((caveatSpan.props as { children: string }).children, "results vary by starting fitness level");
 });
