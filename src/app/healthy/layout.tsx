@@ -82,10 +82,16 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
     <div
       className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
-      {/* Large screens: a small frosted menu floating at the left edge, centred
+      {/* Wide screens: a small frosted menu floating at the left edge, centred
           vertically so it stays clear of each page's opening heading. The page
-          itself runs full width underneath it. */}
-      <aside className="fixed top-1/2 left-3 z-40 hidden w-40 -translate-y-1/2 flex-col rounded-2xl border border-white/60 bg-white/65 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md lg:flex">
+          itself runs full width underneath it, so the menu only shows once it
+          fits in the margin beside the content: it ends at 172px (left-3 +
+          w-40). Product pages pad outside their max-w-6xl container, so their
+          content starts right at (page width - 72rem) / 2, and the breakpoint
+          counts a ~15px scrollbar the page width does not: 1544px is the
+          first width with a 16px gap on every page (measured, not assumed).
+          Below that the Menu button further down takes over. */}
+      <aside className="fixed top-1/2 left-3 z-40 hidden w-40 -translate-y-1/2 flex-col rounded-2xl border border-white/60 bg-white/65 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md min-[1544px]:flex">
         <Link
           href="/healthy"
           aria-label="GetBrian Healthy home"
@@ -121,10 +127,10 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </div>
       </div>
 
-      {/* Small screens: a floating Menu button (the sidebar above takes over
-          from lg). The sticky wrapper is zero-height so it takes no space;
+      {/* Narrower screens: a floating Menu button (the sidebar above takes over
+          from 1544px). The sticky wrapper is zero-height so it takes no space;
           <main>'s top padding keeps it clear of each page's first line. */}
-      <header className="pointer-events-none sticky top-0 z-40 h-0 lg:hidden">
+      <header className="pointer-events-none sticky top-0 z-40 h-0 min-[1544px]:hidden">
         <div className="mx-auto mt-3 flex max-w-6xl justify-end px-4 sm:px-6">
           <div className="pointer-events-auto flex items-center rounded-full border border-slate-200/80 bg-white/85 p-1.5 shadow-[0_8px_30px_rgba(10,29,59,0.12)] backdrop-blur-md">
             {/* No-JS disclosure menu. */}
@@ -151,7 +157,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </div>
       </header>
 
-      <main className="flex-1 pt-16 lg:pt-0">{children}</main>
+      <main className="flex-1 pt-16 min-[1544px]:pt-0">{children}</main>
 
       <footer className="border-t border-border bg-slate-950 text-slate-300">
         <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
