@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FdaDisclaimer, GoalChooser } from "./components";
 import { Icon } from "./icons";
 import { PickLoop } from "./pick-loop";
+import { PromoVideo } from "./promo-video";
 import { JobRail } from "./job-rail";
 import { signupEnabled } from "./newsletter";
 import { Signup } from "./signup";
@@ -189,7 +190,8 @@ export default function HealthyHome() {
 
       {/* HOW BRIAN PICKS: one continuous loop (pick-loop.tsx). AI gathers the
           research, the checks run, a person signs off, and the re-check sends it
-          round again, with the animated mark at the centre. */}
+          round again, with the animated mascot at the centre and the mascot
+          promo video beside it. */}
       <section aria-labelledby="why-heading" className="border-b border-slate-200 bg-slate-50 py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
@@ -209,8 +211,13 @@ export default function HealthyHome() {
               <Icon name="arrow" size={18} className="ml-1 transition-transform group-hover:translate-x-1.5" />
             </Link>
           </div>
-          <div className="mt-10">
-            <PickLoop />
+          {/* The promo video and the loop share one row, half the width each;
+              below lg the video sits above the loop's list. */}
+          <div className="mt-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+            <PromoVideo className="max-w-md lg:max-w-none" />
+            <div>
+              <PickLoop />
+            </div>
           </div>
         </div>
       </section>
