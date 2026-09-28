@@ -178,7 +178,7 @@ test("healthy-shower-fall keyframes start faded out and scaled down at 0%, then 
   const hundredPercentBlock = body.match(/100%\s*\{([^}]*)\}/);
   assert.ok(hundredPercentBlock, "expected a 100% keyframe step");
   assert.match(hundredPercentBlock![1], /opacity:\s*0\s*;/);
-  assert.match(hundredPercentBlock![1], /translate\(var\(--x1\),\s*104px\)/);
+  assert.match(hundredPercentBlock![1], /translate\(var\(--x1\),\s*var\(--land\)\)/);
 });
 
 // ---------------------------------------------------------------------------
@@ -212,4 +212,47 @@ test("healthy-shower-fall's first frame sits on the palm (var(--x0), var(--y0))"
   const body = css.match(/@keyframes healthy-shower-fall\s*\{([\s\S]*?)\n\}/)![1];
   const zero = body.match(/\b0%\s*\{([^}]*)\}/)![1];
   assert.match(zero, /translate\(var\(--x0\),\s*var\(--y0\)\)/);
+});
+
+// ---------------------------------------------------------------------------
+// Landing: icons fall SINK px into the card and burst there; no stud.
+// ---------------------------------------------------------------------------
+
+test("icons land SINK (20px) past the column's foot, centred, and each has a burst at that same point", () => {
+  assert.match(source, /const COLUMN_H = 112;/);
+  assert.match(source, /const SINK = 20;/);
+  assert.match(source, /"--land": `\$\{COLUMN_H \+ SINK - d\.size \/ 2\}px`/);
+  assert.match(source, /"--by": `\$\{COLUMN_H \+ SINK\}px`/);
+  assert.match(source, /style=\{\{ height: COLUMN_H \}\}/);
+  // One burst per drop, on the drop's own delay.
+  assert.match(source, /className=\{`healthy-shower-burst[^`]*`\}\s*style=\{\s*\{\s*"--x1": `\$\{d\.x1\}px`,[\s\S]*?animationDelay: `\$\{d\.delay\}s`/);
+});
+
+function keyframeSteps(name: string): Array<{ at: number[]; body: string }> {
+  const m = css.match(new RegExp(`@keyframes ${name}\\s*\\{([\\s\\S]*?)\\n\\}`));
+  assert.ok(m, `expected @keyframes ${name}`);
+  return [...m![1].matchAll(/((?:\d+%\s*,\s*)*\d+%)\s*\{([^}]*)\}/g)].map((s) => ({
+    at: s[1].split(",").map((p) => parseFloat(p)),
+    body: s[2],
+  }));
+}
+
+test("the burst goes off only once its icon has landed, and the icon is gone before the burst fades", () => {
+  const fall = keyframeSteps("healthy-shower-fall");
+  const burst = keyframeSteps("healthy-shower-burst");
+  const landed = fall.find((s) => /var\(--land\)/.test(s.body) && /scale\(1\)/.test(s.body));
+  assert.ok(landed, "expected a fall step where the icon sits landed at full size");
+  const firstVisibleBurst = burst.find((s) => /opacity:\s*1\b/.test(s.body));
+  assert.ok(firstVisibleBurst, "expected a burst step at full opacity");
+  assert.ok(Math.min(...firstVisibleBurst!.at) >= Math.min(...landed!.at), "burst shows before its icon lands");
+  const iconGone = fall.find((s) => /scale\(0\)/.test(s.body) && /opacity:\s*0\b/.test(s.body) && s.at.includes(100));
+  assert.ok(iconGone, "expected the icon to end scaled to 0 and hidden");
+  const burstFaded = burst.find((s) => s.at.includes(100));
+  assert.match(burstFaded!.body, /opacity:\s*0\b/);
+  assert.ok(Math.min(...iconGone!.at) < Math.min(...burstFaded!.at), "icon should vanish before the burst finishes");
+});
+
+test("bursts are hidden under reduced motion", () => {
+  const block = reducedMotionBlockContaining(".healthy-shower-burst");
+  assert.match(block, /\.healthy-shower-burst\s*\{\s*display:\s*none\s*;\s*\}/);
 });

@@ -867,10 +867,6 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   transition: transform 450ms ease-out;
 }
 
-.healthy-rail-stud {
-  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
 .rail-armed .healthy-rail-line {
   transform: scaleX(0);
 }
@@ -884,12 +880,8 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   transform: scaleY(0);
 }
 
-.rail-armed .healthy-rail-stud {
-  transform: scale(0);
-}
-
 /* Mascot shower (healthy/mascot-shower.tsx): under each pick's goal, the
-   mascot tosses the goal's icons down onto the card. Nine icons share one
+   mascot tosses the goal's icons down into the card. Nine icons share one
    2.7s fall, 0.3s apart (the delays in DROPS), so one leaves every 0.3s; the
    mascot bobs twice a cycle, as if throwing. Each icon leaves a palm
    (--x0, --y0), drifts to --x1 and spins to --r as it falls, speeding up
@@ -924,7 +916,8 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 }
 
 /* Each icon appears in the throwing palm (--x0, --y0), pops a little up and
-   outward as it is tossed, then falls to --x1. */
+   outward as it is tossed, falls to --x1 and into the top of the card
+   (--land), swells, and is gone as its burst goes off. */
 @keyframes healthy-shower-fall {
   0% {
     transform: translate(var(--x0), var(--y0)) rotate(0deg) scale(0.4);
@@ -935,10 +928,56 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
     opacity: 1;
   }
   80% {
+    transform: translate(var(--x1), var(--land)) rotate(var(--r)) scale(1);
     opacity: 1;
   }
+  84% {
+    transform: translate(var(--x1), var(--land)) rotate(var(--r)) scale(1.35);
+    opacity: 0.9;
+  }
+  88%,
   100% {
-    transform: translate(var(--x1), 104px) rotate(var(--r)) scale(0.9);
+    transform: translate(var(--x1), var(--land)) rotate(var(--r)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* The small explosion where an icon lands: a dot with eight sparks (box
+   shadows in the icon's colour) that flies outward and fades, timed to the
+   icon's 80% landing on the same clock and delay. */
+.healthy-shower-burst {
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 -9px currentColor,
+    6px -6px currentColor,
+    9px 0 currentColor,
+    6px 6px currentColor,
+    0 9px currentColor,
+    -6px 6px currentColor,
+    -9px 0 currentColor,
+    -6px -6px currentColor;
+  opacity: 0;
+  transform: translate(var(--x1), var(--by)) scale(0.2);
+  animation: healthy-shower-burst 2.7s ease-out infinite both;
+}
+
+@keyframes healthy-shower-burst {
+  0%,
+  81% {
+    transform: translate(var(--x1), var(--by)) scale(0.2);
+    opacity: 0;
+  }
+  83% {
+    transform: translate(var(--x1), var(--by)) scale(0.5);
+    opacity: 1;
+  }
+  95%,
+  100% {
+    transform: translate(var(--x1), var(--by)) scale(1.7);
     opacity: 0;
   }
 }
@@ -968,17 +1007,20 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
     animation: none !important;
   }
 
-  /* The shower rests: icons scattered down the column, mascot still. */
+  /* The shower rests: icons scattered down the column, mascot still, no bursts. */
   .healthy-shower * {
     animation: none !important;
+  }
+
+  .healthy-shower-burst {
+    display: none;
   }
 
   /* RailReveal doesn't arm under reduced motion; this covers a preference
      switched on after it did. */
   .rail-armed .healthy-rail-line,
   .rail-armed .healthy-rail-node,
-  .rail-armed .healthy-rail-drop,
-  .rail-armed .healthy-rail-stud {
+  .rail-armed .healthy-rail-drop {
     opacity: 1;
     transform: none;
   }

@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, type CSSProperties } from "react";
 import { Icon, type IconName } from "./icons";
 
 /*
  * A small mascot above each pick, tossing that pick's goal icons (energy,
- * strength, calm...) from its hands, alternating left and right, down onto
- * its card in a steady waterfall: what the pick gives you, falling into the
- * product. Used by job-rail.tsx between each goal's label and its card.
+ * strength, calm...) from its hands, alternating left and right, down into
+ * its card in a steady waterfall, where each one bursts: what the pick gives
+ * you, falling into the product. Used by job-rail.tsx between each goal's
+ * label and its card.
  *
  * The keyframes are `.healthy-shower-*` in globals.css. Each icon falls on the
  * same clock at its own delay and drift, read from CSS variables set here.
@@ -24,6 +25,12 @@ const MASCOT_H = (MASCOT_W * 372) / 473;
 // the top centre of the icon column, which starts at the mascot's feet.
 const HAND_X = Math.round(MASCOT_W * 0.43);
 const HAND_Y = -Math.round(MASCOT_H * (1 - 0.52));
+
+// The icon column runs from the mascot's feet to the top of the card, which
+// sits straight below it in job-rail.tsx. Icons fall SINK px past its foot,
+// into the card, and burst there.
+const COLUMN_H = 112;
+const SINK = 20;
 
 /** One falling icon: which hand throws it (-1 left, 1 right), where it lands
  *  (px from centre; each lands nearer the middle than its hand, so the two
@@ -58,7 +65,7 @@ export function MascotShower({ icons }: { icons: IconName[] }) {
   if (icons.length === 0) return null;
 
   return (
-    <div ref={ref} className="healthy-shower mx-auto flex flex-col items-center" aria-hidden="true">
+    <div ref={ref} className="healthy-shower pointer-events-none mx-auto flex flex-col items-center" aria-hidden="true">
       <Image
         src={MASCOT}
         alt=""
@@ -68,27 +75,44 @@ export function MascotShower({ icons }: { icons: IconName[] }) {
         className="healthy-shower-mascot h-auto"
         style={{ width: MASCOT_W }}
       />
-      <div className="relative h-28 w-40">
-        {DROPS.map((d, i) => (
-          <span
-            key={i}
-            className={`healthy-shower-icon absolute top-0 left-1/2 ${i % 2 ? "text-kinetic-primary" : "text-kinetic-teal"}`}
-            style={
-              {
-                // Start centred on the throwing palm.
-                "--x0": `${d.hand * HAND_X}px`,
-                "--y0": `${HAND_Y - d.size / 2}px`,
-                "--x1": `${d.x1}px`,
-                "--r": `${d.r}deg`,
-                "--rest": `${d.rest}px`,
-                marginLeft: `${-d.size / 2}px`,
-                animationDelay: `${d.delay}s`,
-              } as CSSProperties
-            }
-          >
-            <Icon name={icons[i % icons.length]} size={d.size} />
-          </span>
-        ))}
+      <div className="relative w-40" style={{ height: COLUMN_H }}>
+        {DROPS.map((d, i) => {
+          const colour = i % 2 ? "text-kinetic-primary" : "text-kinetic-teal";
+          return (
+            <Fragment key={i}>
+              <span
+                className={`healthy-shower-icon absolute top-0 left-1/2 ${colour}`}
+                style={
+                  {
+                    // Start centred on the throwing palm; land with the icon's
+                    // centre SINK px into the card.
+                    "--x0": `${d.hand * HAND_X}px`,
+                    "--y0": `${HAND_Y - d.size / 2}px`,
+                    "--x1": `${d.x1}px`,
+                    "--land": `${COLUMN_H + SINK - d.size / 2}px`,
+                    "--r": `${d.r}deg`,
+                    "--rest": `${d.rest}px`,
+                    marginLeft: `${-d.size / 2}px`,
+                    animationDelay: `${d.delay}s`,
+                  } as CSSProperties
+                }
+              >
+                <Icon name={icons[i % icons.length]} size={d.size} />
+              </span>
+              {/* The burst where this icon lands, on the same clock. */}
+              <span
+                className={`healthy-shower-burst absolute top-0 left-1/2 ${colour}`}
+                style={
+                  {
+                    "--x1": `${d.x1}px`,
+                    "--by": `${COLUMN_H + SINK}px`,
+                    animationDelay: `${d.delay}s`,
+                  } as CSSProperties
+                }
+              />
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );

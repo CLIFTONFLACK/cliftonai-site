@@ -63,15 +63,12 @@ export function JobRail({ products }: { products: Product[] }) {
                   )}
                 </div>
                 {/* Where the drop line was: the mascot showering this pick's goal
-                    icons down onto its card. Unrolls from the top on reveal. */}
-                <div className="healthy-rail-drop mt-3" style={{ transitionDelay: `${base + 350}ms` }}>
+                    icons into the top of its card, where each one bursts.
+                    Unrolls from the top on reveal; z-10 keeps the icons in
+                    front of the card they fall into. */}
+                <div className="healthy-rail-drop relative z-10 mt-3" style={{ transitionDelay: `${base + 350}ms` }}>
                   <MascotShower icons={lead ? [lead.icon] : []} />
                 </div>
-                <span
-                  className="healthy-rail-stud mx-auto -mt-1 mb-2 block h-3.5 w-3.5 rounded-full bg-kinetic-teal ring-4 ring-kinetic-primary-light"
-                  style={{ transitionDelay: `${base + 750}ms` }}
-                  aria-hidden="true"
-                />
                 <div className="flex-1">
                   <ProductCard product={product} />
                 </div>

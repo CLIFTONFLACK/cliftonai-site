@@ -58,9 +58,10 @@ function listItems(el: ReturnType<typeof JobRail>): AnyEl[] {
   return Array.isArray(items) ? items : [items];
 }
 
-/** A <li>'s children: [node <div>, drop <div>, stud <span>, card-wrapper <div>]. */
+/** A <li>'s children: [node <div>, drop <div>, card-wrapper <div>]. The teal
+ *  stud that used to sit above the card is gone: the icons fall into the card. */
 function liParts(li: AnyEl) {
-  const [nodeDiv, dropDiv, , cardWrapper] = (li.props as { children: AnyEl[] }).children;
+  const [nodeDiv, dropDiv, cardWrapper] = (li.props as { children: AnyEl[] }).children;
   return { nodeDiv, dropDiv, cardWrapper };
 }
 
