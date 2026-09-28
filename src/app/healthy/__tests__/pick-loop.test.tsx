@@ -4,14 +4,14 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PickLoop } from "../pick-loop.tsx";
-import { LogoAnimation } from "../logo-animation.tsx";
+import { MascotAnimation } from "../mascot-animation.tsx";
 
 /**
  * PickLoop is a plain server component (no hooks in its own body), so
  * calling it directly returns the React element tree, the same approach
- * components.test.tsx and job-rail.test.tsx use. LogoAnimation is a client
- * component with hooks in its own body (see logo-animation.test.tsx's own
- * comment) and is therefore treated as opaque here: we assert on the
+ * components.test.tsx and job-rail.test.tsx use. MascotAnimation is a client
+ * component with hooks in its own body and is therefore treated as opaque
+ * here: we assert on the
  * *element* PickLoop hands it (type + props), never invoke it.
  */
 
@@ -80,23 +80,19 @@ test("desktop ring travels via exactly 2 .healthy-loop-dot circles", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Both LogoAnimation uses pass showSteps={false} (the loop draws its own
-// step cards; the caption list inside the mark would duplicate them).
+// Both layouts put the animated mascot in the middle of the loop.
 // ---------------------------------------------------------------------------
 
-test("desktop mark passes showSteps={false} to LogoAnimation", () => {
+test("desktop ring centres MascotAnimation", () => {
   const { markDiv } = desktopParts();
   const markEl = markDiv.props.children as El;
-  assert.equal(markEl.type, LogoAnimation);
-  assert.equal(markEl.props.showSteps, false);
+  assert.equal(markEl.type, MascotAnimation);
 });
 
-test("mobile mark passes showSteps={false} to LogoAnimation", () => {
+test("mobile list opens with MascotAnimation", () => {
   const { mobile } = loop();
   const kids = mobile.props.children as El[];
-  const markEl = kids[0];
-  assert.equal(markEl.type, LogoAnimation);
-  assert.equal(markEl.props.showSteps, false);
+  assert.equal(kids[0].type, MascotAnimation);
 });
 
 // ---------------------------------------------------------------------------
@@ -268,4 +264,58 @@ test("spoke pulses and the hub glow are hidden under reduced motion", () => {
   assert.ok(mediaStart >= 0, "rule must follow a prefers-reduced-motion block's opening");
   // A closing brace at column 0 between the two would mean the media block ended first.
   assert.doesNotMatch(css.slice(mediaStart, rule.index), /\n\}/);
+});
+
+// ---------------------------------------------------------------------------
+// Ring geometry: the box is now square (W = H = 1000, RX = RY = 340) since
+// PickLoop shares its row with the square promo video. Every step card
+// (its w-[NN%] width) must still land fully inside the 0..W / 0..H box, or it would
+// visually spill out of its half of the grid row.
+// ---------------------------------------------------------------------------
+
+const pickLoopSource = readFileSync(
+  path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../pick-loop.tsx"),
+  "utf8",
+);
+
+function literal(name: string): number {
+  const m = pickLoopSource.match(new RegExp(`const ${name} = (\\d+(?:\\.\\d+)?);`));
+  assert.ok(m, `expected a literal ${name} declaration in pick-loop.tsx`);
+  return Number(m![1]);
+}
+
+test("the ring box is square (W === H === 1000) and RX === RY === 340", () => {
+  assert.equal(literal("W"), 1000);
+  assert.equal(literal("H"), 1000);
+  assert.equal(literal("RX"), 340);
+  assert.equal(literal("RY"), 340);
+});
+
+test("every step card sits fully inside the ring box at its own angle, given its width", () => {
+  const W = literal("W");
+  const H = literal("H");
+  const RX = literal("RX");
+  const RY = literal("RY");
+  const CX = W / 2;
+  const CY = H / 2;
+  const { ol } = desktopParts();
+  const liClass = (ol.props.children as El[])[0].props.className as string;
+  const widthPct = /\bw-\[(\d+(?:\.\d+)?)%\]/.exec(liClass);
+  assert.ok(widthPct, "expected the ring's step <li> to carry a w-[NN%] width");
+  const cardWidth = (Number(widthPct![1]) / 100) * W;
+  const halfCard = cardWidth / 2;
+  const stepCount = 5;
+
+  for (let k = 0; k < stepCount; k++) {
+    const a = ((-90 + (360 / stepCount) * k) * Math.PI) / 180;
+    const x = CX + RX * Math.cos(a);
+    const y = CY + RY * Math.sin(a);
+    assert.ok(x - halfCard >= 0, `step ${k}: card's left edge (${(x - halfCard).toFixed(1)}) falls left of the box`);
+    assert.ok(x + halfCard <= W, `step ${k}: card's right edge (${(x + halfCard).toFixed(1)}) falls right of the box`);
+    // The card is vertically centred on the ring point too (-translate-y-1/2),
+    // and uses the same width for its height budget here since StepCard's
+    // actual height isn't known ahead of layout; this pins the ring point
+    // itself, which must stay inside the box regardless.
+    assert.ok(y >= 0 && y <= H, `step ${k}: ring point y=${y.toFixed(1)} falls outside the box`);
+  }
 });

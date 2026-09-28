@@ -1,10 +1,10 @@
 import { Icon, type IconName } from "./icons";
-import { LogoAnimation } from "./logo-animation";
+import { MascotAnimation } from "./mascot-animation";
 
 /**
  * "How Brian picks" as one continuous loop rather than a list that ends:
  * Brian finds the clinical data, the checks run, a human gives final approval,
- * and it goes round again. The animated mark sits in the middle of the ring.
+ * and it goes round again. The animated mascot sits in the middle of the ring.
  *
  * Desktop draws the ring as an ellipse in a fixed-aspect box, so the steps can
  * be placed with plain percentages on the same geometry the SVG uses. Below
@@ -22,11 +22,14 @@ const STEPS: Step[] = [
 
 // Ring geometry, in the SVG's own units. The box is W x H; the ring is an
 // ellipse centred in it. Steps sit on the ring, the first at the top, then
-// clockwise at equal angles.
+// clockwise at equal angles. The box is square because the loop shares its row
+// with the square promo video (page.tsx), half the width each; RX leaves room
+// for the side cards (27% wide) inside the box. Wider cards touch their
+// neighbours: at 32% steps 1 and 2 overlapped by about 7px at every lg width.
 const W = 1000;
-const H = 640;
-const RX = 385;
-const RY = 245;
+const H = 1000;
+const RX = 340;
+const RY = 340;
 const CX = W / 2;
 const CY = H / 2;
 const angle = (k: number) => ((-90 + (360 / STEPS.length) * k) * Math.PI) / 180;
@@ -39,8 +42,8 @@ const RING = `M ${CX} ${CY - RY} A ${RX} ${RY} 0 1 1 ${CX - 0.01} ${CY - RY} Z`;
 // Spokes: the mark feeds each step and hears back. Each runs from just outside
 // the mark (an ellipse roughly its size) to the step card's centre, where the
 // card itself covers the end of the line.
-const HUB_RX = 150;
-const HUB_RY = 125;
+const HUB_RX = 170;
+const HUB_RY = 150;
 const spoke = (k: number) => {
   const a = angle(k);
   const end = point(a);
@@ -62,7 +65,7 @@ export function PickLoop() {
   return (
     <>
       {/* Desktop: the ring. */}
-      <div className="relative mx-auto hidden w-full max-w-5xl lg:block" style={{ aspectRatio: `${W} / ${H}` }}>
+      <div className="relative mx-auto hidden w-full lg:block" style={{ aspectRatio: `${W} / ${H}` }}>
         <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" aria-hidden="true">
           <path d={RING} fill="none" stroke="var(--kinetic-teal)" strokeOpacity={0.35} strokeWidth={3} />
           {STEPS.map((_, k) => {
@@ -122,19 +125,19 @@ export function PickLoop() {
           </g>
         </svg>
 
-        {/* The mark in the middle. */}
-        <div className="absolute top-1/2 left-1/2 w-[26%] -translate-x-1/2 -translate-y-1/2">
-          <LogoAnimation showSteps={false} />
+        {/* The mascot in the middle, hopping toward each step as its pulse leaves. */}
+        <div className="absolute top-1/2 left-1/2 w-[30%] -translate-x-1/2 -translate-y-1/2">
+          <MascotAnimation />
         </div>
 
         <ol>
           {STEPS.map((s, k) => (
             <li
               key={s.title}
-              className="absolute w-[21%] -translate-x-1/2 -translate-y-1/2"
+              className="absolute w-[27%] -translate-x-1/2 -translate-y-1/2"
               style={pct(point(angle(k)))}
             >
-              <StepCard step={s} n={k + 1} />
+              <StepCard step={s} n={k + 1} compact />
             </li>
           ))}
         </ol>
@@ -142,7 +145,7 @@ export function PickLoop() {
 
       {/* Phones and tablets: the same loop as a list, closing back on step 1. */}
       <div className="lg:hidden">
-        <LogoAnimation showSteps={false} className="mx-auto w-40" />
+        <MascotAnimation className="mx-auto w-44" />
         <ol className="relative mt-8 space-y-4 border-l-2 border-kinetic-teal/40 pl-6">
           {STEPS.map((s, k) => (
             <li key={s.title} className="relative">
@@ -159,10 +162,11 @@ export function PickLoop() {
   );
 }
 
-function StepCard({ step, n }: { step: Step; n: number }) {
+/** `compact` tightens the card for the ring, where it has a quarter of a half-width column. */
+function StepCard({ step, n, compact = false }: { step: Step; n: number; compact?: boolean }) {
   return (
     <div
-      className={`rounded-xl border bg-white p-4 shadow-sm ${step.human ? "border-2 border-kinetic-teal/50" : "border-slate-200"}`}
+      className={`rounded-xl border bg-white shadow-sm ${compact ? "p-3" : "p-4"} ${step.human ? "border-2 border-kinetic-teal/50" : "border-slate-200"}`}
     >
       <div className="flex items-center gap-2">
         {/* Lights up as the mark's pulse reaches this step (same timing as its spoke). */}
@@ -176,7 +180,9 @@ function StepCard({ step, n }: { step: Step; n: number }) {
           Step {n}
         </span>
       </div>
-      <h3 className="font-kinetic-heading mt-2 text-base leading-snug font-bold text-slate-950">{step.title}</h3>
+      <h3 className={`font-kinetic-heading mt-2 leading-snug font-bold text-slate-950 ${compact ? "text-sm" : "text-base"}`}>
+        {step.title}
+      </h3>
     </div>
   );
 }
