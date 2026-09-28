@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { JobRail } from "../job-rail.tsx";
 import { ProductCard } from "../components.tsx";
 import { Icon } from "../icons.tsx";
+import { MascotShower } from "../mascot-shower.tsx";
 import { goals, type Product } from "../data.ts";
 
 /**
@@ -57,10 +58,16 @@ function listItems(el: ReturnType<typeof JobRail>): AnyEl[] {
   return Array.isArray(items) ? items : [items];
 }
 
-/** A <li>'s children: [node <div>, drop <span>, stud <span>, card-wrapper <div>]. */
+/** A <li>'s children: [node <div>, drop <div>, stud <span>, card-wrapper <div>]. */
 function liParts(li: AnyEl) {
-  const [nodeDiv, , , cardWrapper] = (li.props as { children: AnyEl[] }).children;
-  return { nodeDiv, cardWrapper };
+  const [nodeDiv, dropDiv, , cardWrapper] = (li.props as { children: AnyEl[] }).children;
+  return { nodeDiv, dropDiv, cardWrapper };
+}
+
+/** The drop <div>'s single child: the <MascotShower> element itself, so
+ *  tests can read the `icons` prop JobRail computed for it. */
+function mascotShowerEl(dropDiv: AnyEl): AnyEl {
+  return (dropDiv.props as { children: AnyEl }).children;
 }
 
 /** The node <div>'s children: [icon/number tile <span>, job fragment]. When
@@ -79,26 +86,20 @@ function tileContent(nodeDiv: AnyEl): AnyEl | string {
   return (tileSpan.props as { children: AnyEl | string }).children;
 }
 
-type JobParts = { heading: string; name: string; alsoLines: string[] };
+type JobParts = { heading: string; name: string; caveatLine: string | null };
 
 /** Reads the job fragment's three children: heading <span>, supplement name
- *  <span>, and the `also.map(...)` array of "+ Label[: caveat]" <span>s (the
- *  array is empty, not absent, when there's only one goal). Each "+" span's
- *  children are ["+ ", label, caveat-string-or-""], joined here into one
- *  string so tests can assert on the whole line. */
+ *  <span>, and the lead's caveat <span> (`lead?.caveat && ...`, so a falsy
+ *  value when the lead has no caveat). Secondary goals get no line. */
 function jobParts(nodeDiv: AnyEl): JobParts | null {
   const fragment = jobFragment(nodeDiv);
   if (fragment === undefined) return null;
-  const [headingSpan, nameSpan, alsoArray] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl[]] })
+  const [headingSpan, nameSpan, caveatSpan] = (fragment.props as { children: [AnyEl, AnyEl, AnyEl | undefined] })
     .children;
-  const alsoLines = alsoArray.map((span) => {
-    const parts = (span.props as { children: (string | undefined)[] }).children;
-    return parts.join("");
-  });
   return {
     heading: (headingSpan.props as { children: string }).children,
     name: (nameSpan.props as { children: string }).children,
-    alsoLines,
+    caveatLine: caveatSpan ? (caveatSpan.props as { children: string }).children : null,
   };
 }
 
@@ -153,7 +154,7 @@ test("reversing the product order reverses which goal each card shows", () => {
   assert.deepEqual(reversedHeadings, [...forwardHeadings].reverse());
 });
 
-test("creatine leads with Strength (no caveat) and names Focus beneath with its caveat attached", () => {
+test("creatine leads with Strength (no caveat) and does not name Focus beneath it", () => {
   const products = [baseProduct({ slug: "p-creatine", category: "Creatine" })];
   const items = listItems(JobRail({ products }));
   const { nodeDiv } = liParts(items[0]);
@@ -167,14 +168,14 @@ test("creatine leads with Strength (no caveat) and names Focus beneath with its 
   assert.ok(job);
   assert.equal(job!.heading, "Strength");
   assert.equal(job!.name, "Creatine");
-  assert.deepEqual(job!.alsoLines, [`+ Focus: ${focusGoal.caveat}`]);
+  assert.equal(job!.caveatLine, null);
 
   const tile = tileContent(nodeDiv);
   assert.equal((tile as AnyEl).type, Icon);
   assert.equal(((tile as AnyEl).props as { name: string }).name, strengthGoal.icon);
 });
 
-test("a supplement with a single goal shows no '+' line", () => {
+test("a supplement with a single uncaveated goal shows no line beneath its name", () => {
   const products = [baseProduct({ slug: "p-magnesium", category: "Magnesium" })];
   const items = listItems(JobRail({ products }));
   const { nodeDiv } = liParts(items[0]);
@@ -183,7 +184,7 @@ test("a supplement with a single goal shows no '+' line", () => {
   assert.ok(job);
   assert.equal(job!.heading, "Energy");
   assert.equal(job!.name, "Magnesium");
-  assert.deepEqual(job!.alsoLines, []);
+  assert.equal(job!.caveatLine, null);
 });
 
 test("renders no goal text for a product whose category has no matching supplement, but still its card", () => {
@@ -206,4 +207,42 @@ test("renders no goal text for a product whose category has no matching suppleme
 test("JobRail renders an empty list for an empty products array", () => {
   const items = listItems(JobRail({ products: [] }));
   assert.deepEqual(items, []);
+});
+
+// ---------------------------------------------------------------------------
+// MascotShower wiring: each card's own goal icons, not the wrong goal's.
+// ---------------------------------------------------------------------------
+
+test("each card's MascotShower receives that product's own goal icons, in goal order", () => {
+  const products = [
+    baseProduct({ slug: "p-magnesium", category: "Magnesium" }),
+    baseProduct({ slug: "p-theanine", category: "L-theanine" }),
+  ];
+  const items = listItems(JobRail({ products }));
+
+  const magShower = mascotShowerEl(liParts(items[0]).dropDiv);
+  assert.equal(magShower.type, MascotShower);
+  assert.deepEqual((magShower.props as { icons: string[] }).icons, ["zap"]);
+
+  const theanineShower = mascotShowerEl(liParts(items[1]).dropDiv);
+  assert.equal(theanineShower.type, MascotShower);
+  assert.deepEqual((theanineShower.props as { icons: string[] }).icons, ["moon"]);
+});
+
+test("creatine's MascotShower showers only its lead goal's icon (strength), not focus", () => {
+  const products = [baseProduct({ slug: "p-creatine", category: "Creatine" })];
+  const items = listItems(JobRail({ products }));
+  const shower = mascotShowerEl(liParts(items[0]).dropDiv);
+  assert.deepEqual((shower.props as { icons: string[] }).icons, ["dumbbell"]);
+});
+
+test("a product with no matching supplement passes an empty icons array to MascotShower", () => {
+  const orphan = baseProduct({
+    slug: "orphan",
+    category: "Nonexistent" as unknown as Product["category"],
+  });
+  const items = listItems(JobRail({ products: [orphan] }));
+  const shower = mascotShowerEl(liParts(items[0]).dropDiv);
+  assert.equal(shower.type, MascotShower);
+  assert.deepEqual((shower.props as { icons: string[] }).icons, []);
 });
