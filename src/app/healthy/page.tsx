@@ -83,7 +83,7 @@ export default function HealthyHome() {
                 GetBrian <span className="block text-kinetic-primary-electric sm:inline">Healthy</span>
               </p>
             </div>
-            <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
+            <h1 className="font-kinetic-heading text-[5.2vw] leading-[1.1] font-semibold tracking-tight text-slate-950 sm:text-[32px]">
               {taglineLead}
               {taglineHighlight && (
                 <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
@@ -97,7 +97,7 @@ export default function HealthyHome() {
             <ul className="space-y-3">
               {HERO_POINTS.map((point) => (
                 <li key={point.text} className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-kinetic-primary text-kinetic-teal-on-dark shadow-sm">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-kinetic-teal/40 bg-white text-kinetic-teal shadow-sm">
                     <Icon name={point.icon} size={22} />
                   </span>
                   <span className="text-lg leading-snug font-medium text-slate-800 sm:text-xl">{point.text}</span>
@@ -134,7 +134,7 @@ export default function HealthyHome() {
           {/* Caption legibility: a scrim on the small-screen band; on large screens a text
               shadow instead, since a scrim there would grey the feathered copy side. */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/60 to-transparent lg:hidden" aria-hidden="true" />
-          <p className="absolute right-4 bottom-4 left-4 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6 lg:right-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]">
+          <p className="absolute right-4 bottom-4 left-4 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6">
             An active, evidence-checked routine for the decades ahead
           </p>
         </div>

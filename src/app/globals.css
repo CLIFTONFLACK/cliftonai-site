@@ -461,22 +461,23 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   transform: translateY(0);
 }
 
-/* /healthy hero photo, large screens: solid white under the copy column, then a
-   fade to the photo. The fade is anchored to the column's real right edge, not a
-   share of the viewport: max-w-6xl container, sm:px-6 gutter and a 36rem column
-   put that edge at max(37.5rem, 50vw + 1.5rem). An earlier version used
-   percentage stops, which let the fade creep under the copy (paragraph 4.3:1,
-   trust line 3.6:1 at 1280-1600px); anchored to the edge, the copy sits on
-   solid white at every width (7.6:1, measured 1024-2560px). */
+/* /healthy hero photo, large screens: solid white to 35% of the viewport, where
+   the photo starts to show, then a fade to the photo. The copy column's real
+   right edge (max-w-6xl container, sm:px-6 gutter, 36rem column) is
+   max(37.5rem, 50vw + 1.5rem), so the right end of the copy sits on the early,
+   still mostly white part of the fade; the stop there is held at 0.75 so the
+   copy keeps its contrast over the photo. An earlier version used percentage
+   stops that dropped far lower under the copy (trust line 3.6:1 at
+   1280-1600px). */
 @media (min-width: 64rem) {
   .healthy-hero-feather {
     --copy-edge: max(37.5rem, calc(50vw + 1.5rem));
     background-image: linear-gradient(
       to right,
       #fff 0,
-      #fff var(--copy-edge),
-      rgb(255 255 255 / 0.8) calc(var(--copy-edge) + 3rem),
-      transparent calc(var(--copy-edge) + 16rem)
+      #fff 35vw,
+      rgb(255 255 255 / 0.75) var(--copy-edge),
+      transparent calc(var(--copy-edge) + 12rem)
     );
   }
 }
