@@ -13,11 +13,11 @@ import { LogoAnimation } from "./logo-animation";
 type Step = { title: string; icon: IconName; human?: boolean };
 
 const STEPS: Step[] = [
-  { title: "Brian Finds Clinical Data", icon: "flask" },
-  { title: "Information Gets Evaluated", icon: "book" },
-  { title: "Products Get Matched", icon: "clipboardCheck" },
-  { title: "Brian Creates Shortlist", icon: "listChecks" },
-  { title: "Human Final Approval", icon: "shieldCheck", human: true },
+  { title: "Clinical Reviews", icon: "flask" },
+  { title: "Evaluated Process", icon: "book" },
+  { title: "Products Matched", icon: "clipboardCheck" },
+  { title: "Shortlist Built", icon: "listChecks" },
+  { title: "Final Approval", icon: "shieldCheck", human: true },
 ];
 
 // Ring geometry, in the SVG's own units. The box is W x H; the ring is an
