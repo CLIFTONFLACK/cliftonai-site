@@ -124,14 +124,16 @@ export default function HealthyHome() {
         </div>
 
         {/* The couple stand in the right half of the frame, so the crop anchors
-            right to keep both of them clear of the feathered side. */}
+            right to keep both of them clear of the feathered side. On large
+            screens the wide section crops the photo vertically, so it also
+            anchors to the top to keep their heads in frame. */}
         <div className="relative mt-10 h-72 sm:h-96 lg:absolute lg:inset-0 lg:mt-0 lg:h-auto">
           <Image
             src="/healthy/hero-couple-v2.jpg"
             alt="A couple in their fifties hiking a coastal trail at sunrise"
             fill
             sizes="100vw"
-            className="animate-kinetic-hero-zoom object-cover object-right"
+            className="animate-kinetic-hero-zoom object-cover object-right lg:origin-top lg:object-[right_top]"
             priority
           />
           <div
