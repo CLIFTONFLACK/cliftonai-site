@@ -180,3 +180,36 @@ test("healthy-shower-fall keyframes start faded out and scaled down at 0%, then 
   assert.match(hundredPercentBlock![1], /opacity:\s*0\s*;/);
   assert.match(hundredPercentBlock![1], /translate\(var\(--x1\),\s*104px\)/);
 });
+
+// ---------------------------------------------------------------------------
+// Icons leave from the mascot's hands: alternate palms, start at the palm
+// (--x0/--y0 from HAND_X/HAND_Y), and land nearer the middle than they left.
+// ---------------------------------------------------------------------------
+
+test("every drop is thrown by a hand (-1 left, 1 right), alternating left and right", () => {
+  const drops = parseDrops();
+  drops.forEach((d, i) => {
+    assert.ok(d.hand === -1 || d.hand === 1, `drop ${i}: hand must be -1 or 1, got ${d.hand}`);
+    if (i > 0) assert.notEqual(d.hand, drops[i - 1].hand, `drop ${i} is thrown by the same hand as drop ${i - 1}`);
+  });
+});
+
+test("each icon starts on its throwing palm: --x0 from HAND_X, --y0 from HAND_Y", () => {
+  assert.match(source, /"--x0": `\$\{d\.hand \* HAND_X\}px`/);
+  assert.match(source, /"--y0": `\$\{HAND_Y - d\.size \/ 2\}px`/);
+});
+
+test("each icon lands nearer the middle than the palm it left, on its own hand's side or centre", () => {
+  const handX = Math.round(96 * 0.43);
+  assert.match(source, /const MASCOT_W = 96;/);
+  for (const d of parseDrops()) {
+    assert.ok(Math.abs(d.x1) < handX, `x1=${d.x1} lands outside the palm at ${handX}`);
+    assert.ok(d.x1 * d.hand >= 0, `x1=${d.x1} crosses over from hand ${d.hand}`);
+  }
+});
+
+test("healthy-shower-fall's first frame sits on the palm (var(--x0), var(--y0))", () => {
+  const body = css.match(/@keyframes healthy-shower-fall\s*\{([\s\S]*?)\n\}/)![1];
+  const zero = body.match(/\b0%\s*\{([^}]*)\}/)![1];
+  assert.match(zero, /translate\(var\(--x0\),\s*var\(--y0\)\)/);
+});
