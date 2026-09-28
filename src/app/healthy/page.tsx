@@ -98,7 +98,7 @@ export default function HealthyHome() {
             {/* Three points, each marked with a piece of the logo: the traces
                 (three supplements), the check seal (reviewed), the cross (the
                 benefit). */}
-            <ul className="space-y-3">
+            <ul className="space-y-5">
               {HERO_POINTS.map((point) => (
                 <li key={point.text} className="flex items-center gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-kinetic-teal/40 bg-white text-kinetic-teal shadow-sm">
