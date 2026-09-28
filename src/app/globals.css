@@ -891,8 +891,9 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 /* Mascot shower (healthy/mascot-shower.tsx): under each pick's goal, the
    mascot tosses the goal's icons down onto the card. Nine icons share one
    2.7s fall, 0.3s apart (the delays in DROPS), so one leaves every 0.3s; the
-   mascot bobs twice a cycle, as if throwing. Each icon drifts from --x0 to
-   --x1 and spins to --r as it falls, speeding up like something dropped. */
+   mascot bobs twice a cycle, as if throwing. Each icon leaves a palm
+   (--x0, --y0), drifts to --x1 and spins to --r as it falls, speeding up
+   like something dropped. */
 .healthy-shower-mascot {
   transform-origin: 50% 100%;
   animation: healthy-shower-toss 1.35s ease-in-out infinite;
@@ -922,13 +923,15 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   }
 }
 
+/* Each icon appears in the throwing palm (--x0, --y0), pops a little up and
+   outward as it is tossed, then falls to --x1. */
 @keyframes healthy-shower-fall {
   0% {
-    transform: translate(var(--x0), -6px) rotate(0deg) scale(0.5);
+    transform: translate(var(--x0), var(--y0)) rotate(0deg) scale(0.4);
     opacity: 0;
   }
   12% {
-    transform: translate(var(--x0), 2px) rotate(0deg) scale(1);
+    transform: translate(calc(var(--x0) * 1.2), calc(var(--y0) - 10px)) rotate(0deg) scale(1);
     opacity: 1;
   }
   80% {

@@ -6,9 +6,9 @@ import { Icon, type IconName } from "./icons";
 
 /*
  * A small mascot above each pick, tossing that pick's goal icons (energy,
- * strength, calm...) down onto its card in a steady waterfall: what the pick
- * gives you, falling into the product. Used by job-rail.tsx between each
- * goal's label and its card.
+ * strength, calm...) from its hands, alternating left and right, down onto
+ * its card in a steady waterfall: what the pick gives you, falling into the
+ * product. Used by job-rail.tsx between each goal's label and its card.
  *
  * The keyframes are `.healthy-shower-*` in globals.css. Each icon falls on the
  * same clock at its own delay and drift, read from CSS variables set here.
@@ -16,18 +16,28 @@ import { Icon, type IconName } from "./icons";
  * down the column, so the column still reads as a shower. Off screen it pauses.
  */
 const MASCOT = "/healthy/brand/healthy-mascot.webp";
+const MASCOT_W = 96;
+const MASCOT_H = (MASCOT_W * 372) / 473;
 
-/** One falling icon: horizontal start and end (px from centre), spin, delay (s), size (px), resting height (px). */
+// Where the hands are, measured from the image's alpha: palm centres sit 43%
+// of the width either side of centre, 52% of the way down. As offsets from
+// the top centre of the icon column, which starts at the mascot's feet.
+const HAND_X = Math.round(MASCOT_W * 0.43);
+const HAND_Y = -Math.round(MASCOT_H * (1 - 0.52));
+
+/** One falling icon: which hand throws it (-1 left, 1 right), where it lands
+ *  (px from centre; each lands nearer the middle than its hand, so the two
+ *  streams pour inward onto the card), spin, delay (s), size (px), resting height (px). */
 const DROPS = [
-  { x0: -6, x1: -40, r: -35, delay: 0, size: 22, rest: 20 },
-  { x0: 8, x1: 30, r: 30, delay: 0.3, size: 17, rest: 66 },
-  { x0: -2, x1: 6, r: 15, delay: 0.6, size: 24, rest: 40 },
-  { x0: 6, x1: -20, r: -20, delay: 0.9, size: 18, rest: 86 },
-  { x0: -8, x1: 44, r: 40, delay: 1.2, size: 20, rest: 10 },
-  { x0: 2, x1: -46, r: -45, delay: 1.5, size: 16, rest: 56 },
-  { x0: 0, x1: 16, r: 25, delay: 1.8, size: 22, rest: 96 },
-  { x0: -4, x1: -8, r: -15, delay: 2.1, size: 19, rest: 74 },
-  { x0: 4, x1: 36, r: 35, delay: 2.4, size: 16, rest: 32 },
+  { hand: -1, x1: -22, r: 35, delay: 0, size: 22, rest: 20 },
+  { hand: 1, x1: 18, r: -30, delay: 0.3, size: 21, rest: 66 },
+  { hand: -1, x1: -10, r: 20, delay: 0.6, size: 18, rest: 40 },
+  { hand: 1, x1: 24, r: -40, delay: 0.9, size: 22, rest: 86 },
+  { hand: -1, x1: -26, r: 45, delay: 1.2, size: 20, rest: 10 },
+  { hand: 1, x1: 8, r: -25, delay: 1.5, size: 16, rest: 56 },
+  { hand: -1, x1: -4, r: 15, delay: 1.8, size: 19, rest: 96 },
+  { hand: 1, x1: 4, r: -35, delay: 2.1, size: 19, rest: 74 },
+  { hand: -1, x1: -16, r: 30, delay: 2.4, size: 16, rest: 32 },
 ];
 
 export function MascotShower({ icons }: { icons: IconName[] }) {
@@ -49,7 +59,15 @@ export function MascotShower({ icons }: { icons: IconName[] }) {
 
   return (
     <div ref={ref} className="healthy-shower mx-auto flex flex-col items-center" aria-hidden="true">
-      <Image src={MASCOT} alt="" width={473} height={372} unoptimized className="healthy-shower-mascot h-auto w-24" />
+      <Image
+        src={MASCOT}
+        alt=""
+        width={473}
+        height={372}
+        unoptimized
+        className="healthy-shower-mascot h-auto"
+        style={{ width: MASCOT_W }}
+      />
       <div className="relative h-28 w-40">
         {DROPS.map((d, i) => (
           <span
@@ -57,7 +75,9 @@ export function MascotShower({ icons }: { icons: IconName[] }) {
             className={`healthy-shower-icon absolute top-0 left-1/2 ${i % 2 ? "text-kinetic-primary" : "text-kinetic-teal"}`}
             style={
               {
-                "--x0": `${d.x0}px`,
+                // Start centred on the throwing palm.
+                "--x0": `${d.hand * HAND_X}px`,
+                "--y0": `${HAND_Y - d.size / 2}px`,
                 "--x1": `${d.x1}px`,
                 "--r": `${d.r}deg`,
                 "--rest": `${d.rest}px`,
