@@ -11,6 +11,8 @@ export type Product = {
   href: string;
   /** Only set when a distinct demo/sandbox URL exists. */
   demoHref?: string;
+  /** Client-row button text, when "Visit {name}" reads badly. */
+  visitLabel?: string;
   subdomain: string;
   status: "live" | "in-development";
   screenshot: string;
@@ -218,9 +220,10 @@ export const products: Product[] = [
     category: "client",
   },
   {
-    name: "Anatop Territory Evaluation",
-    tagline: "Pharma launch planning for SLA Pharma",
-    hook: "Regulatory, clinical and commercial AI agents test a country launch, and every claim comes with its source.",
+    name: "Ai Simulator",
+    visitLabel: "Visit the Simulator",
+    tagline: "Country Evaluations",
+    hook: "Regulatory, clinical and commercial AI agents evaluation simulation.",
     bullets: [
       "Three specialist agents debate the launch, you moderate",
       "Every claim tagged verified, estimate or unknown, with the source",

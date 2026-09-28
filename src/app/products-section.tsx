@@ -188,7 +188,9 @@ function ClientRow({ product }: { product: Product }) {
           <span className="text-xs text-fg-subtle">
             Built by <span className="font-semibold text-fg-muted">Brian</span>
           </span>
-          <VisitButton href={product.href}>Visit {product.name}</VisitButton>
+          <VisitButton href={product.href}>
+            {product.visitLabel ?? `Visit ${product.name}`}
+          </VisitButton>
         </div>
       </div>
     </div>
