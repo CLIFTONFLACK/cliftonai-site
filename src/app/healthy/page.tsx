@@ -83,7 +83,7 @@ export default function HealthyHome() {
                 GetBrian <span className="block text-kinetic-primary-electric sm:inline">Healthy</span>
               </p>
             </div>
-            <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
+            <h1 className="font-kinetic-heading text-3xl leading-[1.1] font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
               {taglineLead}
               {taglineHighlight && (
                 <span className="bg-gradient-to-r from-kinetic-primary via-kinetic-primary-electric to-kinetic-teal bg-clip-text text-transparent">
@@ -100,7 +100,7 @@ export default function HealthyHome() {
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-kinetic-primary text-kinetic-teal-on-dark shadow-sm">
                     <Icon name={point.icon} size={22} />
                   </span>
-                  <span className="text-lg leading-snug font-semibold text-slate-800 sm:text-xl">{point.text}</span>
+                  <span className="text-lg leading-snug font-medium text-slate-800 sm:text-xl">{point.text}</span>
                 </li>
               ))}
             </ul>
@@ -120,7 +120,7 @@ export default function HealthyHome() {
             right to keep both of them clear of the feathered side. */}
         <div className="relative mt-10 h-72 sm:h-96 lg:absolute lg:inset-0 lg:mt-0 lg:h-auto">
           <Image
-            src="/healthy/hero-couple.jpg"
+            src="/healthy/hero-couple-v2.jpg"
             alt="A couple in their fifties hiking a coastal trail at sunrise"
             fill
             sizes="100vw"
