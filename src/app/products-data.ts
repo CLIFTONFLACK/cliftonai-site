@@ -234,6 +234,23 @@ export const products: Product[] = [
     screenshot: "/screenshots/anatop-simulator.jpg",
     category: "client",
   },
+  {
+    name: "BikeMe",
+    tagline: "Voice-guided cycling routes",
+    hook: "Pick a route, press start and put your phone away: every turn is called out before you reach it.",
+    bullets: [
+      "Turn-by-turn voice on cycle paths, towpaths and quiet lanes",
+      "Routes across London and the South East, or draw your own",
+      "Off-route warnings, splits and GPX export",
+    ],
+    description:
+      "Cycling somewhere new means stopping at every junction to check a map. BikeMe follows your GPS along a route and tells you every turn at 400 metres and again as you reach it, on the cycle paths and quiet lanes car sat-navs skip. You get to keep riding, not keep checking your phone.",
+    href: "https://bikeme-usgc.vercel.app",
+    subdomain: "bikeme-usgc.vercel.app",
+    status: "live",
+    screenshot: "/screenshots/bikeme.jpg",
+    category: "client",
+  },
 ];
 
 /**
