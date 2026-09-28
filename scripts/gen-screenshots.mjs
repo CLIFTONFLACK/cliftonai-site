@@ -53,6 +53,8 @@ const OUT_H = 563;
  */
 const CAPTURE_HEIGHT = {
   crm: 735,
+  // Healthy (www.getbrian.xyz/healthy): hero ends near y=705.
+  www: 705,
 };
 const SCALE = 2; // capture at 2x, downsample — much crisper text than a 1x grab
 
@@ -94,16 +96,17 @@ function readTargets() {
     const category = grab("category");
     const name = grab("name");
     if (href && screenshot && category === "self") {
-      out.push({ name, href, screenshot });
+      // Healthy lives on the main site, so its href is a path. Shoot production.
+      out.push({ name, href: new URL(href, "https://www.getbrian.xyz").href, screenshot });
     }
   }
   return out;
 }
 
 const all = readTargets();
-if (all.length !== 4) {
+if (all.length !== 5) {
   console.error(
-    `Expected 4 self-category products in products-data.ts, parsed ${all.length}.\n` +
+    `Expected 5 self-category products in products-data.ts, parsed ${all.length}.\n` +
       `The file's shape probably changed — fix readTargets() rather than trusting this.`
   );
   process.exit(1);

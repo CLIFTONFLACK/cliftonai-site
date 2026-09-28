@@ -216,7 +216,17 @@ export function ProductsSection() {
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {selfProducts.map((product, i) => (
-              <Reveal key={product.name} delay={Math.min(i, 3) * 80}>
+              <Reveal
+                key={product.name}
+                delay={Math.min(i, 3) * 80}
+                // An odd card out centres under the pair above rather than
+                // hanging off the left column.
+                className={
+                  selfProducts.length % 2 === 1 && i === selfProducts.length - 1
+                    ? "sm:col-span-2 sm:mx-auto sm:w-[calc(50%-0.75rem)]"
+                    : ""
+                }
+              >
                 <ProductCard product={product} />
               </Reveal>
             ))}

@@ -95,6 +95,27 @@ export const products: Product[] = [
     category: "self",
   },
   {
+    // No structure/function claims in this copy: those need the FDA
+    // disclaimer, and the homepage does not carry it. /healthy does.
+    name: "Healthy",
+    shortName: "Healthy",
+    accent: "#046d7c",
+    tagline: "Human Longevity Program",
+    hook: "Three supplements for adults over 40, each picked for one job and explained from the research.",
+    bullets: [
+      "3 supplements, 3 jobs, no stack to decode",
+      "Every pick traced back to the clinical studies",
+      "Carefully researched, honestly reviewed",
+    ],
+    description:
+      "The supplement aisle sells forty bottles and no reasons. Brian's Human Longevity Program picks three, gives each one job, and explains every pick from the clinical research, dose included. You get a short routine you understand, not a cupboard of guesses.",
+    href: "/healthy",
+    subdomain: "getbrian.xyz/healthy",
+    status: "live",
+    screenshot: "/screenshots/healthy.jpg",
+    category: "self",
+  },
+  {
     name: "Merlows News",
     tagline: "Independent journalism + AI research",
     hook: "Independent journalism on Middle East diplomacy, sharpened by AI research.",
@@ -194,6 +215,23 @@ export const products: Product[] = [
     subdomain: "vancehealthhub.co.uk",
     status: "live",
     screenshot: "/screenshots/vancehealthhub.jpg",
+    category: "client",
+  },
+  {
+    name: "Anatop Territory Evaluation",
+    tagline: "Pharma launch planning for SLA Pharma",
+    hook: "Regulatory, clinical and commercial AI agents test a country launch, and every claim comes with its source.",
+    bullets: [
+      "Three specialist agents debate the launch, you moderate",
+      "Every claim tagged verified, estimate or unknown, with the source",
+      "Decision report with risks, kill criteria and next actions",
+    ],
+    description:
+      "Deciding whether to launch a product in a new country usually means weeks of meetings and a slide deck nobody can trace back to evidence. Anatop Territory Evaluation runs the working group as regulatory, clinical and commercial AI agents that research the target market live, challenge each other, and cite every claim. You get a sourced decision report with risks, kill criteria and next actions, exported to Word or PDF.",
+    href: "https://anatop-simulator.vercel.app",
+    subdomain: "anatop-simulator.vercel.app",
+    status: "live",
+    screenshot: "/screenshots/anatop-simulator.jpg",
     category: "client",
   },
 ];
