@@ -202,7 +202,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Positioning — the frame before the evidence */}
+        <ProductsSection />
+
+        {/* Positioning — the case for building, just before the price */}
         <section className="border-t border-border px-6 py-24">
           <div className="mx-auto max-w-6xl">
             <Reveal className="max-w-2xl">
@@ -226,8 +228,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <ProductsSection />
 
         <PricingSection />
 
