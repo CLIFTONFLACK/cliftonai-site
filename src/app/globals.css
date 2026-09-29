@@ -626,11 +626,11 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 }
 
 /* Feathered edges (healthy/promo-video.tsx): all four sides fade to transparent
-   over the outer 18%, so the video melts into whatever background it sits on.
+   over the outer 9%, so the video melts into whatever background it sits on.
    Two gradient masks, one per axis, intersected. */
 .healthy-feather {
-  --feather: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
-    linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  --feather: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
   -webkit-mask-image: var(--feather);
   -webkit-mask-composite: source-in;
   mask-image: var(--feather);
