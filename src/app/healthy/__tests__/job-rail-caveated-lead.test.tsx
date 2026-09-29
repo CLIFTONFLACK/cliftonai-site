@@ -55,6 +55,7 @@ function baseProduct(): Product {
     safety: [],
     pros: [],
     cons: [],
+    advantage: "",
     brandUrl: "https://brand.example.com",
     affiliateUrl: null,
     redirectAllowed: false,

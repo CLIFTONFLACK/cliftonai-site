@@ -105,7 +105,7 @@ test("mobile list opens with MascotAnimation", () => {
 
 const EXPECTED_TITLES = [
   "Clinical Reviews",
-  "Evaluated Process",
+  "Evaluate Data",
   "Products Matched",
   "Shortlist Built",
   "Final Approval",
@@ -294,7 +294,7 @@ test("spoke pulses and the hub glow are hidden under reduced motion", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Ring geometry: the box is now square (W = H = 1000, RX = RY = 340) since
+// Ring geometry: the box is now square (W = H = 1000, RX = RY = 330) since
 // PickLoop shares its row with the square promo video. Every step card
 // (its w-[NN%] width) must still land fully inside the 0..W / 0..H box, or it would
 // visually spill out of its half of the grid row.
@@ -311,11 +311,18 @@ function literal(name: string): number {
   return Number(m![1]);
 }
 
-test("the ring box is square (W === H === 1000) and RX === RY === 340", () => {
+test("the ring box is square (W === H === 1000) and RX === RY === 330", () => {
   assert.equal(literal("W"), 1000);
   assert.equal(literal("H"), 1000);
-  assert.equal(literal("RX"), 340);
-  assert.equal(literal("RY"), 340);
+  assert.equal(literal("RX"), 330);
+  assert.equal(literal("RY"), 330);
+});
+
+test("ring step titles never wrap: the title is whitespace-nowrap", () => {
+  for (const card of desktopStepCardEls()) {
+    const h3 = (card.props.children as El[])[1];
+    assert.match(h3.props.className as string, /\bwhitespace-nowrap\b/);
+  }
 });
 
 test("every step card sits fully inside the ring box at its own angle, given its width", () => {
