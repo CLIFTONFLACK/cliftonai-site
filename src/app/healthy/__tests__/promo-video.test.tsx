@@ -224,8 +224,8 @@ function ruleBody(selector: string): string {
 
 test(".healthy-feather masks with a horizontal AND a vertical gradient", () => {
   const body = ruleBody(".healthy-feather");
-  assert.match(body, /linear-gradient\(to right,\s*transparent,\s*#000\s*18%,\s*#000\s*82%,\s*transparent\)/);
-  assert.match(body, /linear-gradient\(to bottom,\s*transparent,\s*#000\s*18%,\s*#000\s*82%,\s*transparent\)/);
+  assert.match(body, /linear-gradient\(to right,\s*transparent,\s*#000\s*9%,\s*#000\s*91%,\s*transparent\)/);
+  assert.match(body, /linear-gradient\(to bottom,\s*transparent,\s*#000\s*9%,\s*#000\s*91%,\s*transparent\)/);
 });
 
 test(".healthy-feather sets both the prefixed and unprefixed mask-image", () => {
