@@ -112,7 +112,7 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         </nav>
       </aside>
 
-      <div className="flex flex-1 flex-col">
+      <div className="group/page flex flex-1 flex-col">
       {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
           The legal sentence and its link are unchanged from before this reskin.
           Hidden on phones; there the homepage picks carry the line themselves (page.tsx),
@@ -162,7 +162,9 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
 
       <main className="flex-1 pt-16 min-[1544px]:pt-0">{children}</main>
 
-      <footer className="border-t border-border bg-slate-950 text-slate-300">
+      {/* On a page with the fixed phone purchase bar (data-buy-bar), the footer
+          pads itself so its last line clears the bar. */}
+      <footer className="border-t border-border bg-slate-950 text-slate-300 group-has-[[data-buy-bar]]/page:pb-24 lg:group-has-[[data-buy-bar]]/page:pb-0">
         <div className="mx-auto max-w-6xl px-4 py-10 text-base sm:px-6">
           <div className="mb-8 flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-5">
             <Icon name="shield" size={22} className="mt-0.5 text-kinetic-teal-on-dark" />
@@ -206,12 +208,13 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
               </li>
             </ul>
           </div>
-          <div className="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-slate-500 sm:flex-row">
+          {/* slate-400, not 500: 500 on this background is 4.2:1, under the 4.5:1 AA floor. */}
+          <div className="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-slate-400 sm:flex-row">
             <p>
               &copy; {new Date().getFullYear()} GetBrian. An independent project, not affiliated with
               Human Longevity, Inc.
             </p>
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
               <span>Re-checked every 6 months</span>
               <span className="text-slate-700">&middot;</span>
               <span className="text-kinetic-teal-on-dark">No paid placements</span>

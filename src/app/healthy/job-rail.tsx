@@ -40,7 +40,7 @@ export function JobRail({ products }: { products: Product[] }) {
             card slides as one, and the next one peeks in from the right. The
             row bleeds to the screen edge; the vertical padding keeps the
             cards' hover lift and shadow from being clipped by the scroller. */}
-        <ul id="healthy-picks-row" aria-label="Brian's picks" className="relative -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-2 pb-6 lg:pb-10 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-8 lg:overflow-visible lg:p-0 [&::-webkit-scrollbar]:hidden">
+        <ul id="healthy-picks-row" aria-label="Brian's picks" className="relative -mx-4 flex scroll-mt-20 snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-2 pb-6 lg:pb-10 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-8 lg:overflow-visible lg:p-0 [&::-webkit-scrollbar]:hidden">
           {products.map((product, i) => {
             const job = supplementFor(product);
             const lead = leadGoal(product);

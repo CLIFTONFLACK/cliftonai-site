@@ -180,8 +180,13 @@ export function ProductCard({ product }: { product: Product }) {
           {product.category}
           {role && <span className="font-medium normal-case text-slate-400"> &middot; {role}</span>}
         </span>
+        {/* The brand sits on its own line inside the link, so every card's name
+            starts at the same height and the link is a full-height tap target. */}
         <h3 className="mb-4 font-kinetic-heading text-xl font-bold tracking-tight text-slate-950">
-          <Link href={`/healthy/products/${product.slug}`} className="hover:underline">
+          <Link href={`/healthy/products/${product.slug}`} className="flex min-h-11 flex-col justify-center hover:underline">
+            <span className="text-sm font-semibold tracking-normal text-slate-500">{product.brand}</span>
+            {/* A real space, so the link reads "Thorne Theanine" to screen readers and crawlers. */}
+            {" "}
             {product.name}
           </Link>
         </h3>
@@ -193,7 +198,10 @@ export function ProductCard({ product }: { product: Product }) {
             <Pending />
           )}
           {perServing !== null && (
-            <span className="text-xs font-semibold text-slate-500">({usd(perServing)}/serving)</span>
+            <span className="text-xs font-semibold text-slate-500">
+              {/* Kept this short on purpose: anything longer wraps on a 375px phone and grows the card. */}
+              {product.servingsPerContainer} ct &middot; {usd(perServing)}/serving
+            </span>
           )}
         </div>
 
