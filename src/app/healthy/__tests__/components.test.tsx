@@ -138,46 +138,61 @@ test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {
   );
 });
 
+test("BuyButton label can be overridden, as the homepage cards do", () => {
+  const el = BuyButton({ product: baseProduct(), from: "picks", label: "Buy Now" });
+  const [link] = children(el) as [{ props: { children: unknown[] } }];
+  assert.equal(link.props.children.filter((c) => typeof c === "string").join(""), "Buy Now");
+});
+
 // ---------------------------------------------------------------------------
-// ProductCard — the "Read the full review" link's icon must not leak into
-// its accessible name (icons.tsx's whole reason for existing: see its file
-// comment about ligature words like "arrow_forward" being announced).
+// ProductCard. contentDiv children:
+// [category span, h3 name, price row, summary, dl, button row]
 // ---------------------------------------------------------------------------
 
-test('ProductCard "Read the full review" link has no text besides the label itself (icon excluded)', () => {
-  const product = baseProduct({ pros: ["Good"], cons: ["Bad"] });
+function cardContent(product: Product): unknown[] {
   const el = ProductCard({ product });
   const articleKids = (el.props as { children: unknown[] }).children;
   const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
-  const readLink = contentDiv.props.children[contentDiv.props.children.length - 1] as {
-    props: { children: unknown[] };
-  };
-  const visibleText = readLink.props.children
-    .filter((child): child is string => typeof child === "string")
-    .join("");
-  assert.equal(visibleText, "Read the full review");
+  return contentDiv.props.children;
+}
+
+function cardButtons(product: Product) {
+  const row = cardContent(product)[5] as { props: { children: unknown[] } };
+  return row.props.children as [
+    { props: Record<string, unknown> },
+    { props: { href: string; children: unknown } },
+  ];
+}
+
+test('ProductCard button row holds "Buy Now" then "View Product", side by side', () => {
+  const product = baseProduct({ slug: "abc" });
+  const [buy, view] = cardButtons(product);
+  assert.equal(buy.props.label, "Buy Now");
+  assert.equal(view.props.href, "/healthy/products/abc");
+  // No icon or other node inside the link, so its accessible name is exactly the label.
+  assert.equal(view.props.children, "View Product");
 });
 
-test("ProductCard's Buy button omits the affiliate disclosure paragraph (the site-wide banner covers it there)", () => {
-  const product = baseProduct();
-  const el = ProductCard({ product });
-  const articleKids = (el.props as { children: unknown[] }).children;
-  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
-  // contentDiv children: [category span, h3 name, brand/format p, price row, summary, dl, buy button div, read-more link]
-  const buyButtonDiv = contentDiv.props.children[6] as { props: { children: unknown } };
-  const buyButtonEl = buyButtonDiv.props.children as { type: unknown; props: Record<string, unknown> };
-  assert.equal(buyButtonEl.props.showDisclosure, false);
+test("ProductCard's Buy button omits the affiliate disclosure paragraph (the banner or the phone line covers it there)", () => {
+  const [buy] = cardButtons(baseProduct());
+  assert.equal(buy.props.showDisclosure, false);
 });
 
-test("ProductCard shows the brand and format beneath the product name", () => {
+test("ProductCard no longer prints the brand and format line", () => {
   const product = baseProduct({ brand: "Thorne", format: "Capsules" });
-  const el = ProductCard({ product });
-  const articleKids = (el.props as { children: unknown[] }).children;
-  const contentDiv = articleKids[articleKids.length - 1] as { props: { children: unknown[] } };
-  // contentDiv children: [category span, h3 name, brand/format p, price row, summary, dl, buy button div, read-more link]
-  const brandFormatP = contentDiv.props.children[2] as { type: string; props: { children: unknown[] } };
-  assert.equal(brandFormatP.type, "p");
-  assert.deepEqual(brandFormatP.props.children, ["Thorne", " · ", "Capsules"]);
+  // Every string in the content column's element tree (the static tree only,
+  // which is where the old "Thorne · Capsules" <p> lived).
+  const strings: string[] = [];
+  const walk = (node: unknown): void => {
+    if (typeof node === "string") strings.push(node);
+    else if (Array.isArray(node)) node.forEach(walk);
+    else if (node && typeof node === "object" && "props" in node) {
+      walk((node as { props: { children?: unknown } }).props.children);
+    }
+  };
+  walk(cardContent(product));
+  assert.ok(strings.length > 0, "walker found no text at all");
+  assert.equal(strings.includes("Capsules"), false);
 });
 
 // ---------------------------------------------------------------------------

@@ -9,7 +9,6 @@ import {
   products,
   retailerName,
   supplementFor,
-  topGrade,
   type EvidenceGrade,
   type GoalAccent,
   type Product,
@@ -70,20 +69,27 @@ export function BuyButton({
   product,
   from,
   showDisclosure = true,
+  label,
+  compact = false,
 }: {
   product: Product;
   from: string;
   showDisclosure?: boolean;
+  /** Overrides the default "Check price at <retailer>" wording. */
+  label?: string;
+  /** Tighter padding and smaller text, for a half-width slot beside another button. */
+  compact?: boolean;
 }) {
+  const sizing = compact ? "px-3 text-sm" : "px-6";
   return (
     <div className="flex flex-col gap-3">
       <a
         href={buyHref(product, from)}
         target="_blank"
         rel="sponsored nofollow noopener"
-        className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 font-bold text-fg shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+        className={`inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-3 font-bold ${sizing} text-fg shadow-[0_4px_14px_rgba(217,119,6,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_6px_20px_rgba(217,119,6,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric`}
       >
-        Check price at {retailerName(product)}
+        {label ?? `Check price at ${retailerName(product)}`}
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
       {showDisclosure && (
@@ -150,24 +156,10 @@ export function FdaDisclaimer({ dark = false }: { dark?: boolean } = {}) {
 export function ProductCard({ product }: { product: Product }) {
   const perServing = costPerServing(product);
   const role = supplementFor(product)?.role;
-  const grade = topGrade(product);
-  const gradeRibbonTone: Record<EvidenceGrade, string> = {
-    strong: "bg-kinetic-evidence-strong",
-    moderate: "bg-kinetic-evidence-moderate",
-    early: "bg-kinetic-evidence-early",
-  };
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {product.image && (
         <div className="relative flex min-h-[220px] items-center justify-center border-b border-slate-100 bg-gradient-to-b from-slate-50 to-slate-100/70 p-6">
-          {grade && (
-            <span
-              className={`absolute top-4 left-4 z-10 flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-extrabold tracking-wide text-white shadow-sm ${gradeRibbonTone[grade]}`}
-            >
-              <Icon name="badgeCheck" size={15} />
-              {gradeLabels[grade].label}
-            </span>
-          )}
           <div className="relative h-40 w-40">
             <Image
               src={product.image}
@@ -180,18 +172,19 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       )}
       <div className="flex flex-1 flex-col p-6">
-        <span className="mb-1.5 block text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
+        {/* At least two lines tall, whatever the role's length, so every card's
+            name and price start at the same height across the row. Not clamped:
+            on the narrowest phones the longest role runs to a third line rather
+            than losing its end, and there the carousel shows one card at a time. */}
+        <span className="mb-1.5 block min-h-[2lh] text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
           {product.category}
           {role && <span className="font-medium normal-case text-slate-400"> &middot; {role}</span>}
         </span>
-        <h3 className="font-kinetic-heading text-xl font-bold tracking-tight text-slate-950">
+        <h3 className="mb-4 font-kinetic-heading text-xl font-bold tracking-tight text-slate-950">
           <Link href={`/healthy/products/${product.slug}`} className="hover:underline">
             {product.name}
           </Link>
         </h3>
-        <p className="mb-4 text-xs font-semibold text-slate-500">
-          {product.brand} &middot; {product.format}
-        </p>
 
         <div className="mb-4 flex items-baseline gap-2 rounded-xl border border-slate-200/80 bg-slate-50 p-3">
           {product.priceUsd !== null ? (
@@ -224,16 +217,16 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </dl>
 
-        <div className="mt-5">
-          <BuyButton product={product} from="picks" showDisclosure={false} />
+        {/* Side by side from 360px; stacked below that, where "View Product" no longer fits half the card. */}
+        <div className="mt-5 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
+          <BuyButton product={product} from="picks" showDisclosure={false} label="Buy Now" compact />
+          <Link
+            href={`/healthy/products/${product.slug}`}
+            className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-xl border-2 border-kinetic-primary px-3 py-3 text-sm font-bold text-kinetic-primary transition-colors hover:bg-kinetic-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric"
+          >
+            View Product
+          </Link>
         </div>
-        <Link
-          href={`/healthy/products/${product.slug}`}
-          className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-kinetic-primary hover:text-kinetic-primary-electric"
-        >
-          Read the full review
-          <Icon name="arrow" size={16} />
-        </Link>
       </div>
     </article>
   );
@@ -270,7 +263,7 @@ const GOAL_ACCENT_TEXT: Record<GoalAccent, string> = {
   cyan: "text-kinetic-teal-on-dark group-hover:text-white",
 };
 
-/** "What do you want more of?" Each tile links straight to that goal's review. */
+/** "What do you need to boost?" Each tile links straight to that goal's review. */
 export function GoalChooser() {
   return (
     <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">

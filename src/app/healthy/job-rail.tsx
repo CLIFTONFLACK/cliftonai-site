@@ -6,7 +6,7 @@ import { goals, supplementFor, type Product } from "./data";
 
 /**
  * Current picks, each card under the goal it serves: the same goals, names
- * and icons as the "What do you want more of?" tiles above, so the page reads
+ * and icons as the "What do you need to boost?" tiles above, so the page reads
  * goal -> pick. A teal circuit trace runs along the goals, drawn once when the
  * row scrolls into view (the `.healthy-rail-*` transitions in globals.css, run
  * by RailReveal), and under each goal the mascot showers that goal's icons
@@ -29,14 +29,18 @@ export function JobRail({ products }: { products: Product[] }) {
           style={{ left: "calc((100% - 4rem) / 6)", right: "calc((100% - 4rem) / 6)" }}
           aria-hidden="true"
         />
-        <ul className="relative grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
+        {/* Below lg the picks become a swipe carousel: each goal, mascot and
+            card slides as one, and the next one peeks in from the right. The
+            row bleeds to the screen edge; the vertical padding keeps the
+            cards' hover lift and shadow from being clipped by the scroller. */}
+        <ul aria-label="Brian's picks" className="relative -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-2 pb-10 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-8 lg:overflow-visible lg:p-0 [&::-webkit-scrollbar]:hidden">
           {products.map((product, i) => {
             const job = supplementFor(product);
             const jobGoals = job ? goals.filter((g) => g.supplement === job.id) : [];
             const lead = jobGoals.find((g) => !g.caveat) ?? jobGoals[0];
             const base = 250 + i * 180;
             return (
-              <li key={product.slug} className="flex flex-col">
+              <li key={product.slug} className="flex w-[85%] shrink-0 snap-start flex-col sm:w-[55%] lg:w-auto">
                 {/* lg:min-h-32 fits a node with a caveat line, so every card
                     starts at the same height whichever goal sits above it. */}
                 <div

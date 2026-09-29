@@ -113,7 +113,7 @@ export default function HealthyHome() {
             </ul>
             <div className="flex flex-col items-start gap-3 pt-2">
               <Link href="#picks" className={primaryCta}>
-                Get Brian&apos;s picks
+                See Brian&apos;s Choices
                 <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
               </Link>
               <p className="font-kinetic-heading text-base font-semibold text-kinetic-primary-electric italic">
@@ -156,11 +156,8 @@ export default function HealthyHome() {
             Start with your goal
           </span>
           <h2 id="start-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-            What do you want more of?
+            What do you need to boost?
           </h2>
-          <p className="mt-2 max-w-2xl text-base text-slate-600">
-            Pick the one that matters most right now. Each answer links straight to Brian&apos;s review.
-          </p>
           <div className="mt-8">
             <GoalChooser />
           </div>
@@ -176,13 +173,18 @@ export default function HealthyHome() {
                 Brian&apos;s picks
               </span>
               <h2 id="picks-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-                A pick for every goal
+                Brian&apos;s Healthy Longevity Plan Starts Here...
               </h2>
-              <p className="mt-2 text-base text-slate-600">
-                Price, the reason and the catch, on every card.
-              </p>
             </div>
           </div>
+          {/* Phones don't get the site-wide disclosure bar (layout.tsx), so it
+              sits here instead, above the Buy buttons it covers. */}
+          <p className="-mt-6 mb-6 text-xs text-slate-500 sm:hidden">
+            Brian may earn a commission when you buy through these links.{" "}
+            <Link href="/healthy/disclosures" className="font-semibold underline">
+              How that works
+            </Link>
+          </p>
           <JobRail products={products} />
         </div>
       </section>
@@ -208,11 +210,8 @@ export default function HealthyHome() {
                 How Brian picks
               </span>
               <h2 id="why-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-                One loop, always running.
+                How Brian Gets You Healthy
               </h2>
-              <p className="mt-2 text-base text-slate-600">
-                Brian finds the clinical data. A human gives final approval. Then it goes round again.
-              </p>
             </div>
             <Link href="/healthy/why-these-picks" className="group inline-flex min-h-11 items-center text-sm font-bold text-kinetic-primary hover:text-kinetic-primary-electric">
               See the full comparison
@@ -240,9 +239,6 @@ export default function HealthyHome() {
             <h2 id="faq-heading" className="font-kinetic-heading text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
               Questions
             </h2>
-            <p className="mt-2 text-base text-slate-600">
-              Medical advice, commission, and how picks are checked.
-            </p>
           </div>
           <dl className="space-y-3">
             {faqs.map((f) => (

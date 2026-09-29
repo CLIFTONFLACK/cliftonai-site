@@ -114,8 +114,11 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
 
       <div className="flex flex-1 flex-col">
       {/* FTC guidance and iHerb's terms both want the disclosure up front, above the fold.
-          The legal sentence and its link are unchanged from before this reskin. */}
-      <div className="bg-slate-900 px-4 py-1.5 text-xs font-medium tracking-wide text-slate-300">
+          The legal sentence and its link are unchanged from before this reskin.
+          Hidden on phones; there the homepage picks carry the line themselves (page.tsx),
+          and product pages print it beside every Buy button. Any new page with a Buy
+          link must do the same, or phones will show it with no disclosure. */}
+      <div className="hidden bg-slate-900 px-4 sm:block py-1.5 text-xs font-medium tracking-wide text-slate-300">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-kinetic-teal-on-dark" aria-hidden="true" />
