@@ -66,7 +66,7 @@ export default function HealthyHome() {
           screens below 1544px the section pulls up over <main>'s pt-16 (the
           floating Menu's clearance) so the photo starts at the top of the page,
           and adds that 4rem back to its own padding to keep the copy clear. */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-10 lg:-mt-16 lg:flex lg:min-h-[680px] lg:items-start lg:pt-28 lg:pb-20 min-[1544px]:mt-0 min-[1544px]:pt-12">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-white pt-3 sm:pt-10 lg:-mt-16 lg:flex lg:min-h-[680px] lg:items-start lg:pt-28 lg:pb-20 min-[1544px]:mt-0 min-[1544px]:pt-12">
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col space-y-6 lg:max-w-[36rem]">
             {/* Brand lockup: the mark and "GetBrian Healthy" lead the page. The
@@ -127,7 +127,7 @@ export default function HealthyHome() {
             right to keep both of them clear of the feathered side. On large
             screens the wide section crops the photo vertically, so it also
             anchors to the top to keep their heads in frame. */}
-        <div className="relative mt-10 h-72 sm:h-96 lg:absolute lg:inset-0 lg:mt-0 lg:h-auto">
+        <div className="relative mt-16 h-72 sm:mt-10 sm:h-96 lg:absolute lg:inset-0 lg:mt-0 lg:h-auto">
           <Image
             src="/healthy/hero-couple-v2.jpg"
             alt="A couple in their fifties hiking a coastal trail at sunrise"

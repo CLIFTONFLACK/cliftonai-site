@@ -902,6 +902,34 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   animation-play-state: paused;
 }
 
+/* The hand in the picks carousel's "Swipe" hint (swipe-controls.tsx): sweeps
+   left, lifts back, rests. Starts and ends at rest, so under reduced motion
+   it simply stands still. */
+.healthy-swipe-hand {
+  animation: healthy-swipe-hand 2.2s ease-in-out infinite;
+}
+
+@keyframes healthy-swipe-hand {
+  0%,
+  15%,
+  100% {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+  45% {
+    transform: translateX(-12px) rotate(-12deg);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(-12px) rotate(-12deg);
+    opacity: 0;
+  }
+  75% {
+    transform: translateX(0) rotate(0);
+    opacity: 0;
+  }
+}
+
 @keyframes healthy-shower-toss {
   0%,
   100% {
