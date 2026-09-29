@@ -560,7 +560,7 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
 
 /* The mark feeding each step. One 10s round = 5 steps x SPOKE_STAGGER_S (2s)
    in pick-loop.tsx; keep the two in step. Each spoke's pulse runs out from the
-   mark to its card, pauses while the card's icon lights, then runs back. The
+   mark to its card, pauses while the card lights, then runs back. The
    hub glows each time a pulse leaves. Static spokes remain under reduced motion. */
 .healthy-spoke-dot {
   offset-rotate: 0deg;
@@ -591,23 +591,64 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   }
 }
 
-.healthy-step-glow {
-  animation: healthy-step-glow 10s ease-out infinite both;
+/* Each step inverts, white card to navy, while its spoke's pulse sits on it.
+   One clock per card: .healthy-step-lit animates --step-lit from 0 to 1 and
+   back, on the same 10s round and per-step delay as the spoke pulses, and every
+   colour below mixes on it. Registered so it tweens; where @property is not
+   supported it flips at the midpoint instead, which still reads. */
+@property --step-lit {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
-@keyframes healthy-step-glow {
+.healthy-step-lit {
+  animation: healthy-step-lit 10s ease-in-out infinite both;
+}
+
+@keyframes healthy-step-lit {
   0%,
   7%,
-  24%,
+  22%,
   100% {
-    background-color: var(--kinetic-primary);
-    box-shadow: 0 0 0 0 transparent;
+    --step-lit: 0;
   }
   10%,
-  14% {
-    background-color: var(--kinetic-teal);
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--kinetic-teal) 25%, transparent);
+  18% {
+    --step-lit: 1;
   }
+}
+
+.healthy-step-card {
+  background-color: color-mix(in srgb, var(--kinetic-primary) calc(var(--step-lit) * 100%), #fff);
+  outline: 4px solid color-mix(in srgb, var(--kinetic-teal) calc(var(--step-lit) * 35%), transparent);
+}
+
+.healthy-step-glow {
+  background-color: color-mix(in srgb, #fff calc(var(--step-lit) * 100%), var(--kinetic-primary));
+  color: color-mix(in srgb, var(--kinetic-primary) calc(var(--step-lit) * 100%), #fff);
+}
+
+.healthy-step-label {
+  color: color-mix(in srgb, var(--kinetic-teal-on-dark) calc(var(--step-lit) * 100%), var(--kinetic-primary-electric));
+}
+
+.healthy-step-title {
+  color: color-mix(in srgb, #fff calc(var(--step-lit) * 100%), var(--color-slate-950, #020618));
+}
+
+/* Below lg the steps are a stacked list, so the lit card also steps out
+   toward its timeline marker, and the marker swells, to carry the pulse down
+   the column. */
+@media (max-width: 63.999rem) {
+  .healthy-step-card {
+    transform: translateX(calc(var(--step-lit) * 8px));
+  }
+}
+
+.healthy-step-marker {
+  transform: scale(calc(1 + var(--step-lit) * 0.6));
+  box-shadow: 0 0 0 calc(var(--step-lit) * 6px) color-mix(in srgb, var(--kinetic-teal) 30%, transparent);
 }
 
 .healthy-hub-glow {
@@ -1026,7 +1067,7 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
     display: none;
   }
 
-  .healthy-step-glow {
+  .healthy-step-lit {
     animation: none !important;
   }
 

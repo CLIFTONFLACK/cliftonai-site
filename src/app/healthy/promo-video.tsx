@@ -59,10 +59,10 @@ export function PromoVideo({ className = "" }: { className?: string }) {
   }
 
   const button =
-    "flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/90 text-kinetic-primary shadow-sm transition-colors duration-200 hover:bg-white hover:text-kinetic-primary-electric focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric";
+    "flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/90 text-kinetic-primary shadow-sm transition-colors duration-200 hover:bg-white hover:text-kinetic-primary-electric focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric";
 
   return (
-    <div className={`relative mx-auto aspect-square w-full ${className}`}>
+    <div className={`mx-auto w-full ${className}`}>
       <video
         ref={ref}
         src={SRC}
@@ -74,10 +74,13 @@ export function PromoVideo({ className = "" }: { className?: string }) {
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         aria-label="GetBrian Healthy promo video featuring the mascot"
-        className="healthy-feather h-full w-full object-cover"
+        className="healthy-feather aspect-square h-auto w-full object-cover"
       />
-      {/* Inset past the feathered edge so the controls sit on solid picture. */}
-      <div className="absolute right-[20%] bottom-[20%] flex gap-2">
+      {/* Centred below the frame, under the burned-in captions. Inside it there
+          is no room: a disclaimer line runs along the frame's bottom edge, and
+          the gap between it and a two-line caption is narrower than a button
+          on a phone. */}
+      <div className="mt-2 flex justify-center gap-2">
         <button type="button" onClick={togglePlay} aria-label={playing ? "Pause video" : "Play video"} className={button}>
           <Icon name={playing ? "pause" : "play"} size={18} />
         </button>

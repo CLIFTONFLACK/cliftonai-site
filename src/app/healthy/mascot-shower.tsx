@@ -29,22 +29,22 @@ const HAND_Y = -Math.round(MASCOT_H * (1 - 0.52));
 // The icon column runs from the mascot's feet to the top of the card, which
 // sits straight below it in job-rail.tsx. Icons fall SINK px past its foot,
 // into the card, and burst there.
-const COLUMN_H = 112;
+const COLUMN_H = 90;
 const SINK = 20;
 
 /** One falling icon: which hand throws it (-1 left, 1 right), where it lands
  *  (px from centre; each lands nearer the middle than its hand, so the two
  *  streams pour inward onto the card), spin, delay (s), size (px), resting height (px). */
 const DROPS = [
-  { hand: -1, x1: -22, r: 35, delay: 0, size: 22, rest: 20 },
-  { hand: 1, x1: 18, r: -30, delay: 0.3, size: 21, rest: 66 },
-  { hand: -1, x1: -10, r: 20, delay: 0.6, size: 18, rest: 40 },
-  { hand: 1, x1: 24, r: -40, delay: 0.9, size: 22, rest: 86 },
-  { hand: -1, x1: -26, r: 45, delay: 1.2, size: 20, rest: 10 },
-  { hand: 1, x1: 8, r: -25, delay: 1.5, size: 16, rest: 56 },
-  { hand: -1, x1: -4, r: 15, delay: 1.8, size: 19, rest: 96 },
-  { hand: 1, x1: 4, r: -35, delay: 2.1, size: 19, rest: 74 },
-  { hand: -1, x1: -16, r: 30, delay: 2.4, size: 16, rest: 32 },
+  { hand: -1, x1: -22, r: 35, delay: 0, size: 22, rest: 16 },
+  { hand: 1, x1: 18, r: -30, delay: 0.3, size: 21, rest: 53 },
+  { hand: -1, x1: -10, r: 20, delay: 0.6, size: 18, rest: 32 },
+  { hand: 1, x1: 24, r: -40, delay: 0.9, size: 22, rest: 69 },
+  { hand: -1, x1: -26, r: 45, delay: 1.2, size: 20, rest: 8 },
+  { hand: 1, x1: 8, r: -25, delay: 1.5, size: 16, rest: 45 },
+  { hand: -1, x1: -4, r: 15, delay: 1.8, size: 19, rest: 77 },
+  { hand: 1, x1: 4, r: -35, delay: 2.1, size: 19, rest: 59 },
+  { hand: -1, x1: -16, r: 30, delay: 2.4, size: 16, rest: 26 },
 ];
 
 export function MascotShower({ icons }: { icons: IconName[] }) {

@@ -150,7 +150,8 @@ export function PickLoop() {
           {STEPS.map((s, k) => (
             <li key={s.title} className="relative">
               <span
-                className="absolute top-5 -left-[33px] h-4 w-4 rounded-full border-2 border-white bg-kinetic-teal"
+                className="healthy-step-lit healthy-step-marker absolute top-5 -left-[33px] h-4 w-4 rounded-full border-2 border-white bg-kinetic-teal"
+                style={{ animationDelay: `${k * SPOKE_STAGGER_S}s` }}
                 aria-hidden="true"
               />
               <StepCard step={s} n={k + 1} />
@@ -164,23 +165,21 @@ export function PickLoop() {
 
 /** `compact` tightens the card for the ring, where it has a quarter of a half-width column. */
 function StepCard({ step, n, compact = false }: { step: Step; n: number; compact?: boolean }) {
+  // The whole card inverts to navy as the mark's pulse reaches this step (same
+  // timing as its spoke). The colours live in globals.css, driven by one
+  // animated --step-lit on the card that its badge, label and title inherit.
   return (
     <div
-      className={`rounded-xl border bg-white shadow-sm ${compact ? "p-3" : "p-4"} ${step.human ? "border-2 border-kinetic-teal/50" : "border-slate-200"}`}
+      className={`healthy-step-lit healthy-step-card rounded-xl border shadow-sm ${compact ? "p-3" : "p-4"} ${step.human ? "border-2 border-kinetic-teal/50" : "border-slate-200"}`}
+      style={{ animationDelay: `${(n - 1) * SPOKE_STAGGER_S}s` }}
     >
       <div className="flex items-center gap-2">
-        {/* Lights up as the mark's pulse reaches this step (same timing as its spoke). */}
-        <span
-          className="healthy-step-glow flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-kinetic-primary text-white"
-          style={{ animationDelay: `${(n - 1) * SPOKE_STAGGER_S}s` }}
-        >
+        <span className="healthy-step-glow flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
           <Icon name={step.icon} size={16} />
         </span>
-        <span className="text-[11px] font-extrabold tracking-wider text-kinetic-primary-electric uppercase">
-          Step {n}
-        </span>
+        <span className="healthy-step-label text-[11px] font-extrabold tracking-wider uppercase">Step {n}</span>
       </div>
-      <h3 className={`font-kinetic-heading mt-2 leading-snug font-bold text-slate-950 ${compact ? "text-sm" : "text-base"}`}>
+      <h3 className={`healthy-step-title font-kinetic-heading mt-2 leading-snug font-bold ${compact ? "text-sm" : "text-base"}`}>
         {step.title}
       </h3>
     </div>

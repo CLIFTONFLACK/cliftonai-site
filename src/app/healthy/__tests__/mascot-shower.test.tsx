@@ -219,7 +219,7 @@ test("healthy-shower-fall's first frame sits on the palm (var(--x0), var(--y0))"
 // ---------------------------------------------------------------------------
 
 test("icons land SINK (20px) past the column's foot, centred, and each has a burst at that same point", () => {
-  assert.match(source, /const COLUMN_H = 112;/);
+  assert.match(source, /const COLUMN_H = 90;/);
   assert.match(source, /const SINK = 20;/);
   assert.match(source, /"--land": `\$\{COLUMN_H \+ SINK - d\.size \/ 2\}px`/);
   assert.match(source, /"--by": `\$\{COLUMN_H \+ SINK\}px`/);
