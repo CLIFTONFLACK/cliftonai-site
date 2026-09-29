@@ -246,15 +246,42 @@ test("each spoke carries one pulse, staggered 2s apart in step order", () => {
   });
 });
 
-test("each step card's icon glows on its own spoke's clock, in both layouts", () => {
+test("each whole step card lights on its own spoke's clock, in both layouts", () => {
   for (const cards of [desktopStepCardEls(), mobileStepCardEls()]) {
     cards.forEach((card, k) => {
-      const iconRow = (card.props.children as El[])[0];
-      const badge = (iconRow.props.children as El[])[0];
+      assert.match(card.props.className as string, /\bhealthy-step-lit\b/);
+      assert.match(card.props.className as string, /\bhealthy-step-card\b/);
+      assert.equal((card.props.style as { animationDelay: string }).animationDelay, `${k * 2}s`);
+      const [iconRow, title] = card.props.children as El[];
+      const [badge, label] = iconRow.props.children as El[];
       assert.match(badge.props.className as string, /\bhealthy-step-glow\b/);
-      assert.equal((badge.props.style as { animationDelay: string }).animationDelay, `${k * 2}s`);
+      assert.match(label.props.className as string, /\bhealthy-step-label\b/);
+      assert.match(title.props.className as string, /\bhealthy-step-title\b/);
     });
   }
+});
+
+test("each mobile timeline marker swells on the same clock as its card", () => {
+  const { mobile } = loop();
+  const liEls = ((mobile.props.children as El[])[1].props.children as El[]);
+  liEls.forEach((li, k) => {
+    const marker = (li.props.children as El[])[0];
+    assert.match(marker.props.className as string, /\bhealthy-step-lit\b/);
+    assert.match(marker.props.className as string, /\bhealthy-step-marker\b/);
+    assert.equal((marker.props.style as { animationDelay: string }).animationDelay, `${k * 2}s`);
+  });
+});
+
+test("step cards invert fully (--step-lit reaches 1) and rest un-lit under reduced motion", () => {
+  assert.match(css, /@property --step-lit\s*\{[^}]*syntax:\s*"<number>"[^}]*inherits:\s*true/);
+  const kf = /@keyframes healthy-step-lit\s*\{([\s\S]*?)\n\}/.exec(css);
+  assert.ok(kf, "expected @keyframes healthy-step-lit");
+  assert.match(kf![1], /--step-lit:\s*1;/);
+  const rule = /\.healthy-step-lit\s*\{\s*animation:\s*none !important;/.exec(css);
+  assert.ok(rule, "expected .healthy-step-lit's animation switched off");
+  const mediaStart = css.lastIndexOf("@media (prefers-reduced-motion: reduce)", rule!.index);
+  assert.ok(mediaStart >= 0);
+  assert.doesNotMatch(css.slice(mediaStart, rule!.index), /\n\}/);
 });
 
 test("spoke pulses and the hub glow are hidden under reduced motion", () => {
