@@ -14,7 +14,7 @@ type Step = { title: string; icon: IconName; human?: boolean };
 
 const STEPS: Step[] = [
   { title: "Clinical Reviews", icon: "flask" },
-  { title: "Evaluated Process", icon: "book" },
+  { title: "Evaluate Data", icon: "book" },
   { title: "Products Matched", icon: "clipboardCheck" },
   { title: "Shortlist Built", icon: "listChecks" },
   { title: "Final Approval", icon: "shieldCheck", human: true },
@@ -23,13 +23,15 @@ const STEPS: Step[] = [
 // Ring geometry, in the SVG's own units. The box is W x H; the ring is an
 // ellipse centred in it. Steps sit on the ring, the first at the top, then
 // clockwise at equal angles. The box is square because the loop shares its row
-// with the square promo video (page.tsx), half the width each; RX leaves room
-// for the side cards (27% wide) inside the box. Wider cards touch their
-// neighbours: at 32% steps 1 and 2 overlapped by about 7px at every lg width.
+// with the square promo video (page.tsx), half the width each. The cards are
+// 36% wide so every title fits on one line at the narrowest lg box (460px,
+// where "Products Matched" needs 34.4%); RX leaves room for the side cards
+// inside the box. Steps 1 and 2 overlap horizontally but sit ~105px apart
+// vertically, more than a one-line card is tall.
 const W = 1000;
 const H = 1000;
-const RX = 340;
-const RY = 340;
+const RX = 330;
+const RY = 330;
 const CX = W / 2;
 const CY = H / 2;
 const angle = (k: number) => ((-90 + (360 / STEPS.length) * k) * Math.PI) / 180;
@@ -126,7 +128,10 @@ export function PickLoop() {
         </svg>
 
         {/* The mascot in the middle, hopping toward each step as its pulse leaves. */}
-        <div className="absolute top-1/2 left-1/2 w-[30%] -translate-x-1/2 -translate-y-1/2">
+        {/* 20% keeps its outstretched hands clear of the wide step 2 and 5 cards
+            through every hop and lean (measured: 7.8px at the narrowest lg box;
+            24% dips under step 2). */}
+        <div className="absolute top-1/2 left-1/2 w-[20%] -translate-x-1/2 -translate-y-1/2">
           <MascotAnimation />
         </div>
 
@@ -134,7 +139,7 @@ export function PickLoop() {
           {STEPS.map((s, k) => (
             <li
               key={s.title}
-              className="absolute w-[27%] -translate-x-1/2 -translate-y-1/2"
+              className="absolute w-[36%] -translate-x-1/2 -translate-y-1/2"
               style={pct(point(angle(k)))}
             >
               <StepCard step={s} n={k + 1} compact />
@@ -179,7 +184,7 @@ function StepCard({ step, n, compact = false }: { step: Step; n: number; compact
         </span>
         <span className="healthy-step-label text-[11px] font-extrabold tracking-wider uppercase">Step {n}</span>
       </div>
-      <h3 className={`healthy-step-title font-kinetic-heading mt-2 leading-snug font-bold ${compact ? "text-sm" : "text-base"}`}>
+      <h3 className={`healthy-step-title font-kinetic-heading mt-2 leading-snug font-bold whitespace-nowrap ${compact ? "text-sm" : "text-base"}`}>
         {step.title}
       </h3>
     </div>

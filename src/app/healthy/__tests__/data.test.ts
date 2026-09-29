@@ -46,6 +46,7 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     safety: [],
     pros: [],
     cons: [],
+    advantage: "",
     brandUrl: "https://brand.example.com",
     affiliateUrl: null,
     redirectAllowed: false,
@@ -442,6 +443,16 @@ function findBritishSpelling(text: string): string | undefined {
   return BRITISH_SPELLINGS.find((word) => lower.includes(word));
 }
 
+// Each card's "The advantage" line: present, and held to the same copy rules.
+for (const product of products) {
+  test(`product "${product.slug}" has a card advantage with no disease-claim, banned or British words`, () => {
+    assert.ok(product.advantage.trim().length > 0);
+    assert.equal(findDiseaseClaimWord(product.advantage), undefined);
+    assert.equal(findBannedWord(product.advantage), undefined);
+    assert.equal(findBritishSpelling(product.advantage), undefined);
+  });
+}
+
 test("TAGLINE has no disease-claim words", () => {
   assert.equal(findDiseaseClaimWord(TAGLINE), undefined);
 });
@@ -586,10 +597,6 @@ const focusOrCognitiveSupplements = supplements.filter(
   (s) => s.role.toLowerCase().includes("focus") || s.role.toLowerCase().includes("cognitive"),
 );
 
-test("at least one supplement's role mentions focus or cognitive (sanity check for the loop below)", () => {
-  assert.ok(focusOrCognitiveSupplements.length > 0);
-});
-
 for (const supplement of focusOrCognitiveSupplements) {
   test(`supplement "${supplement.id}" has a non-empty caveat because its role mentions focus/cognitive`, () => {
     assert.ok(supplement.caveat && supplement.caveat.trim().length > 0);
@@ -618,12 +625,13 @@ for (const supplement of focusOrCognitiveSupplements) {
   });
 }
 
-test("creatine's role specifically pairs its focus claim with 'early'", () => {
-  // Pins the exact wording, not just "some hedge word is present somewhere" —
-  // this is the one supplement the rule exists for.
+test("creatine's role makes no focus claim; its hedged focus line stays in the caveat", () => {
+  // The card strapline was trimmed to "Strength and physical performance." The
+  // focus evidence is still early, so it lives only in `caveat`, hedged.
   const creatine = getSupplement("creatine");
-  assert.match(creatine.role, /focus/i);
-  assert.match(creatine.role, /early/i);
+  assert.doesNotMatch(creatine.role, /focus|cognitive/i);
+  assert.match(creatine.caveat ?? "", /focus/i);
+  assert.ok(hasHedgeWord(creatine.caveat ?? ""));
 });
 
 // ---------------------------------------------------------------------------

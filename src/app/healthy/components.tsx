@@ -159,19 +159,19 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {product.image && (
-        <div className="relative flex min-h-[220px] items-center justify-center border-b border-slate-100 bg-gradient-to-b from-slate-50 to-slate-100/70 p-6">
-          <div className="relative h-40 w-40">
-            <Image
-              src={product.image}
-              alt={product.imageAlt}
-              fill
-              sizes="(min-width: 768px) 33vw, 90vw"
-              className="object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
+        // The packshots carry about 10% empty margin on every side, so the
+        // image fills the panel and is scaled up to crop that margin away.
+        <div className="relative h-[180px] overflow-hidden border-b lg:h-[220px] border-slate-100 bg-gradient-to-b from-slate-50 to-slate-100/70">
+          <Image
+            src={product.image}
+            alt={product.imageAlt}
+            fill
+            sizes="(min-width: 1024px) 33vw, 85vw"
+            className="scale-[1.15] object-contain p-2 drop-shadow-md transition-transform duration-300 group-hover:scale-[1.2]"
+          />
         </div>
       )}
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-5 lg:p-6">
         {/* At least two lines tall, whatever the role's length, so every card's
             name and price start at the same height across the row. Not clamped:
             on the narrowest phones the longest role runs to a third line rather
@@ -197,25 +197,18 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-700">{product.summary}</p>
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-slate-700 lg:mb-5">{product.summary}</p>
 
-        <dl className="space-y-2.5 rounded-xl border border-slate-200/80 bg-slate-50 p-4 text-xs">
-          {product.pros[0] && (
-            <div className="flex items-start gap-2">
-              <dt className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-extrabold text-emerald-700 uppercase">Why Brian picked it</dt>
-              <dd className="font-medium text-slate-700">{product.pros[0]}</dd>
-            </div>
-          )}
-          {product.cons[0] && (
-            <>
-              <div className="h-px w-full bg-slate-200" />
-              <div className="flex items-start gap-2">
-                <dt className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-extrabold text-amber-800 uppercase">The catch</dt>
-                <dd className="font-medium text-slate-700">{product.cons[0]}</dd>
-              </div>
-            </>
-          )}
-        </dl>
+        {/* Below lg the notes fold away behind one tap, so the whole card and
+            the carousel's dots fit on a phone screen; from lg they stay open. */}
+        <details className="group/notes rounded-xl border border-slate-200/80 bg-slate-50 lg:hidden">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-4 py-2 text-xs font-extrabold tracking-wider text-slate-700 uppercase [&::-webkit-details-marker]:hidden">
+            Brian&rsquo;s notes
+            <Icon name="chevronDown" size={16} className="transition-transform group-open/notes:rotate-180" />
+          </summary>
+          <BrianNotes product={product} className="px-4 pb-4" stacked />
+        </details>
+        <BrianNotes product={product} className="hidden rounded-xl border border-slate-200/80 bg-slate-50 p-4 lg:block" />
 
         {/* Side by side from 360px; stacked below that, where "View Product" no longer fits half the card. */}
         <div className="mt-5 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
@@ -229,6 +222,29 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
     </article>
+  );
+}
+
+/** A pick's two card notes: why Brian picked it, and the advantage his check of the research found. */
+function BrianNotes({ product, className, stacked = false }: { product: Product; className: string; stacked?: boolean }) {
+  // Stacked (label over text) in the narrow folded version; side by side when always open.
+  const row = stacked ? "flex flex-col items-start gap-1" : "flex items-start gap-2";
+  return (
+    <dl className={`space-y-2.5 text-xs ${className}`}>
+      {product.pros[0] && (
+        <>
+          <div className={row}>
+            <dt className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-extrabold text-emerald-700 uppercase">Why Brian picked it</dt>
+            <dd className="font-medium text-slate-700">{product.pros[0]}</dd>
+          </div>
+          <div className="h-px w-full bg-slate-200" />
+        </>
+      )}
+      <div className={row}>
+        <dt className="shrink-0 rounded bg-kinetic-primary-light px-1.5 py-0.5 text-[10px] font-extrabold text-kinetic-primary-electric uppercase">The advantage</dt>
+        <dd className="font-medium text-slate-700">{product.advantage}</dd>
+      </div>
+    </dl>
   );
 }
 

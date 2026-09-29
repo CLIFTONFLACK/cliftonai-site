@@ -34,6 +34,7 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     safety: [],
     pros: [],
     cons: [],
+    advantage: "",
     brandUrl: "https://brand.example.com",
     affiliateUrl: null,
     redirectAllowed: false,
@@ -157,7 +158,8 @@ function cardContent(product: Product): unknown[] {
 }
 
 function cardButtons(product: Product) {
-  const row = cardContent(product)[5] as { props: { children: unknown[] } };
+  const kids = cardContent(product);
+  const row = kids[kids.length - 1] as { props: { children: unknown[] } };
   return row.props.children as [
     { props: Record<string, unknown> },
     { props: { href: string; children: unknown } },
@@ -407,4 +409,53 @@ test("SupplementCard uses the supplement id as the section anchor", () => {
   const supplement = baseSupplement({ id: "l-theanine" });
   const el = SupplementCard({ supplement });
   assert.equal((el.props as { id: string }).id, "l-theanine");
+});
+
+// ---------------------------------------------------------------------------
+// Brian's notes: folded behind a <details> below lg, always open from lg, and
+// the second note is "The advantage" (the product's own line), never "The catch".
+// ---------------------------------------------------------------------------
+
+function notesParts(product: Product) {
+  const kids = cardContent(product) as { type: unknown; props: Record<string, unknown> }[];
+  const details = kids.find((k) => k && k.type === "details")!;
+  const open = kids.find((k) => k && typeof k.type === "function" && k !== details && "product" in k.props)!;
+  return { details, open };
+}
+
+function textOf(node: unknown): string {
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (node && typeof node === "object" && "props" in node) {
+    const el = node as { type: unknown; props: Record<string, unknown> };
+    if (typeof el.type === "function") return textOf((el.type as (p: unknown) => unknown)(el.props));
+    return textOf(el.props.children);
+  }
+  return "";
+}
+
+test("ProductCard folds Brian's notes into a details element below lg only", () => {
+  const { details, open } = notesParts(baseProduct());
+  assert.match(details.props.className as string, /\blg:hidden\b/);
+  assert.equal(details.props.open, undefined, "folded by default");
+  assert.match(open.props.className as string, /\bhidden\b/);
+  assert.match(open.props.className as string, /\blg:block\b/);
+});
+
+test("ProductCard notes show the product's advantage under 'The advantage', not 'The catch'", () => {
+  const product = baseProduct({ pros: ["Picked for X"], cons: ["A downside"], advantage: "Matched to the trials" });
+  const { details, open } = notesParts(product);
+  for (const node of [details, open]) {
+    const text = textOf(node);
+    assert.match(text, /The advantage/);
+    assert.match(text, /Matched to the trials/);
+    assert.doesNotMatch(text, /The catch|A downside/);
+  }
+});
+
+test("ProductCard notes draw no divider when there is no 'Why Brian picked it' note", () => {
+  const { open } = notesParts(baseProduct({ pros: [], advantage: "Matched to the trials" }));
+  const dl = (open.type as (p: unknown) => { props: { children: unknown[] } })(open.props);
+  const flat = (dl.props.children as unknown[]).flat(Infinity).filter(Boolean) as { props: { className?: string } }[];
+  assert.ok(!flat.some((k) => /\bh-px\b/.test(k.props?.className ?? "")), "no stray divider");
 });

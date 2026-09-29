@@ -69,6 +69,8 @@ export type Product = {
   safety: string[];
   pros: string[];
   cons: string[];
+  /** One line for cards: what Brian's check of the research found in this pick's favour. Facts from `ingredients`/`testing` only. */
+  advantage: string;
   /** Where the Buy button goes before an affiliate link is issued. */
   brandUrl: string;
   /** Set when a programme approves us. Takes precedence over brandUrl. */
@@ -127,7 +129,7 @@ export const supplements: Supplement[] = [
     name: "Magnesium",
     tagline: "Cover the essentials",
     value: "Essential nutritional support for an active life.",
-    role: "Muscle function and energy metabolism",
+    role: "Muscle function and energy",
     contribution:
       "Supports normal muscle contraction, nerve signaling and cellular energy production.",
     category: "Magnesium",
@@ -137,7 +139,7 @@ export const supplements: Supplement[] = [
     name: "Creatine",
     tagline: "Make your strength work count",
     value: "Extra support for the effort you put into getting stronger.",
-    role: "Strength and physical performance, with early promise for focus",
+    role: "Strength and physical performance.",
     contribution: "Supports strength and lean-mass gains alongside resistance training.",
     caveat:
       "Cognitive benefits are promising, but reliable improvements in everyday focus are not yet established.",
@@ -420,6 +422,8 @@ export const products: Product[] = [
       "Higher cost per milligram of elemental magnesium than a bulk glycinate powder",
       "Not NSF Certified for Sport, unlike the creatine pick",
     ],
+    advantage:
+      "Dose checked against the research: 120 mg a capsule lets you build up in steps and stay under 350 mg a day, the supplemental upper limit",
     brandUrl: "https://www.thorne.com/products/dp/magnesium-glycinate",
     affiliateUrl: null,
     redirectAllowed: false,
@@ -489,6 +493,7 @@ export const products: Product[] = [
       "Higher cost per gram than a bulk tub of the same brand's creatine",
       "30 packets is roughly a one-month supply at one serving a day, so it means more frequent reordering",
     ],
+    advantage: "Matched to the trials: 5 g of plain creatine monohydrate, the form and daily dose the research used",
     brandUrl: "https://www.thorne.com/products/dp/creatine-sf903p",
     affiliateUrl: null,
     redirectAllowed: false,
@@ -556,6 +561,8 @@ export const products: Product[] = [
       "Third-party tested for contaminants",
     ],
     cons: ["Costs more per capsule than generic L-theanine", "Not NSF Certified for Sport"],
+    advantage:
+      "Matched to the trials: Suntheanine, the form used in most of the human research, at 200 mg, within the studied 200 to 400 mg a day",
     brandUrl: "https://www.thorne.com/products/dp/theanine",
     affiliateUrl: null,
     redirectAllowed: false,
