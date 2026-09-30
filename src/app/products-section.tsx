@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Clauses } from "./clauses";
 import { Reveal } from "./reveal";
+import { ClientsCarousel } from "./clients-carousel";
 import { products, productCategories, type Product } from "./products-data";
 
 const H2 =
@@ -131,7 +132,7 @@ function StatusBadge() {
   );
 }
 
-/** Featured client work: their site up front, their name and line beneath. */
+/** Client work: their site up front, their name and line beneath. */
 function ClientCard({ product }: { product: Product }) {
   return (
     <a
@@ -143,7 +144,7 @@ function ClientCard({ product }: { product: Product }) {
           src={product.screenshot}
           alt={`${product.name} product screenshot`}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
+          sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 270px"
           className="object-cover object-top"
         />
       </div>
@@ -152,6 +153,11 @@ function ClientCard({ product }: { product: Product }) {
           {product.name}
         </h3>
         <p className="text-base text-fg-muted">{product.tagline}</p>
+        {product.status === "in-development" && (
+          <p className="mt-1.5">
+            <StatusBadge />
+          </p>
+        )}
       </div>
     </a>
   );
@@ -161,8 +167,6 @@ function ClientCard({ product }: { product: Product }) {
 export function ClientsSection() {
   const category = productCategories.find((c) => c.key === "client")!;
   const clients = products.filter((p) => p.category === "client");
-  const featured = clients.filter((p) => p.featured);
-  const rest = clients.filter((p) => !p.featured);
 
   return (
     <section className="bg-bg-panel px-6 py-24">
@@ -175,27 +179,15 @@ export function ClientsSection() {
             {category.intro}
           </p>
         </Reveal>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((product, i) => (
-            <Reveal key={product.name} delay={Math.min(i, 3) * 80}>
-              <ClientCard product={product} />
-            </Reveal>
-          ))}
-        </div>
-        <Reveal delay={100}>
-          <ul className="mt-10 flex flex-wrap gap-3">
-            {rest.map((product) => (
-              <li key={product.name}>
-                <a
-                  href={product.href}
-                  className={`inline-flex min-h-11 items-center gap-2.5 rounded-full bg-bg px-5 text-base font-medium text-fg transition-colors duration-200 hover:text-brand-navy-bright cursor-pointer ${FOCUS}`}
-                >
-                  {product.name}
-                  {product.status === "in-development" && <StatusBadge />}
-                </a>
-              </li>
+        {/* One Reveal for the whole list, not one per card: on a phone the
+            cards past the first sit off to the right of the row, and a card
+            that only fades in once swiped to reads as slow to load. */}
+        <Reveal delay={100} className="mt-12">
+          <ClientsCarousel label="Client work">
+            {clients.map((product) => (
+              <ClientCard key={product.name} product={product} />
             ))}
-          </ul>
+          </ClientsCarousel>
         </Reveal>
       </div>
     </section>

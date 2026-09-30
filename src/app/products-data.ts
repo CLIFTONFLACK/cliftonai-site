@@ -8,8 +8,6 @@ export type Product = {
   tint?: string;
   /** Accent darkened until it clears 4.5:1 as small text on `tint`. */
   ink?: string;
-  /** Client work shown as a full card; the rest are listed as links. */
-  featured?: boolean;
   tagline: string;
   hook: string;
   bullets: string[];
@@ -135,7 +133,6 @@ export const products: Product[] = [
   },
   {
     name: "Merlows News",
-    featured: true,
     tagline: "Independent journalism + AI research",
     hook: "Independent journalism on Middle East diplomacy, sharpened by AI research.",
     bullets: [
@@ -170,7 +167,6 @@ export const products: Product[] = [
   },
   {
     name: "GetForged",
-    featured: true,
     tagline: "AI app marketplace",
     hook: "Buy the AI tool you were about to pay a developer to build.",
     bullets: [
@@ -257,7 +253,6 @@ export const products: Product[] = [
   },
   {
     name: "BikeMe",
-    featured: true,
     tagline: "Voice-guided cycling routes",
     hook: "Pick a route, press start and put your phone away: every turn is called out before you reach it.",
     bullets: [
