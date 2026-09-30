@@ -294,6 +294,42 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   }
 }
 
+/* Play badge on the homepage mascot (mascot-video.tsx): a slow blink to draw
+   the eye. Hover or keyboard focus on the mascot holds it solid, so it never
+   flickers under the pointer. Reduced motion gets a still, fully visible badge. */
+.mascot-play-blink {
+  animation: mascot-play-blink 1.4s ease-in-out infinite;
+}
+
+.group:hover > .mascot-play-blink,
+.group:focus-visible > .mascot-play-blink {
+  animation: none;
+}
+
+@keyframes mascot-play-blink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-play-blink {
+    animation: none;
+  }
+}
+
+/* A native <dialog> opened with showModal() makes the page behind it inert but
+   still scrollable. Freeze it while the mascot video modal is open. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 /* Hero circuit diagram — traces draw in once, then pulses travel
    node → hub forever. Under prefers-reduced-motion the global block below
    collapses the draw to its final state and hides the pulses.
