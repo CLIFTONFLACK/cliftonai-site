@@ -51,16 +51,12 @@ test("ink reaches 4.5:1 contrast on tint for every self product", () => {
   assert.deepEqual(failing, []);
 });
 
-test("exactly three client products are featured", () => {
-  const featured = clients.filter((p) => p.featured).map((p) => p.name);
+test("no product carries a featured field any more", () => {
+  const stray = products
+    .filter((p) => "featured" in p)
+    .map((p) => p.name);
 
-  assert.equal(featured.length, 3);
-});
-
-test("no self product is featured", () => {
-  const featured = self.filter((p) => p.featured).map((p) => p.name);
-
-  assert.deepEqual(featured, []);
+  assert.deepEqual(stray, []);
 });
 
 test("client products carry no tint or ink", () => {

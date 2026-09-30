@@ -37,12 +37,16 @@ from a mirror on local disk.
   pricing, contact, footer
 - `src/app/products-data.ts` — the product/portfolio data (names, copy, links, screenshots).
   Optional fields: `tint` and `ink` (own tools: the tile's pale ground and a darkened
-  accent for small text) and `featured` (client work: shown as a full card; exactly
-  three are set, the rest render as pill links)
+  accent for small text). There is no `featured` field: every client product is a card.
 - `src/app/products-section.tsx` — exports `WorkSection` (bento grid of Brian's own tools,
-  each a whole-tile link with a 16:9 screenshot) and `ClientsSection` (three featured
-  client cards with 16:10 screenshots, the remaining clients as pill links, with an
-  "In development" badge where set). There is no product modal.
+  each a whole-tile link with a 16:9 screenshot) and `ClientsSection` (every client
+  product as a card: 16:10 screenshot, name, tagline, and an "In development" badge
+  where set). There is no product modal.
+- `src/app/clients-carousel.tsx` — client component (`ClientsCarousel`) that holds the
+  client card list. A 4-column grid on large screens, 2 columns from the `sm` breakpoint,
+  and on phones a CSS scroll-snap swipe row with a "View all N" button that switches to a
+  stacked list ("Show fewer" switches back). The cards arrive as children, so they stay
+  server-rendered.
 - `src/app/pricing-section.tsx` — the £2,500 + 50%-for-3-years pricing model, plus an
   interactive worked-example calculator with one slider (monthly software spend,
   £200 to £3,000) and animated, live-recomputed sums
@@ -78,7 +82,7 @@ from a mirror on local disk.
   Chrome, targets read out of `products-data.ts` so a capture always lands on the path
   its tile renders (the script expects exactly 5 `category: "self"` products). Re-run
   after any product redesign. The client shots are hand-placed and deliberately left
-  alone: those are other people's brands on their own release cycles. Featured client
+  alone: those are other people's brands on their own release cycles. Client
   cards display them at 16:10.
 - `assets/` — original source logo file (not shipped to production)
 - `docs/GetBrian_Logo.png` — **the** brand source of truth; every SVG, favicon and OG image is generated from it
@@ -91,8 +95,8 @@ Brian is a services business, not a product house — the portfolio in
 - `category: "self"` — tools Brian built and runs himself (ContentFlow,
   CRM, DiffDoc, DealMaker, Healthy). No brand prefix on the name; each is a
   Work tile whose ground is the product's own `tint`.
-- `category: "client"` — client/venture brands. Keep their own names. Three
-  (`featured`) are cards in "Built for clients"; the rest are pill links.
+- `category: "client"` — client/venture brands. Keep their own names. Each
+  is a card in "Built for clients".
 
 ## Product links
 
@@ -111,14 +115,14 @@ this file was updated. Use `*.getbrian.xyz`.
 | DiffDoc | self | diffdoc.getbrian.xyz |
 | DealMaker | self | dealmaker.getbrian.xyz |
 | Healthy | self | getbrian.xyz/healthy (`/healthy`) |
-| Merlows News | client (featured) | merlows.com |
+| Merlows News | client | merlows.com |
 | Empirely Game | client (in development) | empirely.getbrian.xyz |
-| GetForged | client (featured) | getforged.getbrian.xyz |
+| GetForged | client | getforged.getbrian.xyz |
 | The Rising Lions | client | therisinglions.com |
 | HYDRGEL | client | hydrgel.com |
 | Vance Health Hub | client | vancehealthhub.co.uk |
 | Ai Simulator | client | anatop-simulator.vercel.app |
-| BikeMe | client (featured) | bikeme-usgc.vercel.app |
+| BikeMe | client | bikeme-usgc.vercel.app |
 
 ## Deploy
 

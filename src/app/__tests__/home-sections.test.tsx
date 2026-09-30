@@ -76,36 +76,60 @@ test("WorkSection shows the short name as the heading", () => {
   assert.ok(markup.includes(">Healthy</h3>"));
 });
 
-test("ClientsSection links every client product exactly once", () => {
+test("ClientsSection links every client product exactly once, in data order", () => {
   const hrefs = anchors(html(createElement(ClientsSection))).map((a) => a.href);
 
-  assert.deepEqual([...hrefs].sort(), clients.map((p) => p.href).sort());
+  assert.deepEqual(hrefs, clients.map((p) => p.href));
 });
 
-test("ClientsSection renders featured clients as cards and the rest as pills", () => {
+test("ClientsSection renders every client as an image card with name and tagline", () => {
   const all = anchors(html(createElement(ClientsSection)));
-  const cards = all.filter((a) => a.inner.includes("<img"));
-  const pills = all.filter((a) => !a.inner.includes("<img"));
 
-  assert.deepEqual(
-    cards.map((a) => a.href),
-    clients.filter((p) => p.featured).map((p) => p.href),
-  );
-  assert.deepEqual(
-    pills.map((a) => a.href),
-    clients.filter((p) => !p.featured).map((p) => p.href),
-  );
+  assert.equal(all.filter((a) => !a.inner.includes("<img")).length, 0);
+  assert.equal(all.length, clients.length);
+  all.forEach((a, i) => {
+    assert.ok(a.inner.includes(clients[i].name), clients[i].name);
+    assert.ok(a.inner.includes(clients[i].tagline), clients[i].name);
+  });
 });
 
-test("ClientsSection shows exactly one In development badge, on the in-development client", () => {
-  const all = anchors(html(createElement(ClientsSection)));
+test("ClientsSection shows exactly one In development badge, inside the in-development client's card", () => {
+  const markup = html(createElement(ClientsSection));
+  const all = anchors(markup);
   const badged = all.filter((a) => a.inner.includes("In development"));
 
+  assert.equal(markup.split("In development").length - 1, 1);
   assert.equal(badged.length, 1);
   assert.equal(
     badged[0].href,
     clients.find((p) => p.status === "in-development")!.href,
   );
+});
+
+test("ClientsSection renders one list item per client", () => {
+  const markup = html(createElement(ClientsSection));
+
+  assert.equal((markup.match(/<li\b/g) ?? []).length, clients.length);
+});
+
+test("ClientsSection list starts as a snap row with 82 percent wide cards", () => {
+  const markup = html(createElement(ClientsSection));
+
+  assert.ok(/<ul[^>]*id="client-list"[^>]*class="[^"]*snap-x[^"]*overflow-x-auto/.test(markup));
+  assert.equal(
+    (markup.match(/<li class="w-\[82%\] shrink-0 snap-start/g) ?? []).length,
+    clients.length,
+  );
+});
+
+test("ClientsSection button starts collapsed, names the client count and controls the list", () => {
+  const markup = html(createElement(ClientsSection));
+  const button = markup.match(/<button\b[^>]*>[^<]*<\/button>/)![0];
+  const controls = button.match(/aria-controls="([^"]+)"/)![1];
+
+  assert.ok(button.includes('aria-expanded="false"'));
+  assert.ok(button.includes(`>View all ${clients.length}<`));
+  assert.ok(markup.includes(`id="${controls}"`));
 });
 
 test("PricingSection shows the 900 a month ledger on first render", () => {
