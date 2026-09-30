@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Plus_Jakarta_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { LAUNCHED, PROGRAM_NAME } from "./data";
@@ -11,11 +11,16 @@ import { Icon } from "./icons";
  * Space Grotesk / DM Sans fonts untouched. Exposed as font-kinetic-heading /
  * font-kinetic-body Tailwind utilities via the matching entries in
  * globals.css's @theme block.
+ *
+ * The heading face is Bricolage Grotesque, the same display face the homepage
+ * now uses, so the GetBrian logotype and headings match across the site. No
+ * `weight`: that loads the variable font, which the 600-800 range used here
+ * needs; `opsz` tightens the letterforms at poster sizes.
  */
-const sora = Sora({
+const bricolage = Bricolage_Grotesque({
   variable: "--font-kinetic-heading",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  axes: ["opsz"],
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -80,7 +85,7 @@ const sideLinkClass = `${linkClass} min-h-10 w-full px-3 text-sm hover:bg-kineti
 export default function HealthyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className={`${sora.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
+      className={`${bricolage.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
     >
       {/* Wide screens: a small frosted menu floating at the left edge, centred
           vertically so it stays clear of each page's opening heading. The page
