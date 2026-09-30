@@ -143,7 +143,7 @@ this file was updated. Use `*.getbrian.xyz`.
 | DealMaker | self | dealmaker.getbrian.xyz |
 | Healthy | self | getbrian.xyz/healthy (`/healthy`) |
 | Merlows News | client | merlows.com |
-| Empirely Game | client (in development) | empirely.getbrian.xyz |
+| Empirely Game | client | empirely.getbrian.xyz |
 | GetForged | client | getforged.getbrian.xyz |
 | The Rising Lions | client | therisinglions.com |
 | HYDRGEL | client | hydrgel.com |
