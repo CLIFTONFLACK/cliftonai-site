@@ -6,6 +6,7 @@ import { Icon } from "./icons";
 import { PickLoop } from "./pick-loop";
 import { PromoVideo } from "./promo-video";
 import { JobRail } from "./job-rail";
+import { HealthyHeroMascot } from "./hero-mascot";
 import { signupEnabled } from "./newsletter";
 import { Signup } from "./signup";
 import {
@@ -116,7 +117,7 @@ export default function HealthyHome() {
             <div className="flex flex-col items-start gap-3 pt-2">
               {/* Lands on the picks row itself, not the section heading above it,
                   so the products are on screen after the jump. */}
-              <Link href="#healthy-picks-row" className={primaryCta}>
+              <Link id="healthy-hero-cta" href="#healthy-picks-row" className={primaryCta}>
                 See Brian&apos;s Choices
                 <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
               </Link>
@@ -147,9 +148,23 @@ export default function HealthyHome() {
           {/* Caption legibility: a scrim on the small-screen band; on large screens a text
               shadow instead, since a scrim there would grey the feathered copy side. */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/60 to-transparent lg:hidden" aria-hidden="true" />
-          <p className="absolute right-4 bottom-4 left-4 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6">
+          {/* left-32/left-56: below lg the mascot stands in the bottom-left of
+              this band, so the caption keeps clear of him and wraps sooner. */}
+          <p className="absolute right-4 bottom-4 left-32 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6 sm:left-56 lg:left-4">
             An active, evidence-checked routine for the decades ahead
           </p>
+        </div>
+
+        {/* The mascot bursts out of the hero button and lands here, at the foot
+            of the hero. His ground is the section's bottom edge; the inner box
+            repeats the copy column's container so he lines up with it. */}
+        <div className="absolute inset-x-0 bottom-0 z-20">
+          <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+            <HealthyHeroMascot
+              originSelector="#healthy-hero-cta"
+              className="absolute bottom-0 left-2 w-[clamp(6.5rem,24vw,11rem)] sm:left-6 lg:left-[23rem] xl:left-[26rem]"
+            />
+          </div>
         </div>
       </section>
 
