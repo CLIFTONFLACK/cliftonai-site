@@ -267,6 +267,33 @@ header:has([aria-controls="mobile-nav-panel"][aria-expanded="true"]) .glass-nav 
   animation: fade-in-up 700ms ease both;
 }
 
+/* Homepage hero mascot — one wave on arrival, then still. The arm is its own
+   image behind the body (hero-mascot.tsx) and turns about the shoulder: the
+   origin is where the sleeve leaves the body, as a fraction of the shared
+   canvas. Rest is 0deg at both ends, so where the animation never runs, or
+   the reduced-motion block below cuts it to nothing, he simply stands there.
+   The delay lets the hero's own fade-in finish first. */
+.hero-mascot-arm {
+  transform-origin: 80.6% 51.9%;
+  animation: hero-mascot-wave 2.2s ease-in-out 0.9s 1 both;
+}
+
+@keyframes hero-mascot-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  16%,
+  48%,
+  80% {
+    transform: rotate(-30deg);
+  }
+  32%,
+  64% {
+    transform: rotate(-10deg);
+  }
+}
+
 /* Hero circuit diagram — traces draw in once, then pulses travel
    node → hub forever. Under prefers-reduced-motion the global block below
    collapses the draw to its final state and hides the pulses.

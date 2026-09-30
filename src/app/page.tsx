@@ -7,6 +7,7 @@ import { PricingSection } from "./pricing-section";
 import { products } from "./products-data";
 import { MobileNav, type NavLink } from "./mobile-nav";
 import { StickyCta } from "./sticky-cta";
+import { HeroMascot } from "./hero-mascot";
 
 /**
  * The homepage's display face. It takes over `--font-heading` for this page
@@ -177,7 +178,8 @@ export default function Home() {
               <span className="block">If you see Brian,</span>
               <span className="block text-brand-gold-deep">get him.</span>
             </h1>
-            <div className="mt-10 grid items-end gap-8 border-t border-border-strong pt-7 lg:grid-cols-2 lg:gap-20">
+            <div className="relative mt-10 grid items-end gap-8 border-t border-border-strong pt-7 lg:grid-cols-2 lg:gap-20">
+              <HeroMascot />
               <p className="text-xl leading-normal text-fg-muted sm:text-2xl">
                 The helpful Ai guy who replaces your rented software. Brian
                 builds the tech you rent: CRM, project tools, marketing, and{" "}
