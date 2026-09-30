@@ -2,8 +2,14 @@ export type Product = {
   name: string;
   /** Product word alone (lockup suffix) — only for Brian's own tools. */
   shortName?: string;
-  /** Functional accent used as the card keyline — sub-brands only. */
+  /** Functional accent, the sub-brand's own colour — sub-brands only. */
   accent?: string;
+  /** Pale wash of the accent: the work tile's ground — sub-brands only. */
+  tint?: string;
+  /** Accent darkened until it clears 4.5:1 as small text on `tint`. */
+  ink?: string;
+  /** Client work shown as a full card; the rest are listed as links. */
+  featured?: boolean;
   tagline: string;
   hook: string;
   bullets: string[];
@@ -24,6 +30,8 @@ export const products: Product[] = [
     name: "ContentFlow",
     shortName: "ContentFlow",
     accent: "#1565c0",
+    tint: "#e8f0fb",
+    ink: "#0f4f96",
     tagline: "Content operations for WordPress",
     hook: "The WordPress theme, content generator, and feedback tool that finally talk to each other.",
     bullets: [
@@ -43,6 +51,8 @@ export const products: Product[] = [
     name: "CRM",
     shortName: "CRM",
     accent: "#00695c",
+    tint: "#e3f2ef",
+    ink: "#00574c",
     tagline: "Leisure & licensed property",
     hook: "The CRM that finally understands what makes a leisure property deal real.",
     bullets: [
@@ -62,6 +72,8 @@ export const products: Product[] = [
     name: "DiffDoc",
     shortName: "DiffDoc",
     accent: "#6a1b9a",
+    tint: "#f1e8f6",
+    ink: "#6a1b9a",
     tagline: "Document comparison",
     hook: "See exactly what changed between two documents, in seconds.",
     bullets: [
@@ -81,6 +93,8 @@ export const products: Product[] = [
     name: "DealMaker",
     shortName: "DealMaker",
     accent: "#b3541e",
+    tint: "#f8ebe2",
+    ink: "#8f4216",
     tagline: "Deal pipeline for small business",
     hook: "One automated pipeline that runs your deals from first touch to close.",
     bullets: [
@@ -102,6 +116,8 @@ export const products: Product[] = [
     name: "Healthy",
     shortName: "Healthy",
     accent: "#046d7c",
+    tint: "#e2f1f3",
+    ink: "#035966",
     tagline: "Human Longevity Program",
     hook: "Three supplements for adults over 40, each picked for one job and explained from the research.",
     bullets: [
@@ -119,6 +135,7 @@ export const products: Product[] = [
   },
   {
     name: "Merlows News",
+    featured: true,
     tagline: "Independent journalism + AI research",
     hook: "Independent journalism on Middle East diplomacy, sharpened by AI research.",
     bullets: [
@@ -153,6 +170,7 @@ export const products: Product[] = [
   },
   {
     name: "GetForged",
+    featured: true,
     tagline: "AI app marketplace",
     hook: "Buy the AI tool you were about to pay a developer to build.",
     bullets: [
@@ -239,6 +257,7 @@ export const products: Product[] = [
   },
   {
     name: "BikeMe",
+    featured: true,
     tagline: "Voice-guided cycling routes",
     hook: "Pick a route, press start and put your phone away: every turn is called out before you reach it.",
     bullets: [
