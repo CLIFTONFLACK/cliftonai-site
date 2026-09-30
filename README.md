@@ -14,7 +14,7 @@ Campaign line: **"If you see Brian, get him."**
 
 - **Next.js 16** (App Router, Turbopack) — static export, no server runtime needed
 - **Tailwind CSS v4** — theme tokens in `src/app/globals.css`
-- **Fonts**: Space Grotesk (headings) + DM Sans (body), loaded via `next/font/google`
+- **Fonts**: Space Grotesk (headings) + DM Sans (body), loaded via `next/font/google` in the root layout. The homepage overrides the heading font with Bricolage Grotesque, loaded in `page.tsx` and scoped by re-declaring `--font-heading` on a wrapper div, so `/healthy`, `/cliftonflack` and the legal pages keep Space Grotesk.
 - Brand colors: Brian Navy `#0A1D3B` (masterbrand) + Brian Gold `#BA8B32` (CTA, wordmark) on white — both sampled from `docs/GetBrian_Logo.png`, not eyeballed
 
 ## Local development
@@ -26,15 +26,31 @@ npm run dev
 
 Open http://localhost:3000.
 
+`npm install` does not work on the Google Drive volume (G:). The toolchain is run
+from a mirror on local disk.
+
 ## Structure
 
-- `src/app/page.tsx` — the one-page site (hero, positioning, products, pricing, who's Brian, contact, footer)
-- `src/app/products-data.ts` — the product/portfolio data (names, copy, links, screenshots)
-- `src/app/products-section.tsx` — product cards, client case-study rows, and detail modal
+- `src/app/page.tsx` — the one-page site, in this order: hero (poster-scale "If you see
+  Brian, get him."), navy proof strip, Work (`WorkSection`), positioning (Replace /
+  Personalise / Save), Built for clients (`ClientsSection`), Who's Brian (navy panel),
+  pricing, contact, footer
+- `src/app/products-data.ts` — the product/portfolio data (names, copy, links, screenshots).
+  Optional fields: `tint` and `ink` (own tools: the tile's pale ground and a darkened
+  accent for small text) and `featured` (client work: shown as a full card; exactly
+  three are set, the rest render as pill links)
+- `src/app/products-section.tsx` — exports `WorkSection` (bento grid of Brian's own tools,
+  each a whole-tile link with a 16:9 screenshot) and `ClientsSection` (three featured
+  client cards with 16:10 screenshots, the remaining clients as pill links, with an
+  "In development" badge where set). There is no product modal.
 - `src/app/pricing-section.tsx` — the £2,500 + 50%-for-3-years pricing model, plus an
-  interactive worked-example calculator (two sliders: monthly software spend, weekly
-  hours on repetitive tasks) with animated, live-recomputed savings
-- `src/app/hero-diagram.tsx` — animated hero integration diagram (CSS/SVG only)
+  interactive worked-example calculator with one slider (monthly software spend,
+  £200 to £3,000) and animated, live-recomputed sums
+- `src/app/pricing-math.ts` — the calculator's arithmetic: `BUILD_FEE` 2500, half the old
+  spend (`ONGOING_SHARE` 0.5) for 3 years (`HANDOVER_YEARS`), measured over 6
+  (`HORIZON_YEARS`); `sixYearSums()` returns rented, ongoing and saved totals
+- `src/app/hero-diagram.tsx` — animated hero integration diagram (CSS/SVG only). No longer
+  used by the homepage; nothing imports it
 - `src/app/layout.tsx` — fonts + metadata
 - `src/app/globals.css` — color tokens, gradients, theme, animations
 - `scripts/trace-logo.mjs` — vectorises `docs/GetBrian_Logo.png` into `public/brand/*.svg`
@@ -57,12 +73,13 @@ Open http://localhost:3000.
     somewhere outside it — an old email signature, a client's page, a deck.
   - Brian is never depicted as a person — no mascot or illustrated character.
 - `scripts/gen-screenshots.mjs` — re-shoots the product cards; run `npm run screenshots`
-- `public/screenshots/` — product card imagery, 1000×625 JPEG (16:10, matching the card's
-  `aspect-[16/10]`). The four own-product shots are **generated** — captured from the live
-  `*.getbrian.xyz` sites via headless Chrome, targets read out of `products-data.ts` so a
-  capture always lands on the path its card renders. Re-run after any product redesign.
-  The four client shots are hand-placed and deliberately left alone: those are other
-  people's brands on their own release cycles.
+- `public/screenshots/` — product imagery. The own-tool shots are **generated** at
+  1000×563 JPEG (16:9, matching the work tile's `aspect-[16/9]`) — captured via headless
+  Chrome, targets read out of `products-data.ts` so a capture always lands on the path
+  its tile renders (the script expects exactly 5 `category: "self"` products). Re-run
+  after any product redesign. The client shots are hand-placed and deliberately left
+  alone: those are other people's brands on their own release cycles. Featured client
+  cards display them at 16:10.
 - `assets/` — original source logo file (not shipped to production)
 - `docs/GetBrian_Logo.png` — **the** brand source of truth; every SVG, favicon and OG image is generated from it
 
@@ -71,12 +88,11 @@ Open http://localhost:3000.
 Brian is a services business, not a product house — the portfolio in
 `src/app/products-data.ts` exists as **proof**, not as a product lineup:
 
-- `category: "self"` — tools Brian built and runs himself daily (ContentFlow,
-  CRM, DiffDoc, DealMaker). No brand prefix on the name; the product card
-  lockup reads "Brian | \<tool\>" and each keeps its own accent color as a
-  card keyline.
-- `category: "client"` — client/venture brands. Keep their own names,
-  rendered as case-study rows with a "Built by Brian" credit.
+- `category: "self"` — tools Brian built and runs himself (ContentFlow,
+  CRM, DiffDoc, DealMaker, Healthy). No brand prefix on the name; each is a
+  Work tile whose ground is the product's own `tint`.
+- `category: "client"` — client/venture brands. Keep their own names. Three
+  (`featured`) are cards in "Built for clients"; the rest are pill links.
 
 ## Product links
 
@@ -94,12 +110,15 @@ this file was updated. Use `*.getbrian.xyz`.
 | CRM | self | crm.getbrian.xyz |
 | DiffDoc | self | diffdoc.getbrian.xyz |
 | DealMaker | self | dealmaker.getbrian.xyz |
-| Merlows News | client | merlows.com |
-| Empirely Game | client | empirely.getbrian.xyz |
-| GetForged | client | getforged.getbrian.xyz |
+| Healthy | self | getbrian.xyz/healthy (`/healthy`) |
+| Merlows News | client (featured) | merlows.com |
+| Empirely Game | client (in development) | empirely.getbrian.xyz |
+| GetForged | client (featured) | getforged.getbrian.xyz |
 | The Rising Lions | client | therisinglions.com |
 | HYDRGEL | client | hydrgel.com |
 | Vance Health Hub | client | vancehealthhub.co.uk |
+| Ai Simulator | client | anatop-simulator.vercel.app |
+| BikeMe | client (featured) | bikeme-usgc.vercel.app |
 
 ## Deploy
 

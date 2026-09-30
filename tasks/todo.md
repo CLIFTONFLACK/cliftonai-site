@@ -293,3 +293,30 @@ lint and typecheck clean.
   fetched by Next at build time and aren't installed system-wide, so librsvg can't
   resolve them. The wordmark in that image is the traced vector, so the brand-critical
   part is exact.
+
+## Homepage re-vision: merged mockup build (2026-09-30)
+
+Source of truth: "Merged · your picks" artboard on the GetBrian Homepage Re-vision canvas.
+Look C (Bricolage Grotesque headings, white ground, rounded tinted panels), homepage only.
+
+### Plan
+
+- [x] Bricolage Grotesque scoped to the homepage (other routes keep Space Grotesk)
+- [x] Hero: poster-scale "If you see Brian, get him." with subhead and CTAs on a ruled row
+- [x] Proof strip: navy band under the hero
+- [x] Work: bento grid of Brian's own tools, tinted per product
+- [x] Positioning: Replace / Personalise / Save as tinted cards
+- [x] Clients: three featured cards, the rest as pill links
+- [x] Who's Brian: navy panel, moved above pricing
+- [x] Pricing: four cells, one slider, six-year ledger (sums moved to pricing-math.ts)
+- [x] Contact: navy card
+- [x] Verify: tests, lint, build, rendered check at 375 / 768 / 1440
+
+### Review
+
+- Built and run from the local mirror `C:\dev\cliftonai-site-mockups` (no node_modules on G:).
+- Tests 538 pass, 0 fail (32 new: pricing-math, products-data, home-sections). Changed files lint clean. `next build` passes.
+- Rendered check: 1440 full page read from a headless screenshot; 375 measured in the preview pane (no horizontal overflow, no target under 44px, hero clauses one line each); 768 read from a headless screenshot, after which the pillars and proof strip were moved from `md` to `lg` breakpoints. 768 not re-shot after that change.
+- Kept from the live site rather than the mockup: floating glass header with stacked wordmark, footer with every product link, the four pricing card descriptions, the live "Proof, not promises" intro line.
+- Left behind on purpose: `hero-diagram.tsx` and its CSS are now unused; `Product.bullets` / `description` / `visitLabel` are no longer rendered. Separate cleanup.
+- Pre-existing, untouched: `tsc --noEmit` errors in test files and /healthy route types; lint errors in `mobile-nav.tsx` and `healthy/why-these-picks/page.tsx`.

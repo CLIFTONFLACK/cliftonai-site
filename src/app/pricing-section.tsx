@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Reveal } from "./reveal";
+import { BUILD_FEE, sixYearSums } from "./pricing-math";
 
 /**
  * How Brian charges: a £2,500 build fee (more for bigger projects), then half
  * of whatever the client was already paying for the software being replaced.
  * Ownership transfers after three years via an agreed handover — and Brian's
- * ongoing fee stops there too. That second part is why the calculator below
- * shows years 4-6 jumping: from year 4 the client keeps the whole amount they
- * used to pay a vendor, not just half of it.
+ * ongoing fee stops there too. The sums live in pricing-math.ts.
  */
 const pricingCards = [
   {
@@ -32,6 +31,8 @@ const pricingCards = [
     note: "agreed handover",
     description:
       "Stay three years and the system becomes yours outright, transferred through an agreed handover of code, data, and the documentation to run it without Brian. His fee stops the same day.",
+    // The one cell on navy: ownership is the part of the offer nobody else makes.
+    featured: true,
   },
   {
     title: "Profit share",
@@ -41,9 +42,6 @@ const pricingCards = [
       "Helping launch or grow a product or service instead of replacing software? Brian can work for a share of the upside, instead of or alongside a fee.",
   },
 ];
-
-const BUILD_FEE = 2500;
-const WORKDAY_HOURS = 8;
 
 const gbp = (n: number) => {
   const sign = n < 0 ? "−" : "";
@@ -103,102 +101,68 @@ function useAnimatedNumber(target: number, duration = 500) {
   return value;
 }
 
-function SliderField({
-  label,
-  value,
-  min,
-  max,
-  step,
-  suffix,
-  format,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  suffix: string;
-  format?: (n: number) => string;
-  onChange: (n: number) => void;
-}) {
-  const pct = ((value - min) / (max - min)) * 100;
-  return (
-    <div>
-      <div className="flex items-baseline justify-between gap-3">
-        <label className="text-sm font-medium text-fg-muted">{label}</label>
-        <span className="font-heading text-lg font-semibold text-brand-navy-mid tabular-nums">
-          {format ? format(value) : value.toLocaleString("en-GB")} {suffix}
-        </span>
-      </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        // mt-1, not mt-3: the input box grew from 6px to 44px to be tappable
-        // and the extra height is centred padding around the same visible
-        // track, so the old margin would now read as a gap.
-        className="brand-slider mt-1 w-full"
-        // A custom property, not a `background` shorthand — the shorthand is
-        // an inline declaration that would reset the stylesheet's
-        // background-size and repaint the track at full 44px height.
-        style={{ "--fill": `${pct}%` } as CSSProperties}
-        aria-label={label}
-      />
-    </div>
-  );
-}
+const SPEND_MIN = 200;
+const SPEND_MAX = 3000;
 
 export function PricingSection() {
   const [monthlySpend, setMonthlySpend] = useState(900);
-  const [weeklyHours, setWeeklyHours] = useState(8);
+  const sums = sixYearSums(monthlySpend);
 
-  const ongoingMonthly = monthlySpend * 0.5;
-  const year1 = ongoingMonthly * 12 - BUILD_FEE;
-  const year2to3Total = ongoingMonthly * 12 * 2;
-  const year4to6Total = monthlySpend * 12 * 3;
-  const sixYearTotal = year1 + year2to3Total + year4to6Total;
+  const rentedDisplay = useAnimatedNumber(sums.rented);
+  const ongoingDisplay = useAnimatedNumber(sums.ongoingTotal);
+  const savedDisplay = useAnimatedNumber(sums.saved);
 
-  const workingDaysLost = Math.round((weeklyHours * 52) / WORKDAY_HOURS);
-
-  const ongoingDisplay = useAnimatedNumber(ongoingMonthly);
-  const year1Display = useAnimatedNumber(year1);
-  const year2to3Display = useAnimatedNumber(year2to3Total);
-  const year4to6Display = useAnimatedNumber(year4to6Total);
-  const totalDisplay = useAnimatedNumber(sixYearTotal);
-  const daysDisplay = useAnimatedNumber(workingDaysLost);
+  const fill = ((monthlySpend - SPEND_MIN) / (SPEND_MAX - SPEND_MIN)) * 100;
 
   return (
-    <section id="pricing" className="border-t border-border px-6 py-24">
+    <section id="pricing" className="px-6 py-24">
       <div className="mx-auto max-w-6xl">
-        <Reveal className="max-w-2xl">
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+        <Reveal className="max-w-3xl">
+          <h2 className="font-heading text-4xl leading-none font-extrabold tracking-[-0.03em] text-brand-navy sm:text-5xl lg:text-6xl">
             How Brian charges
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+          <p className="mt-5 text-lg leading-relaxed text-fg-muted">
             £2,500 to build it, more for bigger projects. Then half of what
             you were already paying, for three years. After that, it&apos;s
             yours outright and the fee stops.
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {pricingCards.map((card, i) => (
             <Reveal key={card.title} delay={i * 100}>
-              <div className="glass glass-hover flex h-full flex-col rounded-2xl p-6">
-                <h3 className="font-heading text-lg font-semibold text-fg">
+              <div
+                className={`flex h-full flex-col rounded-[28px] p-7 ${
+                  card.featured ? "bg-brand-navy text-white" : "bg-bg-panel"
+                }`}
+              >
+                <h3
+                  className={`text-sm font-bold ${
+                    card.featured ? "text-brand-gold-light" : "text-fg-muted"
+                  }`}
+                >
+                  <span aria-hidden="true">0{i + 1} · </span>
                   {card.title}
                 </h3>
-                <p className="mt-4 font-heading text-3xl font-semibold text-brand-navy-mid">
+                <p
+                  className={`mt-3 font-heading text-3xl leading-[1.05] font-extrabold tracking-[-0.03em] ${
+                    card.featured ? "" : "text-brand-navy"
+                  }`}
+                >
                   {card.price}
                 </p>
-                <p className="text-xs font-medium tracking-wide text-fg-subtle uppercase">
+                <p
+                  className={`mt-2 text-base ${
+                    card.featured ? "text-white/85" : "text-fg-muted"
+                  }`}
+                >
                   {card.note}
                 </p>
-                <p className="mt-4 text-sm leading-relaxed text-fg-muted">
+                <p
+                  className={`mt-5 text-sm leading-relaxed ${
+                    card.featured ? "text-white/85" : "text-fg-muted"
+                  }`}
+                >
                   {card.description}
                 </p>
               </div>
@@ -206,116 +170,78 @@ export function PricingSection() {
           ))}
         </div>
 
-        <Reveal delay={100}>
-          <div className="glass relative mt-6 overflow-hidden rounded-2xl">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brand-gold/10 blur-3xl"
-            />
-            <div className="relative border-b border-border px-6 py-6 sm:px-8">
-              <span className="glass inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide text-fg-muted uppercase">
-                <span
-                  className="h-1.5 w-1.5 rounded-full bg-brand-gold"
-                  aria-hidden="true"
-                />
-                Drag the sliders
-              </span>
-              <h3 className="mt-3 font-heading text-xl font-semibold text-fg sm:text-2xl">
+        <div className="mt-5 grid gap-5 lg:grid-cols-2">
+          <Reveal>
+            <div className="flex h-full flex-col gap-4 rounded-[28px] bg-bg-tint p-7 sm:p-10">
+              <p className="text-sm font-bold text-brand-navy-mid">
                 Do the maths yourself
-              </h3>
-              <p className="mt-1 text-sm text-fg-muted">
-                Two numbers only you know. Everything below updates as you
-                move them.
+              </p>
+              <label
+                htmlFor="monthly-spend"
+                className="font-heading text-2xl font-bold tracking-tight text-brand-navy"
+              >
+                Current software spend, a month
+              </label>
+              <input
+                id="monthly-spend"
+                type="range"
+                min={SPEND_MIN}
+                max={SPEND_MAX}
+                step={50}
+                value={monthlySpend}
+                onChange={(e) => setMonthlySpend(Number(e.target.value))}
+                className="brand-slider w-full"
+                // A custom property, not a `background` shorthand — the shorthand is
+                // an inline declaration that would reset the stylesheet's
+                // background-size and repaint the track at full 44px height.
+                style={{ "--fill": `${fill}%` } as CSSProperties}
+                aria-valuetext={`${gbp(monthlySpend)} a month`}
+              />
+              <div className="flex items-baseline justify-between text-sm text-fg-muted tabular-nums">
+                <span>{gbp(SPEND_MIN)}</span>
+                <output
+                  htmlFor="monthly-spend"
+                  className="font-heading text-xl font-bold text-brand-navy"
+                >
+                  {gbp(monthlySpend)}
+                </output>
+                <span>{gbp(SPEND_MAX)}</span>
+              </div>
+              <p className="text-base leading-relaxed text-fg-muted">
+                One number only you know. The sums update as you move it.
               </p>
             </div>
+          </Reveal>
 
-            <div className="relative grid gap-8 border-b border-border px-6 py-8 sm:grid-cols-2 sm:px-8">
-              <SliderField
-                label="Current software spend"
-                value={monthlySpend}
-                min={200}
-                max={3000}
-                step={50}
-                suffix="/month"
-                format={gbp}
-                onChange={setMonthlySpend}
-              />
-              <SliderField
-                label="Hours a week on repetitive tasks"
-                value={weeklyHours}
-                min={1}
-                max={40}
-                step={1}
-                suffix="hrs/week"
-                onChange={setWeeklyHours}
-              />
-            </div>
-
-            <div className="relative grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8">
-              <div>
-                <h4 className="text-xs font-semibold tracking-wide text-fg-subtle uppercase">
-                  What you&apos;d save
-                </h4>
-                <dl className="mt-4 space-y-3 text-sm">
-                  <div className="flex items-center justify-between gap-4">
-                    <dt className="text-fg-muted">Brian&apos;s build fee</dt>
-                    <dd className="font-heading font-semibold text-fg">
-                      {gbp(BUILD_FEE)} one-off
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <dt className="text-fg-muted">Brian&apos;s ongoing fee</dt>
-                    <dd className="font-heading font-semibold text-fg tabular-nums">
-                      {gbp(ongoingDisplay)}/month
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <dt className="text-fg-muted">Saved in year 1</dt>
-                    <dd className="font-heading font-semibold text-fg tabular-nums">
-                      {gbp(year1Display)}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <dt className="text-fg-muted">Saved in years 2-3</dt>
-                    <dd className="font-heading font-semibold text-fg tabular-nums">
-                      {gbp(year2to3Display)}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <dt className="text-fg-muted">
-                      Saved in years 4-6, after handover
-                    </dt>
-                    <dd className="font-heading font-semibold text-fg tabular-nums">
-                      {gbp(year4to6Display)}
-                    </dd>
-                  </div>
-                </dl>
-                <div className="mt-6 border-t border-border pt-5">
-                  <p className="text-xs font-medium tracking-wide text-fg-subtle uppercase">
-                    Total saved over 6 years
-                  </p>
-                  <p className="brand-gradient-text mt-1 font-heading text-4xl font-bold tabular-nums sm:text-5xl">
-                    {gbp(totalDisplay)}
-                  </p>
+          <Reveal delay={100}>
+            <div className="flex h-full flex-col justify-center rounded-[28px] bg-bg-panel p-7 sm:p-10">
+              <dl className="space-y-3.5 text-base text-fg-muted">
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt>Rented for six years</dt>
+                  <dd className="tabular-nums">{gbp(rentedDisplay)}</dd>
                 </div>
-              </div>
-
-              <div className="flex flex-col justify-center rounded-2xl bg-bg-tint p-6 sm:p-8">
-                <p className="text-xs font-medium tracking-wide text-brand-navy-soft uppercase">
-                  Before Brian
-                </p>
-                <p className="mt-2 font-heading text-4xl font-bold text-brand-navy tabular-nums sm:text-5xl">
-                  {daysDisplay} days
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-                  working days a year lost to repetitive tasks, based on an
-                  {" "}{WORKDAY_HOURS}-hour day. That&apos;s before Brian
-                  automates any of it.
-                </p>
-              </div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt>Brian&apos;s build fee</dt>
+                  <dd className="tabular-nums">{gbp(BUILD_FEE)}</dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt>Brian&apos;s fee, years 1 to 3</dt>
+                  <dd className="tabular-nums">{gbp(ongoingDisplay)}</dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt>Brian&apos;s fee, years 4 to 6</dt>
+                  <dd className="tabular-nums">{gbp(0)}</dd>
+                </div>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border-strong pt-5 font-bold text-brand-navy">
+                  <dt>Saved over 6 years</dt>
+                  <dd className="font-heading text-5xl font-extrabold tracking-[-0.03em] tabular-nums sm:text-[3.5rem]">
+                    {gbp(savedDisplay)}
+                  </dd>
+                </div>
+              </dl>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
