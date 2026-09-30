@@ -55,6 +55,12 @@ from a mirror on local disk.
   (`HORIZON_YEARS`); `sixYearSums()` returns rented, ongoing and saved totals
 - `src/app/hero-diagram.tsx` — animated hero integration diagram (CSS/SVG only). No longer
   used by the homepage; nothing imports it
+- `src/app/hero-mascot.tsx` — `HeroMascot`, the GetBrian mascot. He stands on the rule under
+  the hero headline at its right end and waves once on page load (three swings over 2.2s,
+  starting 0.9s in), then is still; he is still throughout under `prefers-reduced-motion`. Built
+  from two images (body and arm) with the arm rotating about the shoulder in CSS
+  (`.hero-mascot-arm` in `globals.css`): no video, no JavaScript. Decorative: empty `alt`,
+  `aria-hidden`. `/healthy` has its own separate mascot (`public/healthy/brand/healthy-mascot.webp`)
 - `src/app/layout.tsx` — fonts + metadata
 - `src/app/globals.css` — color tokens, gradients, theme, animations
 - `scripts/trace-logo.mjs` — vectorises `docs/GetBrian_Logo.png` into `public/brand/*.svg`
@@ -75,7 +81,15 @@ from a mirror on local disk.
     `scripts/` references the file either. So it is unblocked for deletion. It is kept
     for now only because that sweep can prove the portfolio, not a hotlink from
     somewhere outside it — an old email signature, a client's page, a deck.
-  - Brian is never depicted as a person — no mascot or illustrated character.
+  - `getbrian-mascot-body-512.webp` / `getbrian-mascot-arm-512.webp` — the homepage mascot: two
+    cut-outs on the same 512px canvas (body without one arm, and that arm). They are cut from a
+    master image that is kept outside these two files; re-cut both together if the artwork changes.
+    Unlike the logo files above, `npm run brand` does not produce them.
+  - There is a GetBrian mascot: a chunky 3D letter-B character. He is the mascot, not Brian.
+    Brian himself is never depicted as a person — no human face, portrait, photo, avatar or
+    silhouette standing in for him. The mascot is never named "Brian" and never captioned as
+    Brian (the `/healthy` tests enforce this for its mascot's alt text, in
+    `src/app/healthy/__tests__/mascot-animation.test.tsx`).
 - `scripts/gen-screenshots.mjs` — re-shoots the product cards; run `npm run screenshots`
 - `public/screenshots/` — product imagery. The own-tool shots are **generated** at
   1000×563 JPEG (16:9, matching the work tile's `aspect-[16/9]`) — captured via headless
