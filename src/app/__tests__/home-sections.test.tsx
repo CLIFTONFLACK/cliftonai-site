@@ -93,16 +93,19 @@ test("ClientsSection renders every client as an image card with name and tagline
   });
 });
 
-test("ClientsSection shows exactly one In development badge, inside the in-development client's card", () => {
+// Driven by the data, not a fixed count: today no client is in development, so
+// this holds the section to showing no badge at all, and it will hold it to
+// one badge per in-development client the day one is marked so again.
+test("ClientsSection shows an In development badge on the in-development clients' cards and nowhere else", () => {
   const markup = html(createElement(ClientsSection));
   const all = anchors(markup);
   const badged = all.filter((a) => a.inner.includes("In development"));
+  const inDevelopment = clients.filter((p) => p.status === "in-development");
 
-  assert.equal(markup.split("In development").length - 1, 1);
-  assert.equal(badged.length, 1);
-  assert.equal(
-    badged[0].href,
-    clients.find((p) => p.status === "in-development")!.href,
+  assert.equal(markup.split("In development").length - 1, inDevelopment.length);
+  assert.deepEqual(
+    badged.map((a) => a.href),
+    inDevelopment.map((p) => p.href),
   );
 });
 

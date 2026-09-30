@@ -133,7 +133,7 @@ export const products: Product[] = [
   },
   {
     name: "Merlows News",
-    tagline: "Independent journalism + AI research",
+    tagline: "Independent Journalism",
     hook: "Independent journalism on Middle East diplomacy, sharpened by AI research.",
     bullets: [
       "Deep coverage: Abraham Accords, Cyrus Accord, regional voices",
@@ -161,7 +161,7 @@ export const products: Product[] = [
       "You get 3 Action Points a day. Every business you ignore starts dying. Empirely Game is a daily mobile business game where real-world economic, political, and social events hit your portfolio. You get one shot a day to build, survive, and dominate, not an idle game that plays itself.",
     href: "https://empirely.getbrian.xyz",
     subdomain: "empirely.getbrian.xyz",
-    status: "in-development",
+    status: "live",
     screenshot: "/screenshots/empirely.jpg",
     category: "client",
   },
