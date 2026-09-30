@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FdaDisclaimer, GoalChooser } from "./components";
+import { FdaDisclaimer, GoalChooser, supplementHref } from "./components";
 import { Icon } from "./icons";
 import { PickLoop } from "./pick-loop";
 import { PromoVideo } from "./promo-video";
@@ -12,7 +12,9 @@ import {
   PROGRAM_NAME,
   TAGLINE,
   faqs,
+  getSupplement,
   products,
+  tileGoals,
 } from "./data";
 
 export const metadata: Metadata = {
@@ -112,7 +114,9 @@ export default function HealthyHome() {
               ))}
             </ul>
             <div className="flex flex-col items-start gap-3 pt-2">
-              <Link href="#picks" className={primaryCta}>
+              {/* Lands on the picks row itself, not the section heading above it,
+                  so the products are on screen after the jump. */}
+              <Link href="#healthy-picks-row" className={primaryCta}>
                 See Brian&apos;s Choices
                 <Icon name="arrow" size={20} className="ml-2 text-kinetic-teal-on-dark" />
               </Link>
@@ -242,15 +246,27 @@ export default function HealthyHome() {
           </div>
           <dl className="space-y-3">
             {faqs.map((f) => (
-              <details key={f.question} className="group rounded-xl border border-slate-200 bg-slate-50 p-5 transition-all hover:bg-slate-100/80">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left marker:content-none focus:outline-none">
+              <details key={f.question} className="group rounded-xl border border-slate-200 bg-slate-50 transition-all hover:bg-slate-100/80">
+                {/* The padding sits on the summary, so the whole row is the tap target, not just the text. */}
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-xl p-5 text-left marker:content-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-kinetic-primary-electric">
                   <span className="font-kinetic-heading text-base font-bold text-slate-900 sm:text-lg">{f.question}</span>
                   <Icon name="plus" size={22} className="text-slate-400 transition-transform duration-200 group-open:rotate-45" />
                 </summary>
-                <dd className="pt-3 text-sm leading-relaxed text-slate-600">{f.answer}</dd>
+                <dd className="px-5 pb-5 text-sm leading-relaxed text-slate-600">{f.answer}</dd>
               </details>
             ))}
           </dl>
+          <p className="mt-6 text-center text-sm text-slate-600">
+            More detail:{" "}
+            <Link href="/healthy/why-these-picks" className="inline-flex min-h-11 items-center font-semibold text-kinetic-primary underline underline-offset-4 hover:text-kinetic-primary-electric">
+              Why these picks
+            </Link>{" "}
+            and{" "}
+            <Link href="/healthy/about" className="inline-flex min-h-11 items-center font-semibold text-kinetic-primary underline underline-offset-4 hover:text-kinetic-primary-electric">
+              who is behind this
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
@@ -267,11 +283,24 @@ export default function HealthyHome() {
             medication.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            {/* Orange is kept for retailer (Buy) buttons only; this one moves around the page. */}
-            <Link href="#start" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-8 py-4 font-bold text-slate-950 transition-colors hover:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-              Find my pick
-              <Icon name="arrow" size={18} className="ml-2" />
-            </Link>
+            {/* Orange is kept for retailer (Buy) buttons only. One button per goal,
+                each straight to that goal's review, rather than back up the page. */}
+            {tileGoals.map((goal) => {
+              const s = getSupplement(goal.supplement);
+              const review = supplementHref(s);
+              return (
+                <Link
+                  key={goal.id}
+                  href={review ?? "#start"}
+                  className="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3.5 font-bold text-slate-950 transition-colors hover:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <Icon name={goal.icon} size={18} className="mr-2 text-kinetic-teal" />
+                  {goal.label}: {s.name}
+                </Link>
+              );
+            })}
+          </div>
+          <div className="mt-4 flex justify-center">
             <Link href="/healthy/disclosures" className="inline-flex min-h-11 items-center px-2 text-sm font-semibold text-slate-300 underline underline-offset-4 hover:text-white">
               How we earn money
             </Link>

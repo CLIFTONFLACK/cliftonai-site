@@ -324,7 +324,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
       {/* Compact purchase bar: same buyHref as the sidebar BuyButton, just reachable without
           scrolling back up on a phone. The sidebar keeps the full disclosure sentence; this bar
           links to it rather than repeating it in a strip this narrow. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
+      <div data-buy-bar className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-4 py-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-fg">

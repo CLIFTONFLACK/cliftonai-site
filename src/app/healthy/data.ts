@@ -199,7 +199,7 @@ export const goals: {
   {
     id: "energy",
     label: "Energy",
-    hook: "Low on magnesium? Many don't get enough, our bodies need it to turn food into energy.",
+    hook: "Low on magnesium? Many don't get enough, and we need it to turn food into energy.",
     supplement: "magnesium",
     icon: "zap",
     eyebrowDetail: "Cellular Energy",
@@ -290,6 +290,12 @@ export type Faq = { question: string; answer: string };
 /** Short, honest answers for the homepage FAQ. No hedging beyond what's true. */
 export const faqs: Faq[] = [
   {
+    // Same facts as the About page. Keep the two in step.
+    question: "Who is Brian?",
+    answer:
+      "Brian is the voice of GetBrian. The research behind each review is gathered and summarized with the help of AI tools, then checked and signed off by Clifton Flack, who founded GetBrian. Brian is not a doctor.",
+  },
+  {
     question: "Is this medical advice?",
     answer:
       "No. It's general information, not a diagnosis or personal medical guidance. Talk to your doctor before starting a supplement, especially if you take medication or have a health condition.",
@@ -303,6 +309,12 @@ export const faqs: Faq[] = [
     question: "Why only one product per category?",
     answer:
       "One clear answer beats twenty options. Each pick is the one that best matched its studied dose, label and price once the research was checked; see why these picks for the comparison.",
+  },
+  {
+    // Same reasons as the "Why these picks" page. Keep the two in step.
+    question: "Why are all three from Thorne?",
+    answer:
+      "Each Thorne pick is a single named ingredient at a fixed dose, so the label can be checked against what the research studied. No brand can pay to be included, and a pick changes if a better-evidenced or better-priced option turns up in a re-check.",
   },
   {
     question: "How often are picks re-checked?",
