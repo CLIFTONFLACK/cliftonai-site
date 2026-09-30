@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { MascotVideo } from "./mascot-video";
 
 /**
  * The GetBrian mascot, standing on the rule under the hero headline, giving
@@ -17,16 +18,14 @@ import Image from "next/image";
  * down it. The box is therefore hung 13.5% of its own height below the line,
  * which is what puts the feet on it rather than floating above.
  *
- * Decoration only: no alt text, hidden from assistive tech, ignores the
- * pointer. He is the mascot, not Brian, so nothing here names him.
+ * Clicking him opens the 15-second GetBrian video (mascot-video.tsx). The
+ * images stay decorative, with empty alt text, and the button around them
+ * carries the label. He is the mascot, not Brian, so nothing here names him.
  */
 export function HeroMascot() {
   const sizes = "(max-width: 768px) 104px, 192px";
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute right-0 bottom-full w-[clamp(6.5rem,15vw,12rem)] translate-y-[13.5%]"
-    >
+    <MascotVideo className="absolute right-0 bottom-full w-[clamp(6.5rem,15vw,12rem)] translate-y-[13.5%]">
       <Image
         src="/brand/getbrian-mascot-arm-512.webp"
         alt=""
@@ -45,6 +44,6 @@ export function HeroMascot() {
         priority
         className="relative h-auto w-full"
       />
-    </div>
+    </MascotVideo>
   );
 }
