@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  ENTRANCE_MS,
   LANDING_MS,
   entranceMode,
   flightOffset,
@@ -28,29 +29,45 @@ test("entranceMode is still under reduced motion even at the top with an origin"
   assert.equal(entranceMode({ reducedMotion: true, scrollY: 0, hasOrigin: true }), "still");
 });
 
-test("entranceMode is still when there is no origin element", () => {
-  assert.equal(entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: false }), "still");
+test("entranceMode waves without the leap when there is no origin element", () => {
+  assert.equal(entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: false }), "waving");
 });
 
 test("entranceMode still bursts at exactly the 120px scroll threshold", () => {
   assert.equal(entranceMode({ reducedMotion: false, scrollY: 120, hasOrigin: true }), "bursting");
 });
 
-test("entranceMode is still one pixel past the threshold", () => {
-  assert.equal(entranceMode({ reducedMotion: false, scrollY: 121, hasOrigin: true }), "still");
+test("entranceMode waves without the leap one pixel past the threshold", () => {
+  assert.equal(entranceMode({ reducedMotion: false, scrollY: 121, hasOrigin: true }), "waving");
 });
 
-test("entranceMode is still for a fractional scroll just past the threshold", () => {
-  assert.equal(entranceMode({ reducedMotion: false, scrollY: 120.5, hasOrigin: true }), "still");
+test("entranceMode waves without the leap for a fractional scroll just past the threshold", () => {
+  assert.equal(entranceMode({ reducedMotion: false, scrollY: 120.5, hasOrigin: true }), "waving");
 });
 
 test("entranceMode bursts for negative scrollY (iOS rubber-band overscroll)", () => {
   assert.equal(entranceMode({ reducedMotion: false, scrollY: -50, hasOrigin: true }), "bursting");
 });
 
-test("entranceMode is still when the landing spot is off screen", () => {
+// The common phone case: the hero is taller than the screen, so its foot is
+// below the fold on arrival. He must still be waving when scrolled to.
+test("entranceMode waves without the leap when the landing spot is off screen", () => {
   assert.equal(
     entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: true, restInView: false }),
+    "waving",
+  );
+});
+
+test("entranceMode is still, not waving, under reduced motion whatever else is true", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: true, scrollY: 500, hasOrigin: true, restInView: false }),
+    "still",
+  );
+});
+
+test("entranceMode is still, not waving, with data saver on and the landing spot off screen", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: true, restInView: false, saveData: true }),
     "still",
   );
 });
@@ -65,6 +82,55 @@ test("entranceMode is still with data saver on, even with everything else allowi
 test("entranceMode bursts when the landing spot is on screen and data saver is off", () => {
   assert.equal(
     entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: true, restInView: true, saveData: false }),
+    "bursting",
+  );
+});
+
+test("entranceMode is still with data saver on and no origin element", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: false, saveData: true }),
+    "still",
+  );
+});
+
+test("entranceMode is still with data saver on and the page scrolled past the threshold", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 900, hasOrigin: true, saveData: true }),
+    "still",
+  );
+});
+
+test("entranceMode is still with reduced motion and data saver both on", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: true, scrollY: 0, hasOrigin: true, saveData: true }),
+    "still",
+  );
+});
+
+test("entranceMode is still under reduced motion even when the landing spot is on screen", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: true, scrollY: 0, hasOrigin: true, restInView: true }),
+    "still",
+  );
+});
+
+test("entranceMode waves when there is no origin and the landing spot is off screen", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 0, hasOrigin: false, restInView: false }),
+    "waving",
+  );
+});
+
+test("entranceMode waves when scrolled past the threshold even with the landing spot on screen", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 121, hasOrigin: true, restInView: true }),
+    "waving",
+  );
+});
+
+test("entranceMode bursts at exactly the threshold with the landing spot on screen", () => {
+  assert.equal(
+    entranceMode({ reducedMotion: false, scrollY: 120, hasOrigin: true, restInView: true }),
     "bursting",
   );
 });
@@ -135,8 +201,8 @@ test("flightOffset does not mutate its arguments", () => {
   assert.deepEqual(rest, { left: 5, top: 6, width: 7, height: 8 });
 });
 
-test("LANDING_MS is 546, the footage's touchdown time", () => {
-  assert.equal(LANDING_MS, 546);
+test("LANDING_MS is 504, the footage's touchdown time", () => {
+  assert.equal(LANDING_MS, 504);
 });
 
 // ---------------------------------------------------------------------------
@@ -178,12 +244,14 @@ test("server render never names the mascot Brian", () => {
 
 test("component source only ever renders the img with an empty alt", () => {
   const alts = componentSource.match(/\balt=(?:"[^"]*"|\{[^}]*\})/g) ?? [];
-  assert.deepEqual(alts, ['alt=""']);
+  // Three <img>s now: the still, the entrance and the looping wave.
+  assert.equal(alts.length, 3);
+  assert.deepEqual([...new Set(alts)], ['alt=""']);
 });
 
 test("component source hands the img the same WIDTH and HEIGHT constants", () => {
-  assert.match(componentSource, /const WIDTH = 236;/);
-  assert.match(componentSource, /const HEIGHT = 300;/);
+  assert.match(componentSource, /const WIDTH = 336;/);
+  assert.match(componentSource, /const HEIGHT = 320;/);
 });
 
 // ---------------------------------------------------------------------------
@@ -232,6 +300,35 @@ function webpLoopCount(buf: Buffer): number | null {
   return null;
 }
 
+/** Each frame's display time in ms, read from the ANMF chunks in order. */
+function webpFrameDurations(buf: Buffer): number[] {
+  const durations: number[] = [];
+  let pos = 12;
+  while (pos + 8 <= buf.length) {
+    const tag = buf.toString("ascii", pos, pos + 4);
+    const size = buf.readUInt32LE(pos + 4);
+    // ANMF payload: x(3) y(3) width-1(3) height-1(3) duration(3) flags(1)
+    if (tag === "ANMF") durations.push(buf.readUIntLE(pos + 8 + 12, 3));
+    pos += 8 + size + (size % 2);
+  }
+  return durations;
+}
+
+// The component swaps the entrance for the looping wave on a timer, so the
+// timer has to be the entrance file's real running time, not a remembered one.
+test("ENTRANCE_MS is the summed frame time of hero-burst.webp", () => {
+  const durations = webpFrameDurations(readFileSync(path.join(mascotDir, "hero-burst.webp")));
+  assert.ok(durations.length > 1, "expected an animated file");
+  assert.equal(durations.reduce((a, b) => a + b, 0), ENTRANCE_MS);
+});
+
+test("the landing falls inside the entrance, on a frame boundary of the footage", () => {
+  const durations = webpFrameDurations(readFileSync(path.join(mascotDir, "hero-burst.webp")));
+  const boundaries = durations.reduce<number[]>((acc, d) => [...acc, (acc.at(-1) ?? 0) + d], []);
+  assert.ok(LANDING_MS < ENTRANCE_MS);
+  assert.ok(boundaries.includes(LANDING_MS), `no frame boundary at ${LANDING_MS}ms`);
+});
+
 function declared(name: "WIDTH" | "HEIGHT"): number {
   const m = componentSource.match(new RegExp(`const ${name} = (\\d+);`));
   assert.ok(m, `${name} not found`);
@@ -253,6 +350,15 @@ test("hero-burst.webp plays exactly once (loop count 1, not infinite)", () => {
   assert.equal(loops, 1);
 });
 
+test("hero-wave.webp canvas matches the component's WIDTH x HEIGHT", () => {
+  const canvas = webpCanvas(readFileSync(path.join(mascotDir, "hero-wave.webp")));
+  assert.deepEqual(canvas, { width: declared("WIDTH"), height: declared("HEIGHT") });
+});
+
+test("hero-wave.webp loops for ever (loop count 0)", () => {
+  assert.equal(webpLoopCount(readFileSync(path.join(mascotDir, "hero-wave.webp"))), 0);
+});
+
 test("hero-burst-still.webp is a single image with no animation chunk", () => {
   assert.equal(webpLoopCount(readFileSync(path.join(mascotDir, "hero-burst-still.webp"))), null);
 });
@@ -260,4 +366,5 @@ test("hero-burst-still.webp is a single image with no animation chunk", () => {
 test("component references the two asset filenames that exist on disk", () => {
   assert.match(componentSource, /"\/healthy\/mascot\/hero-burst\.webp"/);
   assert.match(componentSource, /"\/healthy\/mascot\/hero-burst-still\.webp"/);
+  assert.match(componentSource, /"\/healthy\/mascot\/hero-wave\.webp"/);
 });

@@ -148,9 +148,9 @@ export default function HealthyHome() {
           {/* Caption legibility: a scrim on the small-screen band; on large screens a text
               shadow instead, since a scrim there would grey the feathered copy side. */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/60 to-transparent lg:hidden" aria-hidden="true" />
-          {/* left-32/left-56: below lg the mascot stands in the bottom-left of
+          {/* left-36/left-64: below lg the mascot stands in the bottom-left of
               this band, so the caption keeps clear of him and wraps sooner. */}
-          <p className="absolute right-4 bottom-4 left-32 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6 sm:left-56 lg:left-4">
+          <p className="absolute right-4 bottom-4 left-36 text-right text-sm font-semibold text-white [text-shadow:0_1px_10px_rgba(2,6,23,0.75)] sm:right-6 sm:left-64 lg:left-4">
             An active, evidence-checked routine for the decades ahead
           </p>
         </div>
@@ -162,7 +162,10 @@ export default function HealthyHome() {
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
             <HealthyHeroMascot
               originSelector="#healthy-hero-cta"
-              className="absolute bottom-0 left-2 w-[clamp(6.5rem,24vw,11rem)] sm:left-6 lg:left-[23rem] xl:left-[26rem]"
+              // Wider than the figure: his canvas keeps a fifth of its width
+              // free on the left for the waving hand. The offsets are set so
+              // the figure, not the box, clears the copy and the caption.
+              className="absolute bottom-0 left-0 w-[clamp(7.9rem,29vw,13.4rem)] sm:left-4 lg:left-[22.5rem] xl:left-[25rem]"
             />
           </div>
         </div>
