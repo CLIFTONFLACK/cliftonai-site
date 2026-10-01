@@ -140,6 +140,22 @@ test("reopening before canplay replaces the pending handler instead of stacking 
   assert.notEqual(videoStub.oncanplay, first, "a single slot, overwritten on the second open");
 });
 
+test("close then a quick reopen: the first open's timer is cancelled and does not start the second", (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const { tree } = setup({ readyState: 0 });
+  const { trigger, closeBtn } = parts(tree);
+
+  on(trigger, "onClick")(); // timer A due at 1200
+  t.mock.timers.tick(500);
+  on(closeBtn, "onClick")(); // cancels A
+  on(trigger, "onClick")(); // timer B due at 1700
+  t.mock.timers.tick(700); // t = 1200: A would have fired here
+  assert.ok(!calls.includes("play"), "the old timer must not start the new open");
+
+  t.mock.timers.tick(500); // t = 1700: B's own fallback
+  assert.equal(calls.filter((c) => c === "play").length, 1);
+});
+
 test("closing before the video can play means it never starts behind the closed modal", () => {
   const { tree } = setup({ readyState: 1 });
 

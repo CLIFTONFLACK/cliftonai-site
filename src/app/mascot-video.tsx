@@ -8,6 +8,16 @@ const HAVE_FUTURE_DATA = 3;
 /** How long a click waits for the video to become playable before playing anyway. */
 const PLAY_ANYWAY_MS = 1200;
 
+/** The fallback timer of the open that is still waiting for `canplay`, per video. */
+const pendingFallback = new WeakMap<HTMLVideoElement, ReturnType<typeof setTimeout>>();
+
+/** Drop a start that is waiting on `canplay` or its fallback timer. Safe to call when none is. */
+function cancelPendingPlay(video: HTMLVideoElement) {
+  clearTimeout(pendingFallback.get(video));
+  pendingFallback.delete(video);
+  video.oncanplay = null;
+}
+
 /**
  * Wraps the homepage mascot so a click on him opens the 15-second GetBrian
  * video in a modal.
@@ -70,23 +80,26 @@ export function MascotVideo({
     // stacking another. Autoplay can still be refused (a strict browser
     // policy); the controls are on screen, so a rejected play() leaves it one
     // tap from playing rather than broken.
-    let fallback: ReturnType<typeof setTimeout> | undefined;
+    //
+    // Whatever start an earlier open left pending is cancelled first, so a
+    // close and a quick reopen cannot have the old timer fire into the new one.
+    cancelPendingPlay(video);
     const play = () => {
-      clearTimeout(fallback);
-      video.oncanplay = null;
+      cancelPendingPlay(video);
       if (dialog?.open) video.play().catch(() => {});
     };
     if (video.readyState >= HAVE_FUTURE_DATA) {
       play();
     } else {
       video.oncanplay = play;
-      fallback = setTimeout(play, PLAY_ANYWAY_MS);
+      pendingFallback.set(video, setTimeout(play, PLAY_ANYWAY_MS));
     }
   };
 
   const stop = () => {
     const video = videoRef.current;
     if (!video) return;
+    cancelPendingPlay(video);
     video.pause();
     video.currentTime = 0;
   };
