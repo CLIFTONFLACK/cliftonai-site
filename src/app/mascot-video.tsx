@@ -2,6 +2,12 @@
 
 import { useRef, type ReactNode } from "react";
 
+/** HTMLMediaElement.HAVE_FUTURE_DATA: enough buffered to start playing. */
+const HAVE_FUTURE_DATA = 3;
+
+/** How long a click waits for the video to become playable before playing anyway. */
+const PLAY_ANYWAY_MS = 1200;
+
 /**
  * Wraps the homepage mascot so a click on him opens the 15-second GetBrian
  * video in a modal.
@@ -13,10 +19,12 @@ import { useRef, type ReactNode } from "react";
  * The modal is a native <dialog> opened with showModal(): the browser supplies
  * the focus trap, Escape to close, the inert page behind it and focus return
  * to the trigger. The <video> is always in the markup but is `preload="none"`,
- * so a closed dialog costs no bandwidth; the 1.8MB file is fetched on the
- * first click. Opening starts playback (the click is the user gesture that
- * lets it play with sound) and closing pauses it and rewinds, so the next
- * open starts from the top.
+ * so a closed dialog costs no bandwidth. The 1.9MB file is fetched when the
+ * pointer, a touch or keyboard focus reaches the mascot (`warm`), or at the
+ * latest on the click. Opening starts playback once the browser reports the
+ * video can play (the click is the user gesture that lets it play with sound;
+ * starting before that loses the first second of audio) and closing pauses it
+ * and rewinds, so the next open starts from the top.
  *
  * The video loops on purpose: it is cut to end on its own first frame.
  */
@@ -34,12 +42,46 @@ export function MascotVideo({
   // dialog, and must not read as a backdrop click.
   const pressBeganOnBackdrop = useRef(false);
 
+  // Start fetching the video when the pointer or a finger goes near the
+  // mascot, so it is usually buffered by the time the click lands.
+  const warm = () => {
+    const video = videoRef.current;
+    if (video && video.preload !== "auto") {
+      video.preload = "auto";
+      video.load();
+    }
+  };
+
   const open = () => {
-    dialogRef.current?.showModal();
-    // Autoplay can still be refused (data saver, a strict browser policy). The
-    // controls are on screen, so a rejected play() leaves it one tap from
-    // playing rather than broken.
-    videoRef.current?.play().catch(() => {});
+    const dialog = dialogRef.current;
+    const video = videoRef.current;
+    dialog?.showModal();
+    if (!video) return;
+    warm();
+    // Calling play() on a video that has not buffered yet starts the audio
+    // clock before there is anything to play, which swallows the first second
+    // of the voiceover. Wait until the browser says it can play, and only if
+    // the modal is still open by then.
+    //
+    // `canplay` is not guaranteed to arrive: Data Saver, a metered connection,
+    // iOS Safari and a failed fetch can all leave the video unbuffered. So a
+    // short timer plays it anyway, and a click is never a no-op. `oncanplay`
+    // is a single slot, so reopening replaces the previous handler instead of
+    // stacking another. Autoplay can still be refused (a strict browser
+    // policy); the controls are on screen, so a rejected play() leaves it one
+    // tap from playing rather than broken.
+    let fallback: ReturnType<typeof setTimeout> | undefined;
+    const play = () => {
+      clearTimeout(fallback);
+      video.oncanplay = null;
+      if (dialog?.open) video.play().catch(() => {});
+    };
+    if (video.readyState >= HAVE_FUTURE_DATA) {
+      play();
+    } else {
+      video.oncanplay = play;
+      fallback = setTimeout(play, PLAY_ANYWAY_MS);
+    }
   };
 
   const stop = () => {
@@ -64,6 +106,9 @@ export function MascotVideo({
       <button
         type="button"
         onClick={open}
+        onPointerEnter={warm}
+        onPointerDown={warm}
+        onFocus={warm}
         aria-haspopup="dialog"
         aria-label="Watch the GetBrian video"
         className={`group cursor-pointer rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-navy-bright ${className ?? ""}`}
