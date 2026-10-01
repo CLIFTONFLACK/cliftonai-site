@@ -82,7 +82,7 @@ export function JobRail({ products, region = "US" }: { products: Product[]; regi
                   <MascotShower icons={lead ? [lead.icon] : []} />
                 </div>
                 <div className="flex-1">
-                  <ProductCard product={product} region={region} />
+                  <ProductCard product={product} region={region} showImage={products.every((p) => p.image)} />
                 </div>
               </li>
             );

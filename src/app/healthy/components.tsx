@@ -174,22 +174,31 @@ export function PriceLine({ product }: { product: Product }) {
   return <Pending />;
 }
 
-export function ProductCard({ product, region = "US" }: { product: Product; region?: Region }) {
+export function ProductCard({
+  product,
+  region = "US",
+  showImage = true,
+}: {
+  product: Product;
+  region?: Region;
+  /** False when a sibling card has no packshot, so the row stays even instead of one card standing taller. */
+  showImage?: boolean;
+}) {
   const perServing = costPerServing(product);
   const baseSupplement = supplementFor(product);
   const role = baseSupplement ? localizeSupplement(baseSupplement, region).role : undefined;
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-      {product.image && (
-        // The packshots carry about 10% empty margin on every side, so the
-        // image fills the panel and is scaled up to crop that margin away.
+      {showImage && product.image && (
+        // The packshots are trimmed to the pack itself, so the image sits
+        // inside the panel at its own size.
         <div className="relative h-[180px] overflow-hidden border-b lg:h-[220px] border-slate-100 bg-gradient-to-b from-slate-50 to-slate-100/70">
           <Image
             src={product.image}
             alt={product.imageAlt}
             fill
             sizes="(min-width: 1024px) 33vw, 85vw"
-            className="scale-[1.15] object-contain p-2 drop-shadow-md transition-transform duration-300 group-hover:scale-[1.2]"
+            className="object-contain p-3 drop-shadow-md transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       )}

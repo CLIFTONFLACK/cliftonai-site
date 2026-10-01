@@ -253,6 +253,14 @@ function cardButtons(product: Product) {
   ];
 }
 
+test("ProductCard shows its packshot by default and drops it when showImage is false (so a row stays even)", () => {
+  const product = baseProduct({ image: "/healthy/products/x.png" });
+  const kids = (el: { props: unknown }) => (el.props as { children: unknown[] }).children;
+  // Children of the article: [image panel or false, content div].
+  assert.ok(kids(ProductCard({ product }))[0], "the image panel renders by default");
+  assert.ok(!kids(ProductCard({ product, showImage: false }))[0], "no image panel when showImage is false");
+});
+
 test('ProductCard button row holds "Buy Now" then "View Product", side by side', () => {
   const product = baseProduct({ slug: "abc" });
   const [buy, view] = cardButtons(product);

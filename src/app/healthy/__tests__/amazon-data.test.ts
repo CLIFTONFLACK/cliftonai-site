@@ -328,12 +328,50 @@ test("the claim-word check does fail on the US L-theanine evidence (so the GB ch
   assert.match(JSON.stringify(us.evidence), CLAIM_WORDS);
 });
 
-test("GB L-theanine has its own pack size and ingredient name", () => {
+test("L-theanine pack, serving and ingredient name differ by region", () => {
   const us = getProductFor("pure-encapsulations-l-theanine", "US")!;
   const gb = getProductFor("pure-encapsulations-l-theanine", "GB")!;
-  assert.equal(us.servingsPerContainer, 120);
+  // US: the 60-capsule bottle, whose label serving is 2 capsules (so 30 servings).
+  assert.equal(us.servingSize, "2 capsules");
+  assert.equal(us.servingsPerContainer, 30);
+  assert.equal(us.ingredients[0].name, "L-theanine (as Suntheanine)");
+  // UK: the 60-capsule bottle, one capsule a serving.
+  assert.equal(gb.servingSize, "1 capsule");
   assert.equal(gb.servingsPerContainer, 60);
   assert.equal(gb.ingredients[0].name, "L-theanine (as Suntheanine)");
+});
+
+// ---------------------------------------------------------------------------
+// Packshots
+// ---------------------------------------------------------------------------
+
+test("every packshot a product can show exists under public/", async () => {
+  const { existsSync } = await import("node:fs");
+  const { resolve } = await import("node:path");
+  const shown = REGIONS.flatMap((r) => productsFor(r)).filter((p) => p.image !== null);
+  assert.ok(shown.length >= 4, "the real data must have packshots, or this check is vacuous");
+  for (const p of shown) {
+    assert.ok(existsSync(resolve("public", `.${p.image}`)), `${p.slug}: missing ${p.image}`);
+  }
+});
+
+test("UK visitors get no packshot for the Pure Encapsulations bottles, whose US labels carry US health claims", () => {
+  for (const slug of ["pure-encapsulations-magnesium-glycinate", "pure-encapsulations-l-theanine"]) {
+    assert.ok(getProductFor(slug, "US")!.image, `${slug} US must have a packshot, or this check is vacuous`);
+    assert.equal(getProductFor(slug, "GB")!.image, null, slug);
+    assert.equal(getProductFor(slug, "GB")!.imageNote, undefined, slug);
+  }
+});
+
+test("the UK creatine and the US creatine each show their own tub", () => {
+  assert.match(getProductFor("thorne-creatine", "GB")!.image ?? "", /thorne-creatine\.png$/);
+  assert.match(getProductFor("pure-encapsulations-creatine", "US")!.image ?? "", /pure-encapsulations-creatine\.png$/);
+});
+
+test("a US packshot that shows a different pack size than the one linked carries a note saying so", () => {
+  assert.match(getProductFor("pure-encapsulations-magnesium-glycinate", "US")!.imageNote ?? "", /30-capsule.*90 capsules/);
+  // The US theanine photo and link are both the 60-capsule bottle, so no note.
+  assert.equal(getProductFor("pure-encapsulations-l-theanine", "US")!.imageNote, undefined);
 });
 
 test("the GB magnesium override does not leak into the US version", () => {

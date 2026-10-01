@@ -315,7 +315,7 @@ test("GB page links to amazon.co.uk with the -21 tag", async () => {
 test("the same product links to a different ASIN in each country", async () => {
   const us = await pageHrefs("pure-encapsulations-l-theanine", "US");
   const gb = await pageHrefs("pure-encapsulations-l-theanine", "GB");
-  assert.ok(us.includes("https://www.amazon.com/dp/B0016CXYK4?tag=getbrian-20"));
+  assert.ok(us.includes("https://www.amazon.com/dp/B0016CXZJO?tag=getbrian-20"));
   assert.ok(gb.includes("https://www.amazon.co.uk/dp/B07JZFQWTL?tag=getbrian-21"));
 });
 

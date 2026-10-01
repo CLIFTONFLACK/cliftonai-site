@@ -144,6 +144,11 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 )}
               </div>
               <p className="mt-6 text-xl leading-relaxed text-fg-muted text-pretty">{product.verdict}</p>
+              {product.image && product.imageNote && (
+                <p className="mt-3 text-sm text-fg-subtle" data-image-note>
+                  {product.imageNote}
+                </p>
+              )}
             </header>
 
             <div className="grid gap-6 sm:grid-cols-2">

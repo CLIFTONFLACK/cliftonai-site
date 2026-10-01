@@ -55,6 +55,8 @@ export type Product = {
   /** Product packshot, or null until we have one checked against the brand's own listing. Path under /public. */
   image: string | null;
   imageAlt: string;
+  /** Shown under the packshot when it differs from the pack linked (for example, a smaller bottle). */
+  imageNote?: string;
   /** One line for cards. */
   summary: string;
   verdict: string;
@@ -584,8 +586,9 @@ export const products: Product[] = [
     brand: "Pure Encapsulations",
     category: "Magnesium",
     format: "Capsules",
-    image: null,
-    imageAlt: "Bottle of Pure Encapsulations magnesium glycinate capsules, 90 capsules",
+    image: "/healthy/products/pure-encapsulations-magnesium-glycinate.png",
+    imageAlt: "Bottle of Pure Encapsulations magnesium glycinate capsules",
+    imageNote: "The photo shows the 30-capsule bottle. The pack linked here is 90 capsules.",
     summary: "Single-ingredient magnesium glycinate, 120 mg a capsule, so you can build your dose up one capsule at a time.",
     verdict:
       "Magnesium glycinate at 120 mg per capsule with no blend, so the label can be checked against what the research studied. Costs more per milligram than a bulk powder.",
@@ -636,6 +639,9 @@ export const products: Product[] = [
     offers: { US: { asin: "B07P5K7DQP" }, GB: { asin: "B087B93NJB" } },
     regional: {
       GB: {
+        // The US bottle photo carries US health-claim wording, which cannot appear in UK advertising.
+        image: null,
+        imageNote: undefined,
         summary: "Single-ingredient magnesium glycinate, 120 mg a capsule.",
         advantage: "A single ingredient at 120 mg a capsule, so the label is easy to check and the dose easy to adjust",
         ingredients: [{ name: "Magnesium (as magnesium glycinate)", amount: "120 mg" }],
@@ -654,7 +660,7 @@ export const products: Product[] = [
     brand: "Pure Encapsulations",
     category: "Creatine",
     format: "Powder",
-    image: null,
+    image: "/healthy/products/pure-encapsulations-creatine.png",
     imageAlt: "Tub of Pure Encapsulations creatine powder, 315 g",
     summary: "Plain creatine monohydrate powder, 5 g a serving, 60 servings a tub.",
     verdict:
@@ -699,7 +705,7 @@ export const products: Product[] = [
     brand: "Thorne",
     category: "Creatine",
     format: "Powder",
-    image: null,
+    image: "/healthy/products/thorne-creatine.png",
     imageAlt: "Tub of Thorne creatine powder, 450 g",
     summary: "Micronised creatine monohydrate powder, 5 g a serving, 90 servings a tub, NSF Certified for Sport.",
     verdict:
@@ -745,16 +751,16 @@ export const products: Product[] = [
     brand: "Pure Encapsulations",
     category: "L-theanine",
     format: "Capsules",
-    image: null,
+    image: "/healthy/products/pure-encapsulations-l-theanine.png",
     imageAlt: "Bottle of Pure Encapsulations L-theanine capsules",
-    summary: "200 mg of L-theanine a capsule, 120 capsules a bottle.",
+    summary: "200 mg of L-theanine a capsule, in the branded Suntheanine form, 60 capsules a bottle.",
     verdict:
-      "200 mg of L-theanine per capsule at a fixed dose, within the 200 to 400 mg a day the research used. Costs more per capsule than generic L-theanine.",
-    bestFor: ["Adults who want a single-ingredient L-theanine at a fixed 200 mg dose"],
+      "200 mg of L-theanine per capsule, in the branded Suntheanine form, at a fixed dose. The label's serving is two capsules (400 mg), at the top of the 200 to 400 mg a day the research used. Costs more per capsule than generic L-theanine.",
+    bestFor: ["Adults who want a single-ingredient L-theanine in the Suntheanine form"],
     notFor: ["Buyers who want the lowest cost per milligram (generic L-theanine capsules are cheaper)"],
-    servingSize: "1 capsule",
-    servingsPerContainer: 120,
-    ingredients: [{ name: "L-theanine", amount: "200 mg", studiedDose: "200 to 400 mg per day" }],
+    servingSize: "2 capsules",
+    servingsPerContainer: 30,
+    ingredients: [{ name: "L-theanine (as Suntheanine)", amount: "400 mg (200 mg per capsule)", studiedDose: "200 to 400 mg per day" }],
     priceUsd: null,
     priceCheckedAt: null,
     testing: [
@@ -766,12 +772,15 @@ export const products: Product[] = [
       "Generally well tolerated. Talk to your doctor before combining with blood pressure medication, since it may add to a blood-pressure-lowering effect.",
       "Interactions with sedatives have not been ruled out; check with a pharmacist if you take one.",
     ],
-    pros: ["Single ingredient, fixed 200 mg dose", "Within the 200 to 400 mg a day used in the research"],
+    pros: [
+      "Suntheanine, the branded form used in much of the human research on L-theanine",
+      "Single ingredient, 200 mg a capsule",
+    ],
     cons: [
       "Costs more per capsule than generic L-theanine",
-      "Whether the US bottle uses the Suntheanine form has not been confirmed",
+      "The label's two-capsule serving is 400 mg, the top of the studied range",
     ],
-    advantage: "A single ingredient at a fixed 200 mg, within the studied 200 to 400 mg a day",
+    advantage: "Suntheanine, a single ingredient at 200 mg a capsule, within the studied 200 to 400 mg a day",
     brandUrl: "https://www.pureencapsulations.com/",
     affiliateUrl: null,
     retailer: "Amazon",
@@ -779,11 +788,15 @@ export const products: Product[] = [
     lastReviewed: "October 1, 2026",
     verified: false,
     regions: ["US", "GB"],
-    offers: { US: { asin: "B0016CXYK4" }, GB: { asin: "B07JZFQWTL" } },
+    offers: { US: { asin: "B0016CXZJO" }, GB: { asin: "B07JZFQWTL" } },
     regional: {
       // No L-theanine health claim is authorised in Great Britain, so this version
       // states the label and nothing about what the ingredient does.
       GB: {
+        // The US bottle photo carries US relaxation wording, which cannot appear in UK advertising.
+        image: null,
+        imageNote: undefined,
+        servingSize: "1 capsule",
         summary: "200 mg of L-theanine (as Suntheanine) a capsule, 60 capsules a bottle.",
         verdict:
           "200 mg of L-theanine per capsule, in the branded Suntheanine form, at a fixed dose. This page makes no health claim for it: none is authorised in the UK.",
