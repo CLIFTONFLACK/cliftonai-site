@@ -3,10 +3,13 @@ import Link from "next/link";
 import {
   buyHref,
   costPerServing,
+  AMAZON_ASSOCIATE_STATEMENT,
   getSupplement,
+  localizeGoal,
+  localizeSupplement,
+  pickFor,
   tileGoals,
   gradeLabels,
-  products,
   retailerName,
   supplementFor,
   type EvidenceGrade,
@@ -15,6 +18,7 @@ import {
   type Supplement,
 } from "./data";
 import { Icon } from "./icons";
+import type { Region } from "./region";
 
 function usd(n: number) {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
@@ -56,8 +60,7 @@ export function PageHeading({
  * expects the disclosure where the endorsement is, not only in a footer. The
  * homepage cards leave it out and rely on the site-wide banner in layout.tsx.
  */
-export const AFFILIATE_DISCLOSURE =
-  "If you buy through this link, GetBrian may earn a commission at no extra cost to you. It never decides which products we pick.";
+export const AFFILIATE_DISCLOSURE = `${AMAZON_ASSOCIATE_STATEMENT} If you buy through this link, GetBrian may earn a commission at no extra cost to you. It never decides which products we pick.`;
 
 /**
  * The Buy button goes through our own /healthy/go redirect while it points at
@@ -136,13 +139,24 @@ export function DraftBanner() {
 }
 
 /**
- * Required alongside structure/function statements on supplements (DSHEA,
- * 21 U.S.C. 343(r)(6)).
+ * Required alongside structure/function statements on supplements in the US
+ * (DSHEA, 21 U.S.C. 343(r)(6)). The FDA wording means nothing to a UK reader,
+ * so the UK version says what applies there instead.
  */
-export function FdaDisclaimer({ dark = false }: { dark?: boolean } = {}) {
+export function FdaDisclaimer({ dark = false, region = "US" }: { dark?: boolean; region?: Region } = {}) {
   const toneClass = dark
     ? "border-slate-800 bg-slate-900/90 text-slate-400"
     : "border-border bg-bg-panel text-fg-muted";
+  if (region === "GB") {
+    return (
+      <p className={`rounded-xl border px-5 py-4 text-sm leading-relaxed ${toneClass}`} data-uk-disclaimer>
+        Food supplements should not replace a varied, balanced diet and a healthy lifestyle. Do not
+        exceed the recommended intake on the label. This page is general information, not medical
+        advice. Talk to your doctor or pharmacist before starting a supplement, especially if you
+        are pregnant or breastfeeding, have a medical condition or take medication.
+      </p>
+    );
+  }
   return (
     <p className={`rounded-xl border px-5 py-4 text-sm leading-relaxed ${toneClass}`} data-fda-disclaimer>
       These statements have not been evaluated by the Food and Drug Administration. These
@@ -153,9 +167,17 @@ export function FdaDisclaimer({ dark = false }: { dark?: boolean } = {}) {
   );
 }
 
-export function ProductCard({ product }: { product: Product }) {
+/** What stands where a price would be, for products sold on Amazon, which limits how long a price may be shown. */
+export function PriceLine({ product }: { product: Product }) {
+  if (product.priceUsd !== null) return <span>{usd(product.priceUsd)}</span>;
+  if (product.retailer) return <span className="text-fg-muted">Price on {product.retailer}</span>;
+  return <Pending />;
+}
+
+export function ProductCard({ product, region = "US" }: { product: Product; region?: Region }) {
   const perServing = costPerServing(product);
-  const role = supplementFor(product)?.role;
+  const baseSupplement = supplementFor(product);
+  const role = baseSupplement ? localizeSupplement(baseSupplement, region).role : undefined;
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {product.image && (
@@ -194,6 +216,8 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="mb-4 flex items-baseline gap-2 rounded-xl border border-slate-200/80 bg-slate-50 p-3">
           {product.priceUsd !== null ? (
             <span className="font-kinetic-heading text-2xl font-extrabold text-slate-950">{usd(product.priceUsd)}</span>
+          ) : product.retailer ? (
+            <span className="text-sm font-semibold text-slate-700">Current price on {product.retailer}</span>
           ) : (
             <Pending />
           )}
@@ -228,6 +252,10 @@ export function ProductCard({ product }: { product: Product }) {
             View Product
           </Link>
         </div>
+        {/* Amazon wants the statement clear and close to its links, and the page banner scrolls out of view. */}
+        <p className="mt-3 text-[11px] leading-snug text-slate-500" data-amazon-statement>
+          {AMAZON_ASSOCIATE_STATEMENT}
+        </p>
       </div>
     </article>
   );
@@ -261,9 +289,9 @@ function BrianNotes({ product, className, stacked = false }: { product: Product;
  * nothing yet when there is none. The program keeps one pick per category on
  * purpose (see "How we choose"), so there is no separate comparison route.
  */
-export function supplementHref(s: Supplement): string | null {
-  const picks = products.filter((p) => p.category === s.category);
-  return picks.length >= 1 ? `/healthy/products/${picks[0].slug}` : null;
+export function supplementHref(s: Supplement, region: Region = "US"): string | null {
+  const pick = s.category ? pickFor(s.category, region) : undefined;
+  return pick ? `/healthy/products/${pick.slug}` : null;
 }
 
 /*
@@ -288,12 +316,13 @@ const GOAL_ACCENT_TEXT: Record<GoalAccent, string> = {
 };
 
 /** "What do you need to boost?" Each tile links straight to that goal's review. */
-export function GoalChooser() {
+export function GoalChooser({ region = "US" }: { region?: Region } = {}) {
   return (
     <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      {tileGoals.map((goal) => {
-        const s = getSupplement(goal.supplement);
-        const review = supplementHref(s);
+      {tileGoals.map((baseGoal) => {
+        const goal = localizeGoal(baseGoal, region);
+        const s = localizeSupplement(getSupplement(goal.supplement), region);
+        const review = supplementHref(s, region);
         const href = review ? (goal.section ? `${review}#${goal.section}` : review) : `#${s.id}`;
         return (
           <li key={goal.id}>
@@ -337,13 +366,15 @@ export function SupplementCard({
   supplement,
   headingLevel = 3,
   currentHref,
+  region = "US",
 }: {
   supplement: Supplement;
   headingLevel?: 2 | 3;
   /** The page this card sits on. Its link is dropped rather than pointing back at the same page. */
   currentHref?: string;
+  region?: Region;
 }) {
-  const href = supplementHref(supplement);
+  const href = supplementHref(supplement, region);
   const isSelf = href !== null && href === currentHref;
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return (

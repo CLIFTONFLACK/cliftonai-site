@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { siteUrl } from "../../../layout";
 import { healthyOpenGraph } from "../../layout";
 import {
@@ -10,10 +10,24 @@ import {
   FdaDisclaimer,
   GradeBadge,
   Pending,
+  PriceLine,
   SupplementCard,
   supplementHref,
 } from "../../components";
-import { buyHref, costPerServing, getProduct, goals, products, supplementFor, supplements } from "../../data";
+import {
+  AMAZON_ASSOCIATE_STATEMENT,
+  buyHref,
+  costPerServing,
+  getProduct,
+  getProductFor,
+  goalsForSupplement,
+  localizeSupplement,
+  pickFor,
+  products,
+  supplementFor,
+  supplements,
+} from "../../data";
+import { getRegion } from "../../region-server";
 
 export const dynamicParams = false;
 
@@ -23,7 +37,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/healthy/products/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
-  const product = getProduct(slug);
+  const region = await getRegion();
+  // Not sold in this region: the page redirects, so there is nothing of the other region's to describe.
+  const product = getProductFor(slug, region);
   if (!product) return {};
   const title = `${product.brand} ${product.name} review`;
   return {
@@ -54,13 +70,23 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default async function ProductPage(props: PageProps<"/healthy/products/[slug]">) {
   const { slug } = await props.params;
-  const product = getProduct(slug);
-  if (!product) notFound();
+  const base = getProduct(slug);
+  if (!base) notFound();
+
+  const region = await getRegion();
+  const product = getProductFor(slug, region);
+  if (!product) {
+    // Sold only in the other country: send the visitor to their own country's pick for this ingredient.
+    const own = pickFor(base.category, region);
+    if (own) redirect(`/healthy/products/${own.slug}`);
+    notFound();
+  }
 
   const perServing = costPerServing(product);
-  const supplement = supplementFor(product);
-  const jobs = supplement ? goals.filter((g) => g.supplement === supplement.id) : [];
-  const others = supplements.filter((s) => s.id !== supplement?.id);
+  const baseSupplement = supplementFor(product);
+  const supplement = baseSupplement ? localizeSupplement(baseSupplement, region) : undefined;
+  const jobs = supplement ? goalsForSupplement(supplement.id, region) : [];
+  const others = supplements.filter((s) => s.id !== supplement?.id).map((s) => localizeSupplement(s, region));
 
   // No rating or review markup: we have no real ratings, and Google treats
   // invented ones as spam.
@@ -137,7 +163,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
 
             {supplement && (
               <Section title="Where it fits in the program">
-                <SupplementCard supplement={supplement} currentHref={`/healthy/products/${product.slug}`} />
+                <SupplementCard supplement={supplement} currentHref={`/healthy/products/${product.slug}`} region={region} />
                 <div className="mt-6 rounded-2xl bg-bg-tint p-6">
                   <h3 className="font-heading text-lg font-semibold text-brand-navy">The rest of the program</h3>
                   <p className="mt-2 leading-relaxed text-fg-muted">
@@ -145,8 +171,8 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                   </p>
                   <ul className="mt-4 space-y-3">
                     {others.map((o) => {
-                      const href = supplementHref(o);
-                      const hook = goals.find((g) => g.supplement === o.id);
+                      const href = supplementHref(o, region);
+                      const hook = goalsForSupplement(o.id, region)[0];
                       return (
                         <li key={o.id} className="leading-relaxed">
                           <strong className="font-semibold text-fg">{hook?.label ?? o.name}:</strong>{" "}
@@ -193,6 +219,12 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
             </Section>
 
             <Section title="What the research says">
+              {product.evidence.length === 0 && (
+                <p className="text-fg-muted">
+                  No health claim is authorised for this ingredient in the UK, so this page makes none.
+                  It lists what is on the label and nothing about what it does.
+                </p>
+              )}
               <ul className="space-y-6">
                 {product.evidence.map((ev) => (
                   <li key={ev.claim} className="rounded-2xl border border-border p-6">
@@ -261,7 +293,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
               </div>
             </Section>
 
-            <FdaDisclaimer />
+            <FdaDisclaimer region={region} />
           </div>
 
           <aside className="lg:sticky lg:top-6 lg:self-start">
@@ -289,7 +321,7 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                 <div className="flex justify-between gap-4">
                   <dt className="text-fg-muted">Price</dt>
                   <dd className="text-right font-semibold text-fg">
-                    {product.priceUsd !== null ? usd(product.priceUsd) : <Pending />}
+                    <PriceLine product={product} />
                   </dd>
                 </div>
                 <div className="flex justify-between gap-4">
@@ -298,18 +330,22 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
                     {product.servingsPerContainer ?? <Pending />}
                   </dd>
                 </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-fg-muted">Per serving</dt>
-                  <dd className="text-right font-semibold text-fg">
-                    {perServing !== null ? usd(perServing) : <Pending />}
-                  </dd>
-                </div>
+                {perServing !== null && (
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-fg-muted">Per serving</dt>
+                    <dd className="text-right font-semibold text-fg">{usd(perServing)}</dd>
+                  </div>
+                )}
               </dl>
-              {product.priceCheckedAt && (
+              {product.priceCheckedAt ? (
                 <p className="mt-3 text-sm text-fg-subtle">
                   Price checked {product.priceCheckedAt}. Prices change; the retailer&apos;s page is current.
                 </p>
-              )}
+              ) : product.retailer ? (
+                <p className="mt-3 text-sm text-fg-subtle">
+                  Prices change, so this page does not show one. {product.retailer}&apos;s page has the current price.
+                </p>
+              ) : null}
               <div className="mt-6">
                 <BuyButton product={product} from="product" />
               </div>
@@ -346,9 +382,12 @@ export default async function ProductPage(props: PageProps<"/healthy/products/[s
             Check price
           </a>
         </div>
-        <Link href="/healthy/disclosures" className="mt-1 block text-xs text-fg-subtle underline underline-offset-2">
-          May earn a commission &mdash; how that works
-        </Link>
+        <p className="mt-1 text-xs text-fg-subtle">
+          {AMAZON_ASSOCIATE_STATEMENT}{" "}
+          <Link href="/healthy/disclosures" className="underline underline-offset-2">
+            How that works
+          </Link>
+        </p>
       </div>
       {/* Keeps the fixed bar from covering the FDA disclaimer / footer on small screens. */}
       <div className="h-20 lg:hidden" aria-hidden="true" />

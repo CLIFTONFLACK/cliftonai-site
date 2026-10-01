@@ -3,7 +3,8 @@ import { ProductCard } from "./components";
 import { Icon } from "./icons";
 import { MascotShower } from "./mascot-shower";
 import { SwipeControls } from "./swipe-controls";
-import { goals, supplementFor, type Product } from "./data";
+import { goalsForSupplement, localizeSupplement, supplementFor, type Product } from "./data";
+import type { Region } from "./region";
 
 /**
  * Current picks, each card under the goal it serves: the same goals, names
@@ -18,13 +19,13 @@ import { goals, supplementFor, type Product } from "./data";
  * someone else's goal. A supplement with two goals (creatine: strength, and
  * focus) shows only the one that has no caveat.
  */
-function leadGoal(product: Product) {
+function leadGoal(product: Product, region: Region) {
   const job = supplementFor(product);
-  const jobGoals = job ? goals.filter((g) => g.supplement === job.id) : [];
+  const jobGoals = job ? goalsForSupplement(job.id, region) : [];
   return jobGoals.find((g) => !g.caveat) ?? jobGoals[0];
 }
 
-export function JobRail({ products }: { products: Product[] }) {
+export function JobRail({ products, region = "US" }: { products: Product[]; region?: Region }) {
   return (
     <RailReveal className="relative">
       <div className="relative">
@@ -42,8 +43,9 @@ export function JobRail({ products }: { products: Product[] }) {
             cards' hover lift and shadow from being clipped by the scroller. */}
         <ul id="healthy-picks-row" aria-label="Brian's picks" className="relative -mx-4 flex scroll-mt-20 snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-2 pb-6 lg:pb-10 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-8 lg:overflow-visible lg:p-0 [&::-webkit-scrollbar]:hidden">
           {products.map((product, i) => {
-            const job = supplementFor(product);
-            const lead = leadGoal(product);
+            const baseJob = supplementFor(product);
+            const job = baseJob ? localizeSupplement(baseJob, region) : baseJob;
+            const lead = leadGoal(product, region);
             const base = 250 + i * 180;
             return (
               <li key={product.slug} className="flex w-[85%] shrink-0 snap-start flex-col sm:w-[55%] lg:w-auto">
@@ -80,7 +82,7 @@ export function JobRail({ products }: { products: Product[] }) {
                   <MascotShower icons={lead ? [lead.icon] : []} />
                 </div>
                 <div className="flex-1">
-                  <ProductCard product={product} />
+                  <ProductCard product={product} region={region} />
                 </div>
               </li>
             );
@@ -88,7 +90,7 @@ export function JobRail({ products }: { products: Product[] }) {
         </ul>
         <SwipeControls
           targetId="healthy-picks-row"
-          labels={products.map((p) => leadGoal(p)?.label ?? p.name)}
+          labels={products.map((p) => leadGoal(p, region)?.label ?? p.name)}
         />
       </div>
     </RailReveal>

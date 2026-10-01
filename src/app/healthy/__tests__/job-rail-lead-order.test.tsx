@@ -33,7 +33,16 @@ test.before(async () => {
   assert.equal(reordered[2].id, "strength", "fixture: strength now sits where focus used to");
 
   mock.module(new URL("../data.ts", import.meta.url), {
-    exports: { ...realData, goals: reordered },
+    // job-rail reads goals through goalsForSupplement, which closes over the
+    // real list, so it is rebuilt here over the reordered one.
+    exports: {
+      ...realData,
+      goals: reordered,
+      goalsForSupplement: (id: string, region: "US" | "GB") =>
+        reordered
+          .filter((g) => g.supplement === id && !(region === "GB" && g.id === "focus"))
+          .map((g) => realData.localizeGoal(g, region)),
+    },
   });
   ({ JobRail } = await import("../job-rail.tsx"));
 });

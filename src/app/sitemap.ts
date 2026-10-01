@@ -18,7 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/healthy/why-these-picks",
         "/healthy/about",
         "/healthy/disclosures",
-        ...products.map((p) => `/healthy/products/${p.slug}`),
+        // Crawlers arrive from the US, where a UK-only product page just redirects, so only US picks are listed.
+        ...products.filter((p) => p.regions.includes("US")).map((p) => `/healthy/products/${p.slug}`),
       ].map((path) => ({
         url: `${siteUrl}${path}`,
         lastModified: new Date(),

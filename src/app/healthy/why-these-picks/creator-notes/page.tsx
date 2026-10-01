@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { healthyOpenGraph } from "../../layout";
 import { FdaDisclaimer, PageHeading } from "../../components";
-import { getProduct } from "../../data";
+import { getProductFor, productsFor } from "../../data";
+import { REGION_LABELS } from "../../region";
+import { getRegion } from "../../region-server";
 import { references } from "../references";
 
 const title = "Creator notes";
@@ -21,7 +23,11 @@ export const metadata: Metadata = {
   openGraph: { ...healthyOpenGraph, title, description, url: "/healthy/why-these-picks/creator-notes" },
 };
 
-export default function CreatorNotesPage() {
+export default async function CreatorNotesPage() {
+  const region = await getRegion();
+  // Only the picks sold in this country, so UK copy never inherits US wording and the reverse.
+  const inRegion = new Set(productsFor(region).map((p) => p.slug));
+  const shown = references.filter((r) => inRegion.has(r.slug));
   return (
     <div className="px-4 py-12 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-4xl">
@@ -40,9 +46,13 @@ export default function CreatorNotesPage() {
         </p>
 
         <div className="mt-12 space-y-10">
-          {references.map((r) => {
-            const product = getProduct(r.slug);
+          <p className="-mb-4 text-sm text-fg-subtle">
+            Showing the picks sold in the {REGION_LABELS[region]}. Change country in the footer to see the other set.
+          </p>
+          {shown.map((r) => {
+            const product = getProductFor(r.slug, region);
             if (!product) return null;
+            const say = region === "GB" && r.sayGb ? r.sayGb : r.say;
             return (
               <section key={r.slug} className="rounded-2xl border border-border p-6">
                 <p className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">{product.category}</p>
@@ -55,7 +65,7 @@ export default function CreatorNotesPage() {
                   <div className="rounded-xl bg-bg-tint p-4">
                     <h3 className="text-sm font-semibold uppercase tracking-wider text-kinetic-primary-electric">Safe to say</h3>
                     <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-relaxed text-fg-muted">
-                      {r.say.map((s) => <li key={s}>{s}</li>)}
+                      {say.map((s) => <li key={s}>{s}</li>)}
                     </ul>
                   </div>
                   <div className="rounded-xl bg-bg-panel p-4">
@@ -71,7 +81,7 @@ export default function CreatorNotesPage() {
         </div>
 
         <div className="mt-12 max-w-3xl">
-          <FdaDisclaimer />
+          <FdaDisclaimer region={region} />
         </div>
       </div>
     </div>

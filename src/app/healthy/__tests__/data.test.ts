@@ -4,6 +4,7 @@ import {
   buyHref,
   costPerServing,
   getProduct,
+  productsFor,
   getSupplement,
   goals,
   gradeLabels,
@@ -52,6 +53,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     redirectAllowed: false,
     lastReviewed: null,
     verified: false,
+    regions: [],
+    offers: {},
     ...overrides,
   };
 }
@@ -61,8 +64,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
 // ---------------------------------------------------------------------------
 
 test("getProduct returns the matching product for a known slug", () => {
-  const product = getProduct("thorne-creatine-stick-packs");
-  assert.equal(product?.slug, "thorne-creatine-stick-packs");
+  const product = getProduct("pure-encapsulations-creatine");
+  assert.equal(product?.slug, "pure-encapsulations-creatine");
 });
 
 test("getProduct returns undefined for an unknown slug", () => {
@@ -74,7 +77,13 @@ test("getProduct returns undefined for an empty string slug", () => {
 });
 
 test("getProduct is case sensitive (does not loosely match)", () => {
-  assert.equal(getProduct("THORNE-CREATINE-STICK-PACKS"), undefined);
+  assert.equal(getProduct("PURE-ENCAPSULATIONS-CREATINE"), undefined);
+});
+
+test("getProduct no longer finds the retired Thorne slugs", () => {
+  assert.equal(getProduct("thorne-magnesium-glycinate"), undefined);
+  assert.equal(getProduct("thorne-creatine-stick-packs"), undefined);
+  assert.equal(getProduct("thorne-theanine"), undefined);
 });
 
 // ---------------------------------------------------------------------------
@@ -152,7 +161,7 @@ test("topGrade picks moderate over early when there is no strong claim", () => {
 });
 
 test("topGrade matches the real magnesium product's best claim (real data)", () => {
-  const product = products.find((p) => p.slug === "thorne-magnesium-glycinate");
+  const product = products.find((p) => p.slug === "pure-encapsulations-magnesium-glycinate");
   assert.ok(product, "fixture assumption: the magnesium product exists");
   assert.equal(topGrade(product as Product), "strong");
 });
@@ -161,25 +170,31 @@ test("topGrade matches the real magnesium product's best claim (real data)", () 
 // totalDailyCost
 // ---------------------------------------------------------------------------
 
-test("totalDailyCost equals the sum of costPerServing across the real products (real data)", () => {
-  const expected = products.reduce((sum, p) => {
-    const c = costPerServing(p);
-    assert.ok(c !== null, `fixture assumption: ${p.slug} has a known cost per serving`);
-    return sum + c;
-  }, 0);
-  assert.equal(totalDailyCost(), expected);
+test("totalDailyCost is null for the real products because no Amazon pick stores a price", () => {
+  assert.equal(totalDailyCost(), null);
+  assert.equal(totalDailyCost(productsFor("US")), null);
+  assert.equal(totalDailyCost(productsFor("GB")), null);
+});
+
+test("totalDailyCost sums the cost per serving of a list it is given", () => {
+  const list = [
+    baseProduct({ priceUsd: 30, servingsPerContainer: 30 }),
+    baseProduct({ priceUsd: 20, servingsPerContainer: 10 }),
+  ];
+  assert.equal(totalDailyCost(list), 3);
+});
+
+test("totalDailyCost of an empty list is zero, not null", () => {
+  assert.equal(totalDailyCost([]), 0);
 });
 
 test("totalDailyCost returns null the moment any pick's price is unverified", () => {
-  const removed = products.pop();
-  assert.ok(removed, "fixture assumption: at least one real product exists to remove");
-  products.push(baseProduct({ slug: "fixture-unpriced", priceUsd: null }));
-  try {
-    assert.equal(totalDailyCost(), null);
-  } finally {
-    products.pop();
-    products.push(removed);
-  }
+  // A priced pick first, so a null result can only come from the unpriced one.
+  const list = [
+    baseProduct({ slug: "fixture-priced", priceUsd: 10, servingsPerContainer: 10 }),
+    baseProduct({ slug: "fixture-unpriced", priceUsd: null, servingsPerContainer: 10 }),
+  ];
+  assert.equal(totalDailyCost(list), null);
 });
 
 // ---------------------------------------------------------------------------
@@ -236,6 +251,21 @@ test("usesRedirect is true when the affiliate programme allows redirects", () =>
     redirectAllowed: true,
   });
   assert.equal(usesRedirect(product), true);
+});
+
+test("usesRedirect is false for every real product, because each is sold on Amazon", () => {
+  for (const p of products) {
+    assert.equal(usesRedirect(p), false, p.slug);
+  }
+});
+
+test("usesRedirect is false for a product with an offer, even with no affiliate link and redirects allowed", () => {
+  const product = baseProduct({
+    affiliateUrl: null,
+    redirectAllowed: true,
+    offers: { US: { asin: "B000000000" } },
+  });
+  assert.equal(usesRedirect(product), false);
 });
 
 test("usesRedirect is false when the affiliate programme forbids redirects", () => {

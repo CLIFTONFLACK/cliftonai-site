@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { LAUNCHED, PROGRAM_NAME } from "./data";
+import { AMAZON_ASSOCIATE_STATEMENT, LAUNCHED, PROGRAM_NAME } from "./data";
 import { Icon } from "./icons";
+import { getRegion } from "./region-server";
+import { RegionSwitch } from "./region-switch";
 
 /**
  * "Kinetic Longevity" type system, scoped to /healthy only — loaded here
@@ -32,6 +34,10 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 const description =
   "Brian's Human Longevity Program for adults over 40: support your energy, strengthen your body, support your focus and find your calm, with supplement picks explained from the clinical research.";
 
+/** UK visitors get no wording that amounts to a health claim: the register authorises very few. */
+const descriptionGb =
+  "Brian's Human Longevity Program for adults over 40: supplement picks explained from the published research.";
+
 /**
  * Next merges metadata one level deep, so a page that sets `openGraph` replaces
  * this whole object. Every page spreads it and adds its own title, description
@@ -44,16 +50,19 @@ export const healthyOpenGraph = {
   images: [{ url: "/healthy/brand/og-image.png", width: 1200, height: 630, alt: "GetBrian Healthy" }],
 } satisfies NonNullable<Metadata["openGraph"]>;
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const region = await getRegion();
+  const pageDescription = region === "GB" ? descriptionGb : description;
+  return {
   title: {
     default: `${PROGRAM_NAME} | GetBrian Healthy`,
     template: `%s | ${PROGRAM_NAME}`,
   },
-  description,
+  description: pageDescription,
   alternates: { canonical: "/healthy" },
   // Draft figures must not be indexed. See LAUNCHED in data.ts.
   robots: LAUNCHED ? { index: true, follow: true } : { index: false, follow: false },
-  openGraph: { ...healthyOpenGraph, title: PROGRAM_NAME, description, url: "/healthy" },
+  openGraph: { ...healthyOpenGraph, title: PROGRAM_NAME, description: pageDescription, url: "/healthy" },
   // Replaces the root layout's icons (metadata merges one level deep). The root
   // app/favicon.ico is still emitted on every route, declared 48x48, so these
   // declare 16 and 32 as well: browsers take the exact size match, which gives
@@ -66,7 +75,8 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/healthy/brand/apple-touch-icon.png", sizes: "180x180" }],
   },
-};
+  };
+}
 
 const nav = [
   { href: "/healthy", label: "Home" },
@@ -82,7 +92,8 @@ const linkClass =
 /** Links in the floating side menu: compact full-width rows with a teal tint on hover. */
 const sideLinkClass = `${linkClass} min-h-10 w-full px-3 text-sm hover:bg-kinetic-primary-light/70`;
 
-export default function HealthyLayout({ children }: { children: React.ReactNode }) {
+export default async function HealthyLayout({ children }: { children: React.ReactNode }) {
+  const region = await getRegion();
   return (
     <div
       className={`${bricolage.variable} ${plusJakartaSans.variable} flex min-h-full flex-1 flex-col text-[1.0625rem] sm:text-lg`}
@@ -127,7 +138,9 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-kinetic-teal-on-dark" aria-hidden="true" />
-            <span>Brian may earn a commission when you buy through links on these pages.</span>
+            <span>
+              {AMAZON_ASSOCIATE_STATEMENT} Brian may earn a commission when you buy through links on these pages.
+            </span>
             <Link href="/healthy/disclosures" className="font-semibold text-white underline hover:text-kinetic-teal-on-dark">
               How that works
             </Link>
@@ -179,8 +192,10 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
               </p>
               <p className="text-sm leading-relaxed text-slate-400">
                 General information only, not medical advice. Supplements are not a substitute for a
-                varied diet or for care from your doctor. Statements about supplements have not been
-                evaluated by the Food and Drug Administration.
+                varied diet or for care from your doctor.{" "}
+                {region === "GB"
+                  ? "Do not exceed the recommended intake on the label."
+                  : "Statements about supplements have not been evaluated by the Food and Drug Administration."}
               </p>
             </div>
           </div>
@@ -212,6 +227,9 @@ export default function HealthyLayout({ children }: { children: React.ReactNode 
                 </Link>
               </li>
             </ul>
+          </div>
+          <div className="border-b border-slate-800 py-6">
+            <RegionSwitch region={region} />
           </div>
           {/* slate-400, not 500: 500 on this background is 4.2:1, under the 4.5:1 AA floor. */}
           <div className="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-slate-400 sm:flex-row">

@@ -4,18 +4,31 @@ import { readFileSync } from "node:fs";
 import Link from "next/link";
 import { JobRail } from "../job-rail.tsx";
 import { ProductCard, supplementHref } from "../components.tsx";
-import { faqs, getSupplement, products, tileGoals, type Product } from "../data.ts";
+import { faqs, getSupplement, localizeGoal, localizeSupplement, productsFor, tileGoals, type Product } from "../data.ts";
+import type { Region } from "../region.ts";
 
 // page.tsx pulls in signup -> actions -> the root layout (next/font/google, a
 // global .css import), which cannot load outside Next's build. Stub it, as the
 // other /healthy page tests do.
-let HealthyHome: () => unknown;
+let HealthyHome: () => Promise<unknown>;
+// region-server.ts reads cookies() and headers(), which throw outside a
+// request, so it is stubbed; the home page is rendered once per region up front.
+let currentRegion: Region = "US";
+const trees: Record<Region, unknown> = { US: null, GB: null };
 
 test.before(async () => {
   mock.module(new URL("../../layout.tsx", import.meta.url), {
     exports: { siteUrl: "https://example.test" },
   });
+  mock.module(new URL("../region-server.ts", import.meta.url), {
+    exports: { getRegion: async () => currentRegion },
+  });
   ({ default: HealthyHome } = await import("../page.tsx"));
+  currentRegion = "US";
+  trees.US = await HealthyHome();
+  currentRegion = "GB";
+  trees.GB = await HealthyHome();
+  currentRegion = "US";
 });
 
 /**
@@ -35,7 +48,7 @@ function walk(node: unknown, visit: (el: El) => void): void {
     const el = node as El;
     visit(el);
     if (el.type === JobRail) {
-      walk(JobRail(el.props as { products: Product[] }), visit);
+      walk(JobRail(el.props as { products: Product[]; region?: Region }), visit);
       return;
     }
     if (el.props && "children" in el.props) walk(el.props.children, visit);
@@ -57,12 +70,12 @@ function allElements(root: unknown): El[] {
   return out;
 }
 
-function homeLinks(): El[] {
-  return allElements(HealthyHome()).filter((el) => el.type === Link);
+function homeLinks(region: Region = "US"): El[] {
+  return allElements(trees[region]).filter((el) => el.type === Link);
 }
 
 function railList(): El {
-  return allElements(JobRail({ products })).find((el) => el.type === "ul") as El;
+  return allElements(JobRail({ products: productsFor("US") })).find((el) => el.type === "ul") as El;
 }
 
 // ---------------------------------------------------------------------------
@@ -70,7 +83,7 @@ function railList(): El {
 // ---------------------------------------------------------------------------
 
 test("hero 'See Brian's Choices' link points at an id that exists on exactly one element in the page", () => {
-  const els = allElements(HealthyHome());
+  const els = allElements(trees.US);
   const hero = els.find((el) => el.type === Link && textOf(el).includes("See Brian"));
   assert.ok(hero, "hero link must be found");
   const href = hero.props.href as string;
@@ -92,12 +105,50 @@ test("JobRail list has scroll-mt-20 so the fixed top bar does not cover the pick
 });
 
 // ---------------------------------------------------------------------------
+// Picks rail follows the visitor's country
+// ---------------------------------------------------------------------------
+
+function railCards(region: Region): El[] {
+  return allElements(trees[region]).filter((el) => el.type === ProductCard);
+}
+
+test("US home page rail shows the three US picks, each told it is for a US visitor", () => {
+  const cards = railCards("US");
+  assert.deepEqual(
+    cards.map((c) => (c.props.product as Product).slug),
+    ["pure-encapsulations-magnesium-glycinate", "pure-encapsulations-creatine", "pure-encapsulations-l-theanine"],
+  );
+  assert.deepEqual(cards.map((c) => c.props.region), ["US", "US", "US"]);
+});
+
+test("GB home page rail shows the Thorne creatine and no US-only creatine, each card told it is for GB", () => {
+  const cards = railCards("GB");
+  assert.deepEqual(
+    cards.map((c) => (c.props.product as Product).slug),
+    ["pure-encapsulations-magnesium-glycinate", "thorne-creatine", "pure-encapsulations-l-theanine"],
+  );
+  assert.deepEqual(cards.map((c) => c.props.region), ["GB", "GB", "GB"]);
+});
+
+test("every rail card links to the Amazon store and tag of the visitor's country", () => {
+  for (const c of railCards("US")) {
+    assert.match((c.props.product as Product).affiliateUrl as string, /^https:\/\/www\.amazon\.com\/dp\/[A-Z0-9]{10}\?tag=getbrian-20$/);
+  }
+  for (const c of railCards("GB")) {
+    assert.match((c.props.product as Product).affiliateUrl as string, /^https:\/\/www\.amazon\.co\.uk\/dp\/[A-Z0-9]{10}\?tag=getbrian-21$/);
+  }
+});
+
+// ---------------------------------------------------------------------------
 // Closing section
 // ---------------------------------------------------------------------------
 
-function closingLinks(): El[] {
-  const labels = tileGoals.map((g) => `${g.label}: ${getSupplement(g.supplement).name}`);
-  return homeLinks().filter((el) => labels.includes(textOf(el).trim()));
+function closingLinks(region: Region = "US"): El[] {
+  const labels = tileGoals.map((g) => {
+    const goal = localizeGoal(g, region);
+    return `${goal.label}: ${localizeSupplement(getSupplement(goal.supplement), region).name}`;
+  });
+  return homeLinks(region).filter((el) => labels.includes(textOf(el).trim()));
 }
 
 test("closing section has exactly one link per tile goal", () => {
@@ -114,6 +165,56 @@ test("each closing link is labelled '<goal>: <supplement>' and goes to that goal
     assert.equal(links[i].props.href, supplementHref(s));
     assert.match(links[i].props.href as string, /^\/healthy\/products\/[a-z0-9-]+$/);
   }
+});
+
+test("US closing links go to the US picks: magnesium, Pure Encapsulations creatine, L-theanine", () => {
+  assert.deepEqual(
+    closingLinks("US").map((l) => l.props.href),
+    [
+      "/healthy/products/pure-encapsulations-magnesium-glycinate",
+      "/healthy/products/pure-encapsulations-creatine",
+      "/healthy/products/pure-encapsulations-l-theanine",
+    ],
+  );
+});
+
+test("GB closing links go to the UK picks: the creatine link is Thorne's", () => {
+  assert.deepEqual(
+    closingLinks("GB").map((l) => l.props.href),
+    [
+      "/healthy/products/pure-encapsulations-magnesium-glycinate",
+      "/healthy/products/thorne-creatine",
+      "/healthy/products/pure-encapsulations-l-theanine",
+    ],
+  );
+});
+
+test("GB closing link for the calm goal is labelled 'Evening: L-theanine', not 'Calm'", () => {
+  const labels = closingLinks("GB").map((l) => textOf(l).trim());
+  assert.ok(labels.includes("Evening: L-theanine"));
+  assert.ok(!labels.some((l) => l.startsWith("Calm")));
+});
+
+test("no home-page link in either country goes through /healthy/go", () => {
+  for (const region of ["US", "GB"] as const) {
+    const hrefs = homeLinks(region).map((l) => String(l.props.href));
+    assert.deepEqual(hrefs.filter((h) => h.startsWith("/healthy/go")), [], region);
+  }
+});
+
+test("the hero in GB drops the 'Calm' bullet but the US hero keeps it", () => {
+  const us = allElements(trees.US).map((el) => textOf(el)).join(" ");
+  const gb = allElements(trees.GB).map((el) => textOf(el)).join(" ");
+  assert.match(us, /Energy, Strength and Calm When You Need It Most/);
+  assert.doesNotMatch(gb, /Energy, Strength and Calm When You Need It Most/);
+  assert.match(gb, /Energy and Exercise, Explained From the Research/);
+  assert.doesNotMatch(gb, /Strength/);
+});
+
+test("the home page shows the Amazon Associate sentence on the phone disclosure line", () => {
+  const paras = allElements(trees.US).filter((el) => el.type === "p" && textOf(el).includes("Amazon Associate"));
+  assert.ok(paras.length >= 1);
+  assert.ok(textOf(paras[0]).startsWith("As an Amazon Associate I earn from qualifying purchases."));
 });
 
 test("no closing link falls back to #start", () => {
@@ -134,7 +235,7 @@ test("FAQ 'More detail' paragraph links to why-these-picks and about", () => {
 });
 
 test("every FAQ summary carries the padding and a focus-visible outline", () => {
-  const summaries = allElements(HealthyHome()).filter((el) => el.type === "summary");
+  const summaries = allElements(trees.US).filter((el) => el.type === "summary");
 
   assert.equal(summaries.length, faqs.length);
   for (const s of summaries) {
@@ -176,6 +277,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     redirectAllowed: false,
     lastReviewed: null,
     verified: false,
+    regions: [],
+    offers: {},
     ...overrides,
   };
 }
@@ -260,7 +363,9 @@ test("the two new FAQ entries exist", () => {
   const questions = faqs.map((f) => f.question);
 
   assert.ok(questions.includes("Who is Brian?"));
-  assert.ok(questions.includes("Why are all three from Thorne?"));
+  assert.ok(questions.includes("Why these brands?"));
+  assert.ok(questions.includes("Why do I see different products in the UK and the US?"));
+  assert.ok(!questions.includes("Why are all three from Thorne?"));
 });
 
 for (const faq of faqs) {
@@ -290,10 +395,16 @@ test("'Who is Brian?' and the About page agree: AI involved, Brian is not a doct
   assert.match(about, /Brian is not a doctor/);
 });
 
-test("'Why are all three from Thorne?' claim matches the data: three products, every one Thorne", () => {
-  // The question says "all three", and it also goes into the FAQPage JSON-LD.
-  assert.equal(products.length, 3);
-  assert.deepEqual(products.filter((p) => p.brand !== "Thorne").map((p) => p.slug), []);
+test("'Why these brands?' answer matches the data: each region shows three picks and more than one brand exists", () => {
+  // The answer says the same brand is not sold in every country, and the
+  // homepage shows "three" picks, so both must stay true of the data.
+  const faq = faqs.find((f) => f.question === "Why these brands?");
+  assert.ok(faq);
+  assert.match(faq.answer, /not sold in every country/);
+  assert.equal(productsFor("US").length, 3);
+  assert.equal(productsFor("GB").length, 3);
+  assert.deepEqual([...new Set(productsFor("US").map((p) => p.brand))], ["Pure Encapsulations"]);
+  assert.deepEqual([...new Set(productsFor("GB").map((p) => p.brand))], ["Pure Encapsulations", "Thorne"]);
 });
 
 // ---------------------------------------------------------------------------

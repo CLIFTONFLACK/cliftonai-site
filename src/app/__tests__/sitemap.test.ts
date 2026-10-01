@@ -29,9 +29,9 @@ test("includes every /healthy path now that LAUNCHED is true", () => {
     `${FAKE_SITE_URL}/healthy/why-these-picks`,
     `${FAKE_SITE_URL}/healthy/about`,
     `${FAKE_SITE_URL}/healthy/disclosures`,
-    `${FAKE_SITE_URL}/healthy/products/thorne-magnesium-glycinate`,
-    `${FAKE_SITE_URL}/healthy/products/thorne-creatine-stick-packs`,
-    `${FAKE_SITE_URL}/healthy/products/thorne-theanine`,
+    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-magnesium-glycinate`,
+    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-creatine`,
+    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-l-theanine`,
   ]);
 });
 
@@ -45,4 +45,11 @@ test("still includes the home page and legal pages regardless of LAUNCHED", () =
 test("never lists the noindexed creator-notes page", () => {
   const urls = sitemap().map((entry) => entry.url);
   assert.ok(urls.every((url) => !url.includes("creator-notes")));
+});
+
+test("never lists a retired Thorne slug that now only redirects", () => {
+  const urls = sitemap().map((entry) => entry.url);
+  assert.ok(urls.every((url) => !url.includes("thorne-magnesium-glycinate")));
+  assert.ok(urls.every((url) => !url.includes("thorne-creatine-stick-packs")));
+  assert.ok(urls.every((url) => !url.includes("thorne-theanine")));
 });

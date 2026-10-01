@@ -10,13 +10,17 @@ import { HealthyHeroMascot } from "./hero-mascot";
 import { signupEnabled } from "./newsletter";
 import { Signup } from "./signup";
 import {
+  AMAZON_ASSOCIATE_STATEMENT,
   PROGRAM_NAME,
   TAGLINE,
   faqs,
   getSupplement,
-  products,
+  localizeGoal,
+  localizeSupplement,
+  productsFor,
   tileGoals,
 } from "./data";
+import { getRegion } from "./region-server";
 
 export const metadata: Metadata = {
   title: { absolute: `${PROGRAM_NAME} | GetBrian Healthy` },
@@ -36,7 +40,11 @@ const HERO_POINTS = [
   { icon: "crossSolid", text: "Energy, Strength and Calm When You Need It Most" },
 ] as const;
 
-export default function HealthyHome() {
+export default async function HealthyHome() {
+  const region = await getRegion();
+  const products = productsFor(region);
+  // "Calm" is a claim for L-theanine, which has no authorised health claim in the UK.
+  const heroPoints = region === "GB" ? HERO_POINTS.map((p, i) => (i === 2 ? { ...p, text: "Energy and Exercise, Explained From the Research" } : p)) : HERO_POINTS;
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -102,7 +110,7 @@ export default function HealthyHome() {
                 (three supplements), the check seal (reviewed), the cross (the
                 benefit). */}
             <ul className="space-y-5">
-              {HERO_POINTS.map((point) => (
+              {heroPoints.map((point) => (
                 <li key={point.text} className="flex items-center gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-kinetic-teal/40 bg-white text-kinetic-teal shadow-sm">
                     <Icon name={point.icon} size={22} />
@@ -181,7 +189,7 @@ export default function HealthyHome() {
             What do you need to boost?
           </h2>
           <div className="mt-8">
-            <GoalChooser />
+            <GoalChooser region={region} />
           </div>
         </div>
       </section>
@@ -202,12 +210,12 @@ export default function HealthyHome() {
           {/* Phones don't get the site-wide disclosure bar (layout.tsx), so it
               sits here instead, above the Buy buttons it covers. */}
           <p className="-mt-6 mb-6 text-xs text-slate-500 sm:hidden">
-            Brian may earn a commission when you buy through these links.{" "}
+            {AMAZON_ASSOCIATE_STATEMENT} Brian may earn a commission when you buy through these links.{" "}
             <Link href="/healthy/disclosures" className="font-semibold underline">
               How that works
             </Link>
           </p>
-          <JobRail products={products} />
+          <JobRail products={products} region={region} />
         </div>
       </section>
 
@@ -303,9 +311,10 @@ export default function HealthyHome() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             {/* Orange is kept for retailer (Buy) buttons only. One button per goal,
                 each straight to that goal's review, rather than back up the page. */}
-            {tileGoals.map((goal) => {
-              const s = getSupplement(goal.supplement);
-              const review = supplementHref(s);
+            {tileGoals.map((baseGoal) => {
+              const goal = localizeGoal(baseGoal, region);
+              const s = localizeSupplement(getSupplement(goal.supplement), region);
+              const review = supplementHref(s, region);
               return (
                 <Link
                   key={goal.id}
@@ -324,7 +333,7 @@ export default function HealthyHome() {
             </Link>
           </div>
           <div className="mx-auto mt-14 max-w-3xl text-left">
-            <FdaDisclaimer dark />
+            <FdaDisclaimer dark region={region} />
           </div>
         </div>
       </section>

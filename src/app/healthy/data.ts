@@ -12,6 +12,7 @@
  */
 
 import type { IconName } from "./icons";
+import type { Region } from "./region";
 
 export const PROGRAM_NAME = "Brian's Human Longevity Program";
 export const PROGRAM_SHORT = "Human Longevity Program";
@@ -90,7 +91,31 @@ export type Product = {
   redirectAllowed: boolean;
   lastReviewed: string | null;
   verified: boolean;
+  /** Countries this pick is sold in. A product outside the visitor's region is never shown to them. */
+  regions: Region[];
+  /** The Amazon listing in each region. Each country's Amazon sells its own ASIN. */
+  offers: Partial<Record<Region, { asin: string }>>;
+  /** Fields that differ by region (pack size, claims), laid over the base fields by `resolveProduct`. */
+  regional?: Partial<Record<Region, Partial<Product>>>;
 };
+
+/**
+ * Amazon Associates store per region. The tag decides who is paid, so a link
+ * built for one region must never carry the other's tag.
+ */
+export const AMAZON: Record<Region, { host: string; tag: string }> = {
+  US: { host: "www.amazon.com", tag: "getbrian-20" },
+  GB: { host: "www.amazon.co.uk", tag: "getbrian-21" },
+};
+
+/** Amazon requires this sentence, clearly and prominently, wherever we link to it. */
+export const AMAZON_ASSOCIATE_STATEMENT = "As an Amazon Associate I earn from qualifying purchases.";
+
+/** Direct Amazon link: no redirect, no shortener, so the destination is plain to the reader. */
+export function amazonUrl(region: Region, asin: string): string {
+  const { host, tag } = AMAZON[region];
+  return `https://${host}/dp/${encodeURIComponent(asin)}?tag=${tag}`;
+}
 
 /** The hero headline. Structure/function wording, so it needs the FDA disclaimer on any page that shows it. */
 export const TAGLINE = "Choose Longevity, Choose Brian.";
@@ -254,6 +279,68 @@ export function getSupplement(id: Supplement["id"]): Supplement {
   return s;
 }
 
+/**
+ * No health claim is authorised for L-theanine in Great Britain, so UK visitors
+ * get neutral wording for it wherever the US copy says what it does.
+ */
+const GB_SUPPLEMENT_COPY: Partial<Record<Supplement["id"], Partial<Supplement>>> = {
+  magnesium: {
+    contribution:
+      "Contributes to normal muscle function, normal functioning of the nervous system and normal energy-yielding metabolism, and to a reduction of tiredness and fatigue.",
+  },
+  // Great Britain authorises one creatine claim, so that sentence is the only thing said, and the focus caveat goes with the focus goal.
+  creatine: {
+    tagline: "For high-intensity exercise",
+    value: "For adults who do short, intense bursts of exercise.",
+    role: "Short bursts of high-intensity exercise",
+    contribution:
+      "Creatine increases physical performance in successive bursts of short-term, high intensity exercise. The claim applies to adults doing high-intensity exercise who take 3 g a day.",
+    caveat: undefined,
+  },
+  "l-theanine": {
+    tagline: "A tea amino acid",
+    value: "An amino acid found naturally in tea.",
+    role: "Evening routine",
+    contribution:
+      "L-theanine is an amino acid found naturally in tea. No health claim is authorised for it in the UK, so this site makes none.",
+  },
+};
+
+const GB_GOAL_COPY: Partial<Record<Goal, Partial<(typeof goals)[number]>>> = {
+  strength: {
+    label: "Exercise",
+    hook: "Do short, intense bursts of exercise? Meet creatine, the most-studied ingredient for them.",
+    eyebrowDetail: "High-Intensity Exercise",
+  },
+  calm: {
+    label: "Evening",
+    hook: "Meet L-theanine, an amino acid found naturally in tea.",
+    eyebrowDetail: "Evening Routine",
+    // The moon would hint at the sleep and relaxation claim that is not allowed here.
+    icon: "book",
+  },
+};
+
+/** Goals that exist only for the US: the claim behind them is not authorised in Great Britain. */
+const GB_HIDDEN_GOALS = new Set<Goal>(["focus"]);
+
+/** The goals a supplement serves for a region's visitor, localized and with any not allowed there removed. */
+export function goalsForSupplement(id: Supplement["id"], region: Region): (typeof goals)[number][] {
+  return goals
+    .filter((g) => g.supplement === id && !(region === "GB" && GB_HIDDEN_GOALS.has(g.id)))
+    .map((g) => localizeGoal(g, region));
+}
+
+/** A supplement as a region's visitor should read it. */
+export function localizeSupplement(s: Supplement, region: Region): Supplement {
+  return region === "GB" ? { ...s, ...GB_SUPPLEMENT_COPY[s.id] } : s;
+}
+
+/** A goal as a region's visitor should read it. */
+export function localizeGoal<G extends (typeof goals)[number]>(g: G, region: Region): G {
+  return region === "GB" ? { ...g, ...GB_GOAL_COPY[g.id] } : g;
+}
+
 /** The supplement a product reviews, if any. */
 export function supplementFor(p: Product): Supplement | undefined {
   return supplements.find((s) => s.category === p.category);
@@ -303,7 +390,7 @@ export const faqs: Faq[] = [
   {
     question: "Do you earn money if I buy?",
     answer:
-      "Sometimes. Some links pay a commission if you buy through them, at no extra cost to you. It never decides which products are listed or how they're graded.",
+      "Yes. As an Amazon Associate I earn from qualifying purchases. The Buy buttons go to Amazon, and if you buy through them GetBrian is paid a commission at no extra cost to you. It never decides which products are listed or how they're graded.",
   },
   {
     question: "Why only one product per category?",
@@ -312,9 +399,14 @@ export const faqs: Faq[] = [
   },
   {
     // Same reasons as the "Why these picks" page. Keep the two in step.
-    question: "Why are all three from Thorne?",
+    question: "Why these brands?",
     answer:
-      "Each Thorne pick is a single named ingredient at a fixed dose, so the label can be checked against what the research studied. No brand can pay to be included, and a pick changes if a better-evidenced or better-priced option turns up in a re-check.",
+      "Each pick is a single named ingredient at a fixed dose, so the label can be checked against what the research studied. The same brand is not sold in every country, so the picks you see depend on where you are. No brand can pay to be included, and a pick changes if a better-evidenced or better-priced option turns up in a re-check.",
+  },
+  {
+    question: "Why do I see different products in the UK and the US?",
+    answer:
+      "Each country's Amazon sells different listings, and the rules on what a supplement may claim differ. The site shows the picks sold in your country, and you can switch country in the footer. Anywhere outside the UK sees the US picks.",
   },
   {
     question: "How often are picks re-checked?",
@@ -347,24 +439,158 @@ export const pillars = [
 ];
 
 /**
- * All three picks are Thorne: label figures and USD prices below were read
- * directly from thorne.com on the date in `priceCheckedAt`/`lastReviewed`,
- * not estimated or converted from another currency.
+ * Evidence shared by the US pages. The UK variants below carry only the claims
+ * Great Britain authorises, worded as the register words them.
+ */
+const NIH_MAGNESIUM: Citation = {
+  label: "NIH Office of Dietary Supplements: Magnesium, health professional fact sheet",
+  url: "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+};
+
+const GB_NHC_REGISTER: Citation = {
+  label: "GB Nutrition and Health Claims Register (gov.uk)",
+  url: "https://www.gov.uk/government/publications/great-britain-nutrition-and-health-claims-nhc-register",
+};
+
+const MAGNESIUM_EVIDENCE_US: EvidenceItem[] = [
+  {
+    claim: "Supports normal muscle and nerve function",
+    grade: "strong",
+    summary:
+      "Magnesium is required for muscle contraction and nerve signaling, and most US adults do not meet the recommended daily intake from food alone.",
+    citations: [NIH_MAGNESIUM],
+  },
+  {
+    claim: "Supports normal energy metabolism",
+    grade: "strong",
+    summary: "Magnesium is a cofactor for the enzymes that convert food into usable cellular energy.",
+    citations: [NIH_MAGNESIUM],
+  },
+  {
+    claim: "May support sleep quality when magnesium intake is low",
+    grade: "early",
+    summary:
+      "A 7-week randomized trial in adults over 50 with poor sleep found sleep scores improved on magnesium citrate, but improved by a similar amount on the placebo too, so the trial could not show magnesium caused the change.",
+    citations: [
+      {
+        label: "Nielsen et al., 2011, Magnesium Research (randomized trial, 96 adults over 50)",
+        url: "https://pubmed.ncbi.nlm.nih.gov/21199787/",
+      },
+    ],
+  },
+];
+
+/** Authorised GB wording only. No sleep claim: none is authorised for magnesium. */
+const MAGNESIUM_EVIDENCE_GB: EvidenceItem[] = [
+  {
+    claim: "Magnesium contributes to a reduction of tiredness and fatigue",
+    grade: "strong",
+    summary: "An authorised health claim for magnesium in Great Britain.",
+    citations: [GB_NHC_REGISTER],
+  },
+  {
+    claim: "Magnesium contributes to normal muscle function",
+    grade: "strong",
+    summary: "An authorised health claim for magnesium in Great Britain.",
+    citations: [GB_NHC_REGISTER],
+  },
+  {
+    claim: "Magnesium contributes to normal energy-yielding metabolism",
+    grade: "strong",
+    summary: "An authorised health claim for magnesium in Great Britain.",
+    citations: [GB_NHC_REGISTER],
+  },
+];
+
+const THEANINE_EVIDENCE_US: EvidenceItem[] = [
+  {
+    claim: "May support relaxation and a calmer response to everyday stress",
+    grade: "moderate",
+    summary:
+      "A systematic review of 9 randomized controlled trials found that 200 to 400 mg per day of L-theanine may help lower stress and anxiety symptoms in people under stressful conditions, though the authors called for larger, longer trials before it is relied on as an established therapy.",
+    citations: [
+      {
+        label: "Williams et al., 2020, Plant Foods for Human Nutrition (systematic review, 9 RCTs)",
+        url: "https://pubmed.ncbi.nlm.nih.gov/31758301/",
+      },
+    ],
+  },
+  {
+    claim: "May increase alpha brain-wave activity associated with relaxed wakefulness",
+    grade: "early",
+    summary:
+      "A crossover trial measuring brain activity directly found greater resting alpha-wave activity 2 hours after an L-theanine drink than after placebo, but only in people who ran higher in trait anxiety to start with.",
+    citations: [
+      {
+        label: "White et al., 2016, Nutrients (randomized crossover trial, MEG-measured brain activity)",
+        url: "https://pubmed.ncbi.nlm.nih.gov/26797633/",
+      },
+    ],
+  },
+];
+
+const CREATINE_EVIDENCE_US: EvidenceItem[] = [
+  {
+    claim: "Supports muscle strength when combined with resistance training",
+    grade: "strong",
+    summary:
+      "In a meta-analysis of 22 randomized trials in adults with a mean age of 57 to 70, creatine taken alongside resistance training produced significantly greater gains in chest- and leg-press strength than training with a placebo.",
+    citations: [
+      {
+        label: "Chilibeck et al., 2017, Open Access Journal of Sports Medicine (meta-analysis, 721 older adults)",
+        url: "https://pubmed.ncbi.nlm.nih.gov/29138605/",
+      },
+    ],
+  },
+  {
+    claim: "Supports lean muscle mass with regular training",
+    grade: "moderate",
+    summary:
+      "Pooled results show a meaningful average gain in lean tissue mass in older adults, though the size of the effect varies by dosing strategy and study length.",
+    citations: [
+      {
+        label: "Forbes et al., 2021, Nutrients (meta-analysis of creatine ingestion strategies in older adults)",
+        url: "https://pubmed.ncbi.nlm.nih.gov/34199420/",
+      },
+    ],
+  },
+];
+
+/** The authorised GB creatine claim, with its conditions. Check the register before relying on it: its creatine entry changed in 2025. */
+const CREATINE_EVIDENCE_GB: EvidenceItem[] = [
+  {
+    claim: "Creatine increases physical performance in successive bursts of short-term, high intensity exercise",
+    grade: "strong",
+    summary:
+      "The authorised GB claim. It applies to adults doing high-intensity exercise who take 3 g of creatine a day.",
+    citations: [GB_NHC_REGISTER],
+  },
+];
+
+
+/**
+ * Where each pick is sold: Amazon, in the visitor's own country. Label figures
+ * were read from retailer listings and the brand's marketing on 2026-10-01
+ * (the brand's own site could not be reached), so the Pure Encapsulations
+ * picks stay `verified: false` until checked against the bottle. No prices are
+ * stored: Amazon's terms limit how long a price may be shown without a live feed.
+ *
+ * US and UK offers sell different ASINs, so each region has its own link.
  */
 export const products: Product[] = [
   {
-    slug: "thorne-magnesium-glycinate",
+    slug: "pure-encapsulations-magnesium-glycinate",
     name: "Magnesium Glycinate",
-    brand: "Thorne",
+    brand: "Pure Encapsulations",
     category: "Magnesium",
     format: "Capsules",
-    image: "/healthy/products/thorne-magnesium-glycinate.png",
-    imageAlt: "Bottle of magnesium glycinate capsules, 90 capsules",
-    summary: "Single-ingredient magnesium glycinate, dosed one capsule at a time.",
+    image: null,
+    imageAlt: "Bottle of Pure Encapsulations magnesium glycinate capsules, 90 capsules",
+    summary: "Single-ingredient magnesium glycinate, 120 mg a capsule, so you can build your dose up one capsule at a time.",
     verdict:
-      "Straightforward, well-absorbed magnesium at 120 mg per capsule, so you can build your dose up gradually. Costs more per milligram than a bulk powder, but the label is one ingredient, no blend.",
+      "Magnesium glycinate at 120 mg per capsule with no blend, so the label can be checked against what the research studied. Costs more per milligram than a bulk powder.",
     bestFor: [
-      "Adults who want to titrate their dose one capsule at a time",
+      "Adults who want to build their dose up one capsule at a time",
       "Anyone who gets loose stools from higher-dose magnesium forms",
     ],
     notFor: ["Buyers who want the lowest cost per milligram of elemental magnesium"],
@@ -374,52 +600,16 @@ export const products: Product[] = [
       {
         name: "Magnesium (as magnesium glycinate)",
         amount: "120 mg",
-        studiedDose: "Supplemental intake studied up to 350 mg/day, the tolerable upper limit for supplemental elemental magnesium",
+        studiedDose: "Supplemental intake studied up to 350 mg/day, the US tolerable upper limit for supplemental elemental magnesium",
       },
     ],
-    priceUsd: 26,
-    priceCheckedAt: "September 17, 2026",
+    priceUsd: null,
+    priceCheckedAt: null,
     testing: [
-      "Not NSF Certified for Sport. A separate magnesium bisglycinate powder from the same brand carries that mark; this glycinate capsule does not.",
-      "The brand states the product is made under NSF-audited cGMP manufacturing, but publishes no independent certificate of analysis for this specific SKU.",
+      "Brian found no independent certification mark (such as NSF Certified for Sport) for this product.",
+      "The brand's own testing claims have not been checked against its site yet.",
     ],
-    evidence: [
-      {
-        claim: "Supports normal muscle and nerve function",
-        grade: "strong",
-        summary:
-          "Magnesium is required for muscle contraction and nerve signaling, and most US adults do not meet the recommended daily intake from food alone.",
-        citations: [
-          {
-            label: "NIH Office of Dietary Supplements: Magnesium, health professional fact sheet",
-            url: "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
-          },
-        ],
-      },
-      {
-        claim: "Supports normal energy metabolism",
-        grade: "strong",
-        summary: "Magnesium is a cofactor for the enzymes that convert food into usable cellular energy.",
-        citations: [
-          {
-            label: "NIH Office of Dietary Supplements: Magnesium, health professional fact sheet",
-            url: "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
-          },
-        ],
-      },
-      {
-        claim: "May support sleep quality when magnesium intake is low",
-        grade: "early",
-        summary:
-          "A 7-week randomized trial in adults over 50 with poor sleep found sleep scores improved on magnesium citrate, but improved by a similar amount on the placebo too, so the trial could not show magnesium caused the change.",
-        citations: [
-          {
-            label: "Nielsen et al., 2011, Magnesium Research (randomized trial, 96 adults over 50)",
-            url: "https://pubmed.ncbi.nlm.nih.gov/21199787/",
-          },
-        ],
-      },
-    ],
+    evidence: MAGNESIUM_EVIDENCE_US,
     safety: [
       "Do not take magnesium supplements if you have kidney disease unless your doctor advises it.",
       "Separate from some antibiotics and osteoporosis medicines by a few hours; ask your pharmacist.",
@@ -427,164 +617,231 @@ export const products: Product[] = [
     ],
     pros: [
       "Single ingredient, easy to check against the label",
-      "Sold direct from the brand, no marketplace resale risk",
-      "One-capsule serving makes it easy to adjust your dose",
+      "120 mg a capsule makes it easy to adjust your dose",
+      "Same strength sold in both the US and the UK",
     ],
     cons: [
       "Higher cost per milligram of elemental magnesium than a bulk glycinate powder",
-      "Not NSF Certified for Sport, unlike the creatine pick",
+      "No independent certification mark found",
     ],
     advantage:
-      "Dose checked against the research: 120 mg a capsule lets you build up in steps and stay under 350 mg a day, the supplemental upper limit",
-    brandUrl: "https://www.thorne.com/products/dp/magnesium-glycinate",
+      "Dose checked against the research: 120 mg a capsule lets you build up in steps and stay under 350 mg a day, the US supplemental upper limit",
+    brandUrl: "https://www.pureencapsulations.com/",
     affiliateUrl: null,
+    retailer: "Amazon",
     redirectAllowed: false,
-    lastReviewed: "September 17, 2026",
-    verified: true,
+    lastReviewed: "October 1, 2026",
+    verified: false,
+    regions: ["US", "GB"],
+    offers: { US: { asin: "B07P5K7DQP" }, GB: { asin: "B087B93NJB" } },
+    regional: {
+      GB: {
+        summary: "Single-ingredient magnesium glycinate, 120 mg a capsule.",
+        advantage: "A single ingredient at 120 mg a capsule, so the label is easy to check and the dose easy to adjust",
+        ingredients: [{ name: "Magnesium (as magnesium glycinate)", amount: "120 mg" }],
+        evidence: MAGNESIUM_EVIDENCE_GB,
+        safety: [
+          "Do not take magnesium supplements if you have kidney disease unless your doctor advises it.",
+          "Separate from some antibiotics and osteoporosis medicines by a few hours; ask your pharmacist.",
+          "Do not exceed the recommended intake on the label. Food supplements should not replace a varied diet.",
+        ],
+      },
+    },
   },
   {
-    slug: "thorne-creatine-stick-packs",
+    slug: "pure-encapsulations-creatine",
     name: "Creatine Monohydrate",
-    brand: "Thorne",
+    brand: "Pure Encapsulations",
     category: "Creatine",
-    format: "Powder stick packs",
-    image: "/healthy/products/thorne-creatine-stick-packs.png",
-    imageAlt: "Box of creatine monohydrate stick packs, 30 sticks",
-    summary: "Pre-measured 5 g creatine monohydrate packets, NSF Certified for Sport.",
+    format: "Powder",
+    image: null,
+    imageAlt: "Tub of Pure Encapsulations creatine powder, 315 g",
+    summary: "Plain creatine monohydrate powder, 5 g a serving, 60 servings a tub.",
     verdict:
-      "A single measured 5 g dose of plain creatine monohydrate per packet, no scoop needed, and NSF Certified for Sport so every batch is checked for banned substances. Costs more per gram than a bulk tub.",
-    bestFor: [
-      "Travel and gym-bag routines where measuring powder is impractical",
-      "Athletes who need NSF Certified for Sport testing for banned substances",
-    ],
-    notFor: ["Buyers who want the lowest cost per gram (a bulk tub is cheaper per serving)"],
-    servingSize: "1 packet (5 g)",
-    servingsPerContainer: 30,
+      "5 g of plain creatine monohydrate per serving, the form and daily dose the research used. Brian found no independent testing mark for it, so athletes who need one should look elsewhere.",
+    bestFor: ["Adults doing resistance training who want the studied form and dose"],
+    notFor: ["Athletes who need NSF Certified for Sport testing"],
+    servingSize: "1.5 teaspoons (5 g)",
+    servingsPerContainer: 60,
     ingredients: [{ name: "Creatine monohydrate", amount: "5 g", studiedDose: "3 to 5 g per day" }],
-    priceUsd: 36,
-    priceCheckedAt: "September 17, 2026",
+    priceUsd: null,
+    priceCheckedAt: null,
     testing: [
-      "NSF Certified for Sport: every batch is tested for label accuracy and for nearly 300 substances banned by major athletic organizations.",
+      "Brian found no independent certification mark (such as NSF Certified for Sport) for this product.",
+      "The brand's own testing claims have not been checked against its site yet.",
     ],
-    evidence: [
-      {
-        claim: "Supports muscle strength when combined with resistance training",
-        grade: "strong",
-        summary:
-          "In a meta-analysis of 22 randomized trials in adults with a mean age of 57 to 70, creatine taken alongside resistance training produced significantly greater gains in chest- and leg-press strength than training with a placebo.",
-        citations: [
-          {
-            label: "Chilibeck et al., 2017, Open Access Journal of Sports Medicine (meta-analysis, 721 older adults)",
-            url: "https://pubmed.ncbi.nlm.nih.gov/29138605/",
-          },
-        ],
-      },
-      {
-        claim: "Supports lean muscle mass with regular training",
-        grade: "moderate",
-        summary:
-          "Pooled results show a meaningful average gain in lean tissue mass in older adults, though the size of the effect varies by dosing strategy and study length.",
-        citations: [
-          {
-            label: "Forbes et al., 2021, Nutrients (meta-analysis of creatine ingestion strategies in older adults)",
-            url: "https://pubmed.ncbi.nlm.nih.gov/34199420/",
-          },
-        ],
-      },
-    ],
+    evidence: CREATINE_EVIDENCE_US,
     safety: [
       "Talk to your doctor first if you have kidney disease or take medication that affects the kidneys.",
       "Early water retention of a pound or two is common and is not fat gain.",
     ],
     pros: [
-      "NSF Certified for Sport, batch-tested for banned substances",
-      "No scoop or scale needed",
       "Plain creatine monohydrate, the form used in the research",
+      "5 g a serving, the dose the research used",
     ],
     cons: [
-      "Higher cost per gram than a bulk tub of the same brand's creatine",
-      "30 packets is roughly a one-month supply at one serving a day, so it means more frequent reordering",
+      "No independent certification mark found",
+      "Needs a spoon or scoop, unlike pre-measured packets",
     ],
     advantage: "Matched to the trials: 5 g of plain creatine monohydrate, the form and daily dose the research used",
-    brandUrl: "https://www.thorne.com/products/dp/creatine-sf903p",
+    brandUrl: "https://www.pureencapsulations.com/",
     affiliateUrl: null,
+    retailer: "Amazon",
     redirectAllowed: false,
-    lastReviewed: "September 17, 2026",
-    verified: true,
+    lastReviewed: "October 1, 2026",
+    verified: false,
+    regions: ["US"],
+    offers: { US: { asin: "B0FSGYKS5Z" } },
   },
   {
-    slug: "thorne-theanine",
-    name: "Theanine",
+    slug: "thorne-creatine",
+    name: "Creatine Monohydrate",
     brand: "Thorne",
+    category: "Creatine",
+    format: "Powder",
+    image: null,
+    imageAlt: "Tub of Thorne creatine powder, 450 g",
+    summary: "Micronised creatine monohydrate powder, 5 g a serving, 90 servings a tub, NSF Certified for Sport.",
+    verdict:
+      "5 g of plain creatine monohydrate per scoop, and NSF Certified for Sport, so every batch is checked for banned substances.",
+    bestFor: [
+      "Adults doing high-intensity or resistance training who want the studied form and dose",
+      "Athletes who need NSF Certified for Sport testing",
+    ],
+    notFor: ["Buyers who want the lowest cost per gram"],
+    servingSize: "1 scoop (5 g)",
+    servingsPerContainer: 90,
+    ingredients: [{ name: "Creatine monohydrate", amount: "5 g", studiedDose: "3 to 5 g per day" }],
+    priceUsd: null,
+    priceCheckedAt: null,
+    testing: [
+      "NSF Certified for Sport: the brand states every batch is tested for label accuracy and for nearly 300 substances banned by major athletic organizations.",
+    ],
+    evidence: CREATINE_EVIDENCE_GB,
+    safety: [
+      "Talk to your doctor first if you have kidney disease or take medication that affects the kidneys.",
+      "Early water retention of a pound or two is common and is not fat gain.",
+      "Do not exceed the recommended intake on the label. Food supplements should not replace a varied diet.",
+    ],
+    pros: [
+      "NSF Certified for Sport, batch-tested for banned substances",
+      "Plain creatine monohydrate, the form used in the research",
+      "90 servings a tub",
+    ],
+    cons: ["Needs a scoop, unlike pre-measured packets"],
+    advantage: "5 g of plain creatine monohydrate a serving, with NSF Certified for Sport batch testing",
+    brandUrl: "https://www.thorne.com/products/dp/creatine",
+    affiliateUrl: null,
+    retailer: "Amazon",
+    redirectAllowed: false,
+    lastReviewed: "October 1, 2026",
+    verified: false,
+    regions: ["GB"],
+    offers: { GB: { asin: "B07978VPPH" } },
+  },
+  {
+    slug: "pure-encapsulations-l-theanine",
+    name: "L-Theanine",
+    brand: "Pure Encapsulations",
     category: "L-theanine",
     format: "Capsules",
-    image: "/healthy/products/thorne-theanine.png",
-    imageAlt: "Bottle of L-theanine capsules, 90 capsules",
-    summary: "200 mg of Suntheanine, a patented, purified form of L-theanine, one capsule at a time.",
+    image: null,
+    imageAlt: "Bottle of Pure Encapsulations L-theanine capsules",
+    summary: "200 mg of L-theanine a capsule, 120 capsules a bottle.",
     verdict:
-      "200 mg of Suntheanine per capsule, the branded form used in most human L-theanine research, at a fixed dose. Costs more per capsule than generic L-theanine.",
-    bestFor: [
-      "Adults who want a single, well-documented form of L-theanine",
-      "Evening or pre-stress dosing at a fixed 200 mg",
-    ],
+      "200 mg of L-theanine per capsule at a fixed dose, within the 200 to 400 mg a day the research used. Costs more per capsule than generic L-theanine.",
+    bestFor: ["Adults who want a single-ingredient L-theanine at a fixed 200 mg dose"],
     notFor: ["Buyers who want the lowest cost per milligram (generic L-theanine capsules are cheaper)"],
     servingSize: "1 capsule",
-    servingsPerContainer: 90,
-    ingredients: [{ name: "L-theanine (as Suntheanine)", amount: "200 mg", studiedDose: "200 to 400 mg per day" }],
-    priceUsd: 68,
-    priceCheckedAt: "September 17, 2026",
+    servingsPerContainer: 120,
+    ingredients: [{ name: "L-theanine", amount: "200 mg", studiedDose: "200 to 400 mg per day" }],
+    priceUsd: null,
+    priceCheckedAt: null,
     testing: [
-      "The brand states this product is third-party tested to verify label accuracy and to screen for heavy metals, pesticides and microorganisms.",
-      "Not NSF Certified for Sport.",
+      "Brian found no independent certification mark (such as NSF Certified for Sport) for this product.",
+      "The brand's own testing claims have not been checked against its site yet.",
     ],
-    evidence: [
-      {
-        claim: "May support relaxation and a calmer response to everyday stress",
-        grade: "moderate",
-        summary:
-          "A systematic review of 9 randomized controlled trials found that 200 to 400 mg per day of L-theanine may help lower stress and anxiety symptoms in people under stressful conditions, though the authors called for larger, longer trials before it is relied on as an established therapy.",
-        citations: [
-          {
-            label: "Williams et al., 2020, Plant Foods for Human Nutrition (systematic review, 9 RCTs)",
-            url: "https://pubmed.ncbi.nlm.nih.gov/31758301/",
-          },
-        ],
-      },
-      {
-        claim: "May increase alpha brain-wave activity associated with relaxed wakefulness",
-        grade: "early",
-        summary:
-          "A crossover trial measuring brain activity directly found greater resting alpha-wave activity 2 hours after an L-theanine drink than after placebo, but only in people who ran higher in trait anxiety to start with.",
-        citations: [
-          {
-            label: "White et al., 2016, Nutrients (randomized crossover trial, MEG-measured brain activity)",
-            url: "https://pubmed.ncbi.nlm.nih.gov/26797633/",
-          },
-        ],
-      },
-    ],
+    evidence: THEANINE_EVIDENCE_US,
     safety: [
       "Generally well tolerated. Talk to your doctor before combining with blood pressure medication, since it may add to a blood-pressure-lowering effect.",
       "Interactions with sedatives have not been ruled out; check with a pharmacist if you take one.",
     ],
-    pros: [
-      "Suntheanine, the branded form used in most human research on L-theanine",
-      "Single ingredient, fixed 200 mg dose",
-      "Third-party tested for contaminants",
+    pros: ["Single ingredient, fixed 200 mg dose", "Within the 200 to 400 mg a day used in the research"],
+    cons: [
+      "Costs more per capsule than generic L-theanine",
+      "Whether the US bottle uses the Suntheanine form has not been confirmed",
     ],
-    cons: ["Costs more per capsule than generic L-theanine", "Not NSF Certified for Sport"],
-    advantage:
-      "Matched to the trials: Suntheanine, the form used in most of the human research, at 200 mg, within the studied 200 to 400 mg a day",
-    brandUrl: "https://www.thorne.com/products/dp/theanine",
+    advantage: "A single ingredient at a fixed 200 mg, within the studied 200 to 400 mg a day",
+    brandUrl: "https://www.pureencapsulations.com/",
     affiliateUrl: null,
+    retailer: "Amazon",
     redirectAllowed: false,
-    lastReviewed: "September 17, 2026",
-    verified: true,
+    lastReviewed: "October 1, 2026",
+    verified: false,
+    regions: ["US", "GB"],
+    offers: { US: { asin: "B0016CXYK4" }, GB: { asin: "B07JZFQWTL" } },
+    regional: {
+      // No L-theanine health claim is authorised in Great Britain, so this version
+      // states the label and nothing about what the ingredient does.
+      GB: {
+        summary: "200 mg of L-theanine (as Suntheanine) a capsule, 60 capsules a bottle.",
+        verdict:
+          "200 mg of L-theanine per capsule, in the branded Suntheanine form, at a fixed dose. This page makes no health claim for it: none is authorised in the UK.",
+        bestFor: ["Adults who want a single-ingredient L-theanine at a fixed 200 mg dose"],
+        servingsPerContainer: 60,
+        ingredients: [{ name: "L-theanine (as Suntheanine)", amount: "200 mg" }],
+        evidence: [],
+        pros: ["Single ingredient, fixed 200 mg dose", "Suntheanine, a branded, purified form of L-theanine"],
+        cons: ["Costs more per capsule than generic L-theanine"],
+        advantage: "A single ingredient at a fixed 200 mg, in the branded Suntheanine form",
+        safety: [
+          "Talk to your doctor before taking it if you take blood pressure medication or sedatives.",
+          "Do not exceed the recommended intake on the label. Food supplements should not replace a varied diet.",
+        ],
+      },
+    },
   },
 ];
 
+
+/** The base entry for a slug, before any region is applied. Use `getProductFor` to show a product. */
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
+}
+
+/**
+ * The product as one region's visitor sees it: regional overrides applied, the
+ * Amazon link for that country set as the affiliate link, and no price (Amazon
+ * limits how long a price may be shown, so the page sends readers to Amazon for it).
+ * Null when the product is not sold in that region.
+ */
+export function resolveProduct(p: Product, region: Region): Product | null {
+  const offer = p.offers?.[region];
+  if (!p.regions?.includes(region) || !offer) return null;
+  return {
+    ...p,
+    ...p.regional?.[region],
+    priceUsd: null,
+    priceCheckedAt: null,
+    affiliateUrl: amazonUrl(region, offer.asin),
+    retailer: "Amazon",
+    redirectAllowed: false,
+  };
+}
+
+/** Every pick sold in a region, resolved for it, in display order. */
+export function productsFor(region: Region): Product[] {
+  return products.flatMap((p) => resolveProduct(p, region) ?? []);
+}
+
+export function getProductFor(slug: string, region: Region): Product | undefined {
+  const p = getProduct(slug);
+  return p ? (resolveProduct(p, region) ?? undefined) : undefined;
+}
+
+/** The pick for a category in a region, so a visitor sent to the other region's product lands on theirs. */
+export function pickFor(category: Product["category"], region: Region): Product | undefined {
+  return productsFor(region).find((p) => p.category === category);
 }
 
 /** Price per serving in USD, or null if either figure is still unverified. */
@@ -598,9 +855,9 @@ export function costPerServing(p: Product): number | null {
  * if you took all three. Null the moment any pick's cost per serving is
  * unverified, rather than silently summing over a gap.
  */
-export function totalDailyCost(): number | null {
+export function totalDailyCost(list: Product[] = products): number | null {
   let total = 0;
-  for (const p of products) {
+  for (const p of list) {
     const c = costPerServing(p);
     if (c === null) return null;
     total += c;
@@ -620,6 +877,8 @@ export function outboundUrl(p: Product): string {
  * keep it; everything else links straight to the affiliate URL.
  */
 export function usesRedirect(p: Product): boolean {
+  // Amazon bars redirecting links, so anything sold there links straight out.
+  if (p.offers && Object.keys(p.offers).length > 0) return false;
   return p.affiliateUrl === null || p.redirectAllowed;
 }
 

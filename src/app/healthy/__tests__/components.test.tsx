@@ -5,11 +5,24 @@ import {
   BuyButton,
   FdaDisclaimer,
   GoalChooser,
+  PriceLine,
   ProductCard,
   SupplementCard,
   supplementHref,
 } from "../components.tsx";
-import { buyHref, getSupplement, goals, products, tileGoals, type Product, type Supplement } from "../data.ts";
+import {
+  AMAZON_ASSOCIATE_STATEMENT,
+  buyHref,
+  getProductFor,
+  productsFor,
+  getSupplement,
+  goals,
+  localizeGoal,
+  products,
+  tileGoals,
+  type Product,
+  type Supplement,
+} from "../data.ts";
 
 function baseProduct(overrides: Partial<Product> = {}): Product {
   return {
@@ -40,6 +53,8 @@ function baseProduct(overrides: Partial<Product> = {}): Product {
     redirectAllowed: false,
     lastReviewed: null,
     verified: false,
+    regions: [],
+    offers: {},
     ...overrides,
   };
 }
@@ -139,6 +154,77 @@ test("FdaDisclaimer renders the required DSHEA disclaimer text", () => {
   );
 });
 
+test("FdaDisclaimer defaults to the US wording with the data-fda-disclaimer marker", () => {
+  const el = FdaDisclaimer();
+  assert.equal(el.props["data-fda-disclaimer"], true);
+  assert.equal(el.props["data-uk-disclaimer"], undefined);
+});
+
+test("FdaDisclaimer for US is the same as the default", () => {
+  assert.deepEqual(FdaDisclaimer({ region: "US" }), FdaDisclaimer());
+});
+
+test("FdaDisclaimer for GB renders the UK wording and never mentions the FDA", () => {
+  const el = FdaDisclaimer({ region: "GB" });
+  const text = (el.props.children as string).replace(/\s+/g, " ");
+  assert.equal(el.props["data-uk-disclaimer"], true);
+  assert.equal(el.props["data-fda-disclaimer"], undefined);
+  assert.match(text, /Food supplements should not replace a varied, balanced diet/);
+  assert.match(text, /Do not exceed the recommended intake/);
+  assert.doesNotMatch(text, /Food and Drug Administration|diagnose, treat, cure/);
+});
+
+test("FdaDisclaimer for US does not carry the UK wording", () => {
+  const el = FdaDisclaimer({ region: "US" });
+  assert.doesNotMatch(String(el.props.children), /Food supplements should not replace/);
+});
+
+test("FdaDisclaimer keeps the dark tone in both regions", () => {
+  assert.match(FdaDisclaimer({ dark: true, region: "US" }).props.className as string, /bg-slate-900\/90/);
+  assert.match(FdaDisclaimer({ dark: true, region: "GB" }).props.className as string, /bg-slate-900\/90/);
+  assert.match(FdaDisclaimer({ region: "GB" }).props.className as string, /bg-bg-panel/);
+});
+
+test("AFFILIATE_DISCLOSURE starts with the Amazon Associate sentence", () => {
+  assert.ok(AFFILIATE_DISCLOSURE.startsWith("As an Amazon Associate I earn from qualifying purchases."));
+  assert.ok(AFFILIATE_DISCLOSURE.startsWith(AMAZON_ASSOCIATE_STATEMENT));
+});
+
+test("PriceLine shows a dollar price when the product has one", () => {
+  const el = PriceLine({ product: baseProduct({ priceUsd: 24.5 }) });
+  assert.equal(el.type, "span");
+  assert.equal(el.props.children, "$24.50");
+});
+
+test("PriceLine sends the reader to the retailer when there is no price", () => {
+  const el = PriceLine({ product: baseProduct({ priceUsd: null, retailer: "Amazon" }) });
+  assert.deepEqual(el.props.children, ["Price on ", "Amazon"]);
+});
+
+test("PriceLine shows the being-verified marker when there is no price and no retailer", () => {
+  const el = PriceLine({ product: baseProduct({ priceUsd: null, retailer: undefined }) });
+  assert.equal(typeof el.type, "function");
+  assert.equal((el.type as { name: string }).name, "Pending");
+});
+
+test("PriceLine treats a price of zero as a price, not as missing", () => {
+  const el = PriceLine({ product: baseProduct({ priceUsd: 0, retailer: "Amazon" }) });
+  assert.equal(el.props.children, "$0.00");
+});
+
+test("BuyButton for a resolved Amazon product links straight to Amazon and is labelled Amazon", () => {
+  const product = getProductFor("pure-encapsulations-creatine", "US") as Product;
+  const [link] = children(renderButton(product)) as [{ props: Record<string, unknown> }];
+  assert.equal(link.props.href, "https://www.amazon.com/dp/B0FSGYKS5Z?tag=getbrian-20");
+  assert.equal(buttonLabel(product), "Check price at Amazon");
+});
+
+test("BuyButton for the UK pick links straight to amazon.co.uk with the -21 tag", () => {
+  const product = getProductFor("thorne-creatine", "GB") as Product;
+  const [link] = children(renderButton(product)) as [{ props: Record<string, unknown> }];
+  assert.equal(link.props.href, "https://www.amazon.co.uk/dp/B07978VPPH?tag=getbrian-21");
+});
+
 test("BuyButton label can be overridden, as the homepage cards do", () => {
   const el = BuyButton({ product: baseProduct(), from: "picks", label: "Buy Now" });
   const [link] = children(el) as [{ props: { children: unknown[] } }];
@@ -159,7 +245,8 @@ function cardContent(product: Product): unknown[] {
 
 function cardButtons(product: Product) {
   const kids = cardContent(product);
-  const row = kids[kids.length - 1] as { props: { children: unknown[] } };
+  // The button row is second to last: the Amazon statement paragraph follows it.
+  const row = kids[kids.length - 2] as { props: { children: unknown[] } };
   return row.props.children as [
     { props: Record<string, unknown> },
     { props: { href: string; children: unknown } },
@@ -175,9 +262,51 @@ test('ProductCard button row holds "Buy Now" then "View Product", side by side',
   assert.equal(view.props.children, "View Product");
 });
 
-test("ProductCard's Buy button omits the affiliate disclosure paragraph (the banner or the phone line covers it there)", () => {
+test("ProductCard's Buy button omits the full affiliate disclosure paragraph", () => {
   const [buy] = cardButtons(baseProduct());
   assert.equal(buy.props.showDisclosure, false);
+  const text = textOf(cardContent(baseProduct()));
+  assert.doesNotMatch(text, /may earn a commission at no extra cost to you/);
+});
+
+test("ProductCard shows the Amazon Associate sentence in its own paragraph under the buttons, for every real pick in both regions", () => {
+  for (const region of ["US", "GB"] as const) {
+    for (const product of productsFor(region)) {
+      const kids = cardContent(product) as { type: unknown; props: Record<string, unknown> }[];
+      const last = kids[kids.length - 1];
+      assert.equal(last.type, "p", `${product.slug} ${region}`);
+      assert.equal(last.props["data-amazon-statement"], true, `${product.slug} ${region}`);
+      assert.equal(last.props.children, "As an Amazon Associate I earn from qualifying purchases.");
+    }
+  }
+});
+
+test("ProductCard for an Amazon pick shows no dollar amount and names Amazon as where the price is", () => {
+  const product = getProductFor("pure-encapsulations-magnesium-glycinate", "US") as Product;
+  const text = textOf(cardContent(product));
+  assert.match(text, /Current price on\s+Amazon/);
+  assert.doesNotMatch(text, /\$\d/);
+});
+
+test("ProductCard for a product with a price still shows it", () => {
+  const text = textOf(cardContent(baseProduct({ priceUsd: 30, servingsPerContainer: 60 })));
+  assert.match(text, /\$30\.00/);
+});
+
+test("ProductCard Buy button for a resolved pick goes straight to Amazon, never through /healthy/go", () => {
+  const product = getProductFor("pure-encapsulations-l-theanine", "GB") as Product;
+  const [buy] = cardButtons(product);
+  assert.equal(buy.props.product, product);
+  assert.equal(buyHref(buy.props.product as Product, "picks"), "https://www.amazon.co.uk/dp/B07JZFQWTL?tag=getbrian-21");
+});
+
+test("ProductCard strapline for GB L-theanine uses the UK role, not the relaxation wording", () => {
+  const product = getProductFor("pure-encapsulations-l-theanine", "GB") as Product;
+  const gb = textOf(ProductCard({ product, region: "GB" }));
+  const us = textOf(ProductCard({ product, region: "US" }));
+  assert.match(gb, /Evening routine/);
+  assert.doesNotMatch(gb, /Calm and relaxation/);
+  assert.match(us, /Calm and relaxation/);
 });
 
 test("ProductCard no longer prints the brand and format line", () => {
@@ -219,43 +348,78 @@ function withTempProducts<T>(temp: Product[], fn: () => T): T {
   }
 }
 
-test("supplementHref returns the single product page when exactly one pick exists (real data, magnesium)", () => {
-  const magnesiumPicks = products.filter((p) => p.category === "Magnesium");
-  assert.equal(magnesiumPicks.length, 1, "fixture assumption: exactly one magnesium product exists");
-  assert.equal(
-    supplementHref(getSupplement("magnesium")),
-    `/healthy/products/${magnesiumPicks[0].slug}`,
-  );
-});
-
-test("supplementHref returns the single product page when exactly one pick exists (real data, creatine)", () => {
-  const creatinePicks = products.filter((p) => p.category === "Creatine");
-  assert.equal(creatinePicks.length, 1, "fixture assumption: exactly one creatine product exists");
+test("supplementHref defaults to the US pick", () => {
   assert.equal(
     supplementHref(getSupplement("creatine")),
-    `/healthy/products/${creatinePicks[0].slug}`,
+    "/healthy/products/pure-encapsulations-creatine",
   );
 });
 
-test("supplementHref returns the single product page when exactly one pick exists (real data, l-theanine)", () => {
-  const theaninePicks = products.filter((p) => p.category === "L-theanine");
-  assert.equal(theaninePicks.length, 1, "fixture assumption: exactly one l-theanine product exists");
+test("supplementHref returns the US magnesium review for a US visitor", () => {
   assert.equal(
-    supplementHref(getSupplement("l-theanine")),
-    `/healthy/products/${theaninePicks[0].slug}`,
+    supplementHref(getSupplement("magnesium"), "US"),
+    "/healthy/products/pure-encapsulations-magnesium-glycinate",
   );
 });
 
-test("supplementHref returns only the first pick's page once a category grows to more than one pick", () => {
+test("supplementHref returns the US creatine review for a US visitor", () => {
+  assert.equal(
+    supplementHref(getSupplement("creatine"), "US"),
+    "/healthy/products/pure-encapsulations-creatine",
+  );
+});
+
+test("supplementHref returns the UK creatine review for a GB visitor, not the US one", () => {
+  assert.equal(supplementHref(getSupplement("creatine"), "GB"), "/healthy/products/thorne-creatine");
+});
+
+test("supplementHref returns the same magnesium and L-theanine reviews in both countries", () => {
+  assert.equal(
+    supplementHref(getSupplement("magnesium"), "GB"),
+    "/healthy/products/pure-encapsulations-magnesium-glycinate",
+  );
+  assert.equal(
+    supplementHref(getSupplement("l-theanine"), "GB"),
+    "/healthy/products/pure-encapsulations-l-theanine",
+  );
+  assert.equal(
+    supplementHref(getSupplement("l-theanine"), "US"),
+    "/healthy/products/pure-encapsulations-l-theanine",
+  );
+});
+
+test("supplementHref returns null when the supplement has no category", () => {
+  assert.equal(supplementHref(baseSupplement({ category: null }), "US"), null);
+});
+
+test("supplementHref returns only the first pick's page once a category has more than one pick in a region", () => {
   // The program keeps one pick per category on purpose, so this pins the
   // fallback behavior if a category ever temporarily grows to two.
-  const extraMagnesium = baseProduct({ slug: "fixture-magnesium-2", category: "Magnesium" });
+  const extraMagnesium = baseProduct({
+    slug: "fixture-magnesium-2",
+    category: "Magnesium",
+    regions: ["US"],
+    offers: { US: { asin: "B000000000" } },
+  });
   withTempProducts([extraMagnesium], () => {
-    const magnesiumPicks = products.filter((p) => p.category === "Magnesium");
-    assert.equal(magnesiumPicks.length, 2, "fixture assumption: two magnesium products now exist");
     assert.equal(
-      supplementHref(getSupplement("magnesium")),
-      `/healthy/products/${magnesiumPicks[0].slug}`,
+      supplementHref(getSupplement("magnesium"), "US"),
+      "/healthy/products/pure-encapsulations-magnesium-glycinate",
+    );
+  });
+});
+
+test("supplementHref ignores a pick that is not sold in the visitor's region", () => {
+  const usOnly = baseProduct({
+    slug: "fixture-theanine-us-only",
+    category: "L-theanine",
+    regions: ["US"],
+    offers: { US: { asin: "B000000000" } },
+  });
+  withTempProducts([usOnly], () => {
+    assert.equal(
+      supplementHref(getSupplement("l-theanine"), "GB"),
+      "/healthy/products/pure-encapsulations-l-theanine",
     );
   });
 });
@@ -317,21 +481,47 @@ test('GoalChooser "strength" goal links to the same creatine review with no hash
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
   const strengthIndex = tileGoals.findIndex((g) => g.id === "strength");
   const anchor = items[strengthIndex].props.children;
-  assert.equal(anchor.props.href, "/healthy/products/thorne-creatine-stick-packs");
+  assert.equal(anchor.props.href, "/healthy/products/pure-encapsulations-creatine");
+});
+
+test('GoalChooser "strength" goal links to the UK creatine for a GB visitor', () => {
+  const items = listItems(GoalChooser({ region: "GB" })) as { props: { children: { props: Record<string, unknown> } } }[];
+  const strengthIndex = tileGoals.findIndex((g) => g.id === "strength");
+  const anchor = items[strengthIndex].props.children;
+  assert.equal(anchor.props.href, "/healthy/products/thorne-creatine");
+});
+
+test('GoalChooser "calm" tile for a GB visitor is relabelled "Evening" and says nothing about calm or stress', () => {
+  const items = listItems(GoalChooser({ region: "GB" })) as { props: { children: { props: { children: unknown[] } } } }[];
+  const calmIndex = tileGoals.findIndex((g) => g.id === "calm");
+  const anchorChildren = items[calmIndex].props.children.props.children;
+  const contentDiv = anchorChildren[2] as { props: { children: { props: { children: unknown } }[] } };
+  const [, , labelSpan, hookParagraph] = contentDiv.props.children;
+  assert.equal(labelSpan.props.children, "Evening");
+  assert.equal(hookParagraph.props.children, "Meet L-theanine, an amino acid found naturally in tea.");
+});
+
+test('GoalChooser "calm" tile for a US visitor keeps the "Calm" label', () => {
+  const items = listItems(GoalChooser({ region: "US" })) as { props: { children: { props: { children: unknown[] } } } }[];
+  const calmIndex = tileGoals.findIndex((g) => g.id === "calm");
+  const anchorChildren = items[calmIndex].props.children.props.children;
+  const contentDiv = anchorChildren[2] as { props: { children: { props: { children: unknown } }[] } };
+  const [, , labelSpan] = contentDiv.props.children;
+  assert.equal(labelSpan.props.children, "Calm");
 });
 
 test('GoalChooser "energy" goal links to the magnesium review with no hash', () => {
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
   const energyIndex = tileGoals.findIndex((g) => g.id === "energy");
   const anchor = items[energyIndex].props.children;
-  assert.equal(anchor.props.href, "/healthy/products/thorne-magnesium-glycinate");
+  assert.equal(anchor.props.href, "/healthy/products/pure-encapsulations-magnesium-glycinate");
 });
 
 test('GoalChooser "calm" goal links to the l-theanine review with no hash', () => {
   const items = listItems(GoalChooser()) as { props: { children: { props: Record<string, unknown> } } }[];
   const calmIndex = tileGoals.findIndex((g) => g.id === "calm");
   const anchor = items[calmIndex].props.children;
-  assert.equal(anchor.props.href, "/healthy/products/thorne-theanine");
+  assert.equal(anchor.props.href, "/healthy/products/pure-encapsulations-l-theanine");
 });
 
 // ---------------------------------------------------------------------------

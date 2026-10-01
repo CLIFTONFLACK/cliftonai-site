@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { healthyOpenGraph } from "../layout";
 import { FdaDisclaimer, PageHeading, Prose } from "../components";
-import { CONTACT_EMAIL, PROGRAM_NAME } from "../data";
+import { AMAZON_ASSOCIATE_STATEMENT, CONTACT_EMAIL, PROGRAM_NAME } from "../data";
+import { getRegion } from "../region-server";
 
 const title = "Disclosures";
 const description =
@@ -14,9 +15,10 @@ export const metadata: Metadata = {
   openGraph: { ...healthyOpenGraph, title, description, url: "/healthy/disclosures" },
 };
 
-const UPDATED = "September 24, 2026";
+const UPDATED = "October 1, 2026";
 
-export default function DisclosuresPage() {
+export default async function DisclosuresPage() {
+  const region = await getRegion();
   return (
     <div className="px-4 py-12 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-3xl">
@@ -27,9 +29,17 @@ export default function DisclosuresPage() {
           <Prose>
             <h2>Affiliate links</h2>
             <p>
-              Some links to retailers and brands are affiliate links. If you click one and buy, the
-              retailer may pay GetBrian a commission. You pay the same price. Every such link is
-              labeled where it appears.
+              <strong>{AMAZON_ASSOCIATE_STATEMENT}</strong> The Buy buttons on these pages are
+              affiliate links to Amazon. If you click one and buy, Amazon pays GetBrian a commission.
+              You pay the same price. Every such link is labeled where it appears, and the buttons
+              go straight to Amazon, with no redirect through this site.
+            </p>
+            <p>
+              GetBrian is a participant in the Amazon Services LLC Associates Program (Amazon.com)
+              and in the Amazon EU Associates Programme (Amazon.co.uk), affiliate advertising
+              programs designed to let sites earn fees by linking to Amazon. US visitors are sent to
+              Amazon.com and UK visitors to Amazon.co.uk, each with that country&apos;s own
+              Associates tag.
             </p>
             <p>
               Commissions do not decide which products are listed or how they are graded. A product
@@ -47,7 +57,7 @@ export default function DisclosuresPage() {
             </p>
           </Prose>
           <div className="mt-6">
-            <FdaDisclaimer />
+            <FdaDisclaimer region={region} />
           </div>
           <Prose>
             <h2>How reviews are made</h2>
@@ -55,7 +65,16 @@ export default function DisclosuresPage() {
               Reviews are based on published research and product labels, gathered with the help of
               AI tools and checked by a person before publishing. No doctor or patient panel has
               evaluated these products yet. Prices and labels change; the retailer&apos;s own page
-              is always the current source.
+              is always the current source, which is why these pages show no prices.
+            </p>
+
+            <h2>United Kingdom and United States</h2>
+            <p>
+              The picks differ by country because each country&apos;s Amazon sells different
+              listings, and because the rules on what a supplement may claim differ. In the UK,
+              health claims are limited to those on the Great Britain Nutrition and Health Claims
+              Register, so pages for UK visitors make fewer claims, and none for L-theanine. Visitors
+              outside the UK see the US picks. You can change country at any time in the footer.
             </p>
 
             <h2>Names and trademarks</h2>
@@ -67,9 +86,12 @@ export default function DisclosuresPage() {
 
             <h2 id="privacy">Privacy</h2>
             <p>
-              When you click a link to a retailer, we count the click against the product, without
-              recording who you are. Retailers and affiliate networks set their own cookies once you
-              reach their sites, under their own privacy policies.
+              To show the right country&apos;s picks, the page reads the country your connection
+              appears to come from. It is used only to choose which picks to show, and this site does not store it. If you
+              change country in the footer, one cookie remembers your choice for a year. It holds
+              only the word US or GB, and it is not used for tracking or advertising. Amazon and its
+              affiliate program set their own cookies once you reach their sites, under their own
+              privacy policies. We do not count or log clicks on the Buy buttons.
             </p>
             <p>
               The only personal information these pages ask for is an email address, and only if you
