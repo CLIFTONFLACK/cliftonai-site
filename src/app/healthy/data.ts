@@ -639,12 +639,15 @@ export const products: Product[] = [
     offers: { US: { asin: "B07P5K7DQP" }, GB: { asin: "B087B93NJB" } },
     regional: {
       GB: {
+        // The UK bottle: a claim-free label, 90 capsules, and a two-capsule serving (45 servings).
         // The US bottle photo carries US health-claim wording, which cannot appear in UK advertising.
-        image: null,
+        image: "/healthy/products/pure-encapsulations-magnesium-glycinate-uk.png",
         imageNote: undefined,
+        servingSize: "2 capsules",
+        servingsPerContainer: 45,
         summary: "Single-ingredient magnesium glycinate, 120 mg a capsule.",
         advantage: "A single ingredient at 120 mg a capsule, so the label is easy to check and the dose easy to adjust",
-        ingredients: [{ name: "Magnesium (as magnesium glycinate)", amount: "120 mg" }],
+        ingredients: [{ name: "Magnesium (as magnesium glycinate)", amount: "240 mg (120 mg per capsule)" }],
         evidence: MAGNESIUM_EVIDENCE_GB,
         safety: [
           "Do not take magnesium supplements if you have kidney disease unless your doctor advises it.",
@@ -793,8 +796,8 @@ export const products: Product[] = [
       // No L-theanine health claim is authorised in Great Britain, so this version
       // states the label and nothing about what the ingredient does.
       GB: {
-        // The US bottle photo carries US relaxation wording, which cannot appear in UK advertising.
-        image: null,
+        // The UK bottle photo has a claim-free label. The US one carries US relaxation wording, which cannot appear in UK advertising.
+        image: "/healthy/products/pure-encapsulations-l-theanine-uk.png",
         imageNote: undefined,
         servingSize: "1 capsule",
         summary: "200 mg of L-theanine (as Suntheanine) a capsule, 60 capsules a bottle.",

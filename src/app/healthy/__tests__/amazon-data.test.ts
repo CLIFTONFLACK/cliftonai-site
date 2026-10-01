@@ -355,12 +355,22 @@ test("every packshot a product can show exists under public/", async () => {
   }
 });
 
-test("UK visitors get no packshot for the Pure Encapsulations bottles, whose US labels carry US health claims", () => {
+test("UK visitors get the UK-label bottle photo, never the US one, whose label carries US health claims", () => {
   for (const slug of ["pure-encapsulations-magnesium-glycinate", "pure-encapsulations-l-theanine"]) {
-    assert.ok(getProductFor(slug, "US")!.image, `${slug} US must have a packshot, or this check is vacuous`);
-    assert.equal(getProductFor(slug, "GB")!.image, null, slug);
+    const us = getProductFor(slug, "US")!.image;
+    const gb = getProductFor(slug, "GB")!.image;
+    assert.ok(us, `${slug} US must have a packshot, or this check is vacuous`);
+    assert.match(gb ?? "", /-uk\.png$/, slug);
+    assert.notEqual(gb, us, slug);
     assert.equal(getProductFor(slug, "GB")!.imageNote, undefined, slug);
   }
+});
+
+test("UK magnesium follows the UK bottle: 2 capsules a serving, 45 servings, 240 mg", () => {
+  const gb = getProductFor("pure-encapsulations-magnesium-glycinate", "GB")!;
+  assert.equal(gb.servingSize, "2 capsules");
+  assert.equal(gb.servingsPerContainer, 45);
+  assert.match(gb.ingredients[0].amount ?? "", /^240 mg/);
 });
 
 test("the UK creatine and the US creatine each show their own tub", () => {
