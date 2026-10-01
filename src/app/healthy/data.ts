@@ -773,7 +773,7 @@ export const products: Product[] = [
       "Interactions with sedatives have not been ruled out; check with a pharmacist if you take one.",
     ],
     pros: [
-      "Suntheanine, the branded form used in much of the human research on L-theanine",
+      "Suntheanine, a branded, purified form of L-theanine, named on the bottle's label",
       "Single ingredient, 200 mg a capsule",
     ],
     cons: [

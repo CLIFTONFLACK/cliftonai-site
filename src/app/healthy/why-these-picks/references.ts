@@ -133,7 +133,7 @@ export const references: ProductReference[] = [
       },
     ],
     ourRead:
-      "The independent research is a systematic review of 9 human randomized controlled trials on stress and anxiety, and a separate crossover trial measuring brain activity directly: real, but small and narrow. “Clinically studied” is true of the Suntheanine ingredient in general, not of this product. The UK listing names Suntheanine; Brian could not confirm that the US bottle does. The US listing's relaxation and stress wording is not allowed in UK advertising.",
+      "The independent research is a systematic review of 9 human randomized controlled trials on stress and anxiety, and a separate crossover trial measuring brain activity directly: real, but small and narrow. “Clinically studied” is true of the Suntheanine ingredient in general, not of this product. Both bottles name Suntheanine: the UK listing says so in its title, and the US bottle's own label reads “With Suntheanine®”. The US listing's relaxation and stress wording is not allowed in UK advertising.",
     gb: {
       brandClaims: [
         {
