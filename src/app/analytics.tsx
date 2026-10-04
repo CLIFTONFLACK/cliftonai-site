@@ -44,14 +44,14 @@ export function Analytics() {
     // The flag is Google's documented off switch; flipping it back on a re-grant matters
     // because the init script does not run twice in one page view.
     const w = window as unknown as Record<string, unknown> & { gtag?: (...args: unknown[]) => void };
-    w[`ga-disable-${GA_MEASUREMENT_ID}`] = consent !== "granted";
+    w[`ga-disable-${GA_MEASUREMENT_ID}`] = consent !== "granted" || isExcludedPath(pathname);
     if (consent === "denied") {
       w.gtag?.("consent", "update", { analytics_storage: "denied" }); // match Google's own consent state
       clearGaCookies(document, hostname);
     } else if (consent === "granted") {
       w.gtag?.("consent", "update", { analytics_storage: "granted" });
     }
-  }, [consent, hostname]);
+  }, [consent, hostname, pathname]);
 
   if (!hostname || isExcludedPath(pathname)) return null;
   const load = consent === "granted" && isTrackedHost(hostname);
