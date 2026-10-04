@@ -13,7 +13,7 @@ import { HeroMascot } from "./hero-mascot";
 /**
  * The homepage's display face. It takes over `--font-heading` for this page
  * only, through the wrapper in `Home`, so every `font-heading` utility below
- * picks it up while /healthy, /cliftonflack and the legal pages keep the root
+ * picks it up while /cliftonflack and the legal pages keep the root
  * layout's Space Grotesk.
  *
  * No `weight`: that loads the variable font, which the 600-800 range here

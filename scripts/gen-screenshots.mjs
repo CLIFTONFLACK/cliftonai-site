@@ -53,7 +53,7 @@ const OUT_H = 563;
  */
 const CAPTURE_HEIGHT = {
   crm: 735,
-  // Healthy (www.getbrian.xyz/healthy): hero ends near y=705.
+  // Healthy (www.getbrianhealthy.xyz): hero ends near y=705.
   www: 705,
 };
 const SCALE = 2; // capture at 2x, downsample — much crisper text than a 1x grab
@@ -96,7 +96,7 @@ function readTargets() {
     const category = grab("category");
     const name = grab("name");
     if (href && screenshot && category === "self") {
-      // Healthy lives on the main site, so its href is a path. Shoot production.
+      // Self-category hrefs are absolute; the base only resolves any relative ones.
       out.push({ name, href: new URL(href, "https://www.getbrian.xyz").href, screenshot });
     }
   }

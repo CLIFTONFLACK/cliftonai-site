@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import nextConfig, { HEALTHY_HOST } from "../../../next.config.ts";
-import { getProduct } from "../healthy/data.ts";
 
 type Redirect = { source: string; destination: string; permanent: boolean };
 
@@ -10,10 +9,10 @@ async function redirects(): Promise<Redirect[]> {
   return (await nextConfig.redirects()) as Redirect[];
 }
 
-const THORNE: Record<string, { to: string; category: string }> = {
-  "/healthy/products/thorne-magnesium-glycinate": { to: "pure-encapsulations-magnesium-glycinate", category: "Magnesium" },
-  "/healthy/products/thorne-creatine-stick-packs": { to: "pure-encapsulations-creatine", category: "Creatine" },
-  "/healthy/products/thorne-theanine": { to: "pure-encapsulations-l-theanine", category: "L-theanine" },
+const THORNE: Record<string, { to: string }> = {
+  "/healthy/products/thorne-magnesium-glycinate": { to: "pure-encapsulations-magnesium-glycinate" },
+  "/healthy/products/thorne-creatine-stick-packs": { to: "pure-encapsulations-creatine" },
+  "/healthy/products/thorne-theanine": { to: "pure-encapsulations-l-theanine" },
 };
 
 test("the new host is the canonical www host of the standalone site", () => {
@@ -36,9 +35,16 @@ test("retired Thorne slugs go straight to the new site's Pure Encapsulations pag
   }
 });
 
-test("each Thorne redirect keeps the old slug's ingredient and lands on a live product", () => {
-  for (const [source, { to, category }] of Object.entries(THORNE)) {
-    assert.equal(getProduct(to)?.category, category, source);
+test("each Thorne redirect keeps the old slug's ingredient in the destination slug", () => {
+  // The product data lives in the GetBrianHealthy repo now, so the live slugs
+  // are pinned here; update both together if a pick is ever renamed there.
+  const ingredient: Record<string, string> = {
+    "/healthy/products/thorne-magnesium-glycinate": "magnesium",
+    "/healthy/products/thorne-creatine-stick-packs": "creatine",
+    "/healthy/products/thorne-theanine": "theanine",
+  };
+  for (const [source, { to }] of Object.entries(THORNE)) {
+    assert.ok(to.includes(ingredient[source]), `${source} -> ${to}`);
   }
 });
 
