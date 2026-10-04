@@ -96,7 +96,7 @@ export function Analytics() {
           <h2 className="font-heading text-base font-semibold text-fg">Cookies</h2>
           <p className="mt-1 text-sm text-fg-muted">
             Can we use Google Analytics cookies to see which pages people visit? No ads and nothing is sold. We
-            remember your choice on this device, and you can change it any time with the "Cookie settings" link.
+            remember your choice on this device, and you can change it any time with the &ldquo;Cookie settings&rdquo; link.
           </p>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <button
