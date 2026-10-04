@@ -110,7 +110,7 @@ export const products: Product[] = [
   },
   {
     // No structure/function claims in this copy: those need the FDA
-    // disclaimer, and the homepage does not carry it. /healthy does.
+    // disclaimer, and the homepage does not carry it. The Healthy site does.
     name: "Healthy",
     shortName: "Healthy",
     accent: "#046d7c",
@@ -125,8 +125,8 @@ export const products: Product[] = [
     ],
     description:
       "The supplement aisle sells forty bottles and no reasons. Brian's Human Longevity Program picks three, gives each one job, and explains every pick from the clinical research, dose included. You get a short routine you understand, not a cupboard of guesses.",
-    href: "/healthy",
-    subdomain: "getbrian.xyz/healthy",
+    href: "https://www.getbrianhealthy.xyz",
+    subdomain: "getbrianhealthy.xyz",
     status: "live",
     screenshot: "/screenshots/healthy.jpg",
     category: "self",

@@ -14,10 +14,10 @@ test.before(async () => {
   ({ default: robots } = await import("../robots.ts"));
 });
 
-test("disallows crawling the Buy-button redirect path", () => {
+test("does not disallow /healthy: crawlers must reach the redirects to the new domain", () => {
   const { rules } = robots();
   const disallow = Array.isArray(rules.disallow) ? rules.disallow : [rules.disallow];
-  assert.ok(disallow.includes("/healthy/go/"));
+  assert.ok(disallow.every((path) => !path?.includes("healthy")));
 });
 
 test("still allows crawling the site generally", () => {
