@@ -125,8 +125,8 @@ export const products: Product[] = [
     ],
     description:
       "The supplement aisle sells forty bottles and no reasons. Brian's Human Longevity Program picks three, gives each one job, and explains every pick from the clinical research, dose included. You get a short routine you understand, not a cupboard of guesses.",
-    href: "/healthy",
-    subdomain: "getbrian.xyz/healthy",
+    href: "https://getbrianhealthy.xyz",
+    subdomain: "getbrianhealthy.xyz",
     status: "live",
     screenshot: "/screenshots/healthy.jpg",
     category: "self",
@@ -262,8 +262,8 @@ export const products: Product[] = [
     ],
     description:
       "Cycling somewhere new means stopping at every junction to check a map. BikeMe follows your GPS along a route and tells you every turn at 400 metres and again as you reach it, on the cycle paths and quiet lanes car sat-navs skip. You get to keep riding, not keep checking your phone.",
-    href: "https://bikeme-usgc.vercel.app",
-    subdomain: "bikeme-usgc.vercel.app",
+    href: "https://bikeme.getbrian.xyz",
+    subdomain: "bikeme.getbrian.xyz",
     status: "live",
     screenshot: "/screenshots/bikeme.jpg",
     category: "client",

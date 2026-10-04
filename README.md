@@ -178,7 +178,7 @@ this file was updated. Use `*.getbrian.xyz`.
 | CRM | self | crm.getbrian.xyz |
 | DiffDoc | self | diffdoc.getbrian.xyz |
 | DealMaker | self | dealmaker.getbrian.xyz |
-| Healthy | self | getbrian.xyz/healthy (`/healthy`) |
+| Healthy | self | getbrianhealthy.xyz |
 | Merlows News | client | merlows.com |
 | Empirely Game | client | empirely.getbrian.xyz |
 | GetForged | client | getforged.getbrian.xyz |
@@ -186,7 +186,7 @@ this file was updated. Use `*.getbrian.xyz`.
 | HYDRGEL | client | hydrgel.com |
 | Vance Health Hub | client | vancehealthhub.co.uk |
 | Ai Simulator | client | anatop-simulator.vercel.app |
-| BikeMe | client | bikeme-usgc.vercel.app |
+| BikeMe | client | bikeme.getbrian.xyz |
 
 ## Deploy
 
