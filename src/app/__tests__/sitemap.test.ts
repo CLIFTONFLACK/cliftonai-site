@@ -20,19 +20,12 @@ test.before(async () => {
   ({ default: sitemap } = await import("../sitemap.ts"));
 });
 
-test("includes every /healthy path now that LAUNCHED is true", () => {
+test("lists no /healthy URL: that section moved to getbrianhealthy.xyz and only redirects here", () => {
   const urls = sitemap().map((entry) => entry.url);
-  const healthyUrls = urls.filter((url) => url.includes("/healthy"));
-  assert.deepEqual(healthyUrls, [
-    `${FAKE_SITE_URL}/healthy`,
-    `${FAKE_SITE_URL}/healthy/method`,
-    `${FAKE_SITE_URL}/healthy/why-these-picks`,
-    `${FAKE_SITE_URL}/healthy/about`,
-    `${FAKE_SITE_URL}/healthy/disclosures`,
-    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-magnesium-glycinate`,
-    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-creatine`,
-    `${FAKE_SITE_URL}/healthy/products/pure-encapsulations-l-theanine`,
-  ]);
+  assert.deepEqual(
+    urls.filter((url) => url.includes("/healthy")),
+    [],
+  );
 });
 
 test("still includes the home page and legal pages regardless of LAUNCHED", () => {

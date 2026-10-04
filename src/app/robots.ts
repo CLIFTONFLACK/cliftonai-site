@@ -9,8 +9,7 @@ import { siteUrl } from "./layout";
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    // /healthy/go/ is the Buy-button redirect: nothing to index there.
-    rules: { userAgent: "*", allow: "/", disallow: "/healthy/go/" },
+    rules: { userAgent: "*", allow: "/" },
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   };
