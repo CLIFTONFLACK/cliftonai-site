@@ -7,6 +7,7 @@ import { PricingSection } from "./pricing-section";
 import { products } from "./products-data";
 import { MobileNav, type NavLink } from "./mobile-nav";
 import { StickyCta } from "./sticky-cta";
+import { CookieSettingsButton } from "./analytics";
 import { HeroMascot } from "./hero-mascot";
 
 /**
@@ -371,6 +372,8 @@ export default function Home() {
           >
             Terms
           </Link>
+          {" · "}
+          <CookieSettingsButton />
         </p>
       </footer>
 

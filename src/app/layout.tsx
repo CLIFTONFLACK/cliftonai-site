@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "./analytics";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
@@ -77,6 +78,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg font-body antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );
