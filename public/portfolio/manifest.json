@@ -1,0 +1,375 @@
+{
+  "getbrian/desktop": {
+    "name": "getbrian.xyz home",
+    "url": "https://www.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 6145,
+    "truncated": false,
+    "fullScale": 1.25,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:26:14.986Z",
+    "problems": []
+  },
+  "getbrian/mobile": {
+    "name": "getbrian.xyz home",
+    "url": "https://www.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 9348,
+    "truncated": true,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:26:24.376Z",
+    "problems": []
+  },
+  "flow/desktop": {
+    "name": "ContentFlow",
+    "url": "https://flow.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 6276,
+    "truncated": false,
+    "fullScale": 1.24,
+    "scale": 2,
+    "shotAt": "2026-10-13T15:21:47.560Z",
+    "problems": []
+  },
+  "flow/mobile": {
+    "name": "ContentFlow",
+    "url": "https://flow.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 10198,
+    "truncated": true,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T15:21:58.399Z",
+    "problems": []
+  },
+  "crm/desktop": {
+    "name": "CRM",
+    "url": "https://crm.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 3678,
+    "truncated": false,
+    "fullScale": 1.62,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:40:48.649Z",
+    "problems": []
+  },
+  "crm/mobile": {
+    "name": "CRM",
+    "url": "https://crm.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6088,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:40:56.710Z",
+    "problems": []
+  },
+  "diffdoc/desktop": {
+    "name": "DiffDoc",
+    "url": "https://diffdoc.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 3681,
+    "truncated": false,
+    "fullScale": 1.62,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:00.445Z",
+    "problems": []
+  },
+  "diffdoc/mobile": {
+    "name": "DiffDoc",
+    "url": "https://diffdoc.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6901,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:09.253Z",
+    "problems": []
+  },
+  "dealmaker/desktop": {
+    "name": "DealMaker",
+    "url": "https://dealmaker.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 3913,
+    "truncated": false,
+    "fullScale": 1.57,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:17.682Z",
+    "problems": []
+  },
+  "dealmaker/mobile": {
+    "name": "DealMaker",
+    "url": "https://dealmaker.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6598,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:26.135Z",
+    "problems": []
+  },
+  "getbrian-healthy/desktop": {
+    "name": "Healthy",
+    "url": "https://www.getbrian.xyz/healthy",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 6415,
+    "truncated": false,
+    "fullScale": 1.23,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:36.196Z",
+    "problems": []
+  },
+  "getbrian-healthy/mobile": {
+    "name": "Healthy",
+    "url": "https://www.getbrian.xyz/healthy",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 7888,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:27:46.229Z",
+    "problems": []
+  },
+  "merlows/desktop": {
+    "name": "Merlows News",
+    "url": "https://merlows.com/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 7194,
+    "truncated": false,
+    "fullScale": 0.5,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:18:48.866Z",
+    "problems": [
+      "downscaled (hero x1, full page x0.25) after the page hung at full scale"
+    ]
+  },
+  "merlows/mobile": {
+    "name": "Merlows News",
+    "url": "https://merlows.com/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 9384,
+    "truncated": true,
+    "fullScale": 1,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:19:49.400Z",
+    "problems": [
+      "downscaled (hero x1, full page x0.5) after the page hung at full scale"
+    ]
+  },
+  "empirely/desktop": {
+    "name": "Empirely Game",
+    "url": "https://empirely.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 2866,
+    "truncated": false,
+    "fullScale": 1.84,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:30:48.158Z",
+    "problems": []
+  },
+  "empirely/mobile": {
+    "name": "Empirely Game",
+    "url": "https://empirely.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 4548,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:30:56.317Z",
+    "problems": []
+  },
+  "getforged/desktop": {
+    "name": "GetForged",
+    "url": "https://getforged.getbrian.xyz/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 4892,
+    "truncated": false,
+    "fullScale": 1.4,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:31:09.993Z",
+    "problems": []
+  },
+  "getforged/mobile": {
+    "name": "GetForged",
+    "url": "https://getforged.getbrian.xyz/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 8223,
+    "truncated": true,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:31:22.637Z",
+    "problems": [
+      "viewport 391 != 390 (emulation not applied)",
+      "horizontal overflow: scrollWidth 391 > 390"
+    ]
+  },
+  "therisinglions/desktop": {
+    "name": "The Rising Lions",
+    "url": "https://www.therisinglions.com/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 3748,
+    "truncated": false,
+    "fullScale": 1,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:20:48.075Z",
+    "problems": [
+      "downscaled (hero x1, full page x0.5) after the page hung at full scale"
+    ]
+  },
+  "therisinglions/mobile": {
+    "name": "The Rising Lions",
+    "url": "https://www.therisinglions.com/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6742,
+    "truncated": false,
+    "fullScale": 1,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:21:47.227Z",
+    "problems": [
+      "downscaled (hero x1, full page x0.5) after the page hung at full scale"
+    ]
+  },
+  "hydrgel/desktop": {
+    "name": "HYDRGEL",
+    "url": "https://www.hydrgel.com/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 4987,
+    "truncated": false,
+    "fullScale": 0.5,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:23:33.303Z",
+    "problems": [
+      "downscaled (hero x1, full page x0.25) after the page hung at full scale"
+    ]
+  },
+  "hydrgel/mobile": {
+    "name": "HYDRGEL",
+    "url": "https://www.hydrgel.com/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 7808,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T14:23:43.421Z",
+    "problems": []
+  },
+  "bikeme-usgc/desktop": {
+    "name": "BikeMe",
+    "url": "https://bikeme-usgc.vercel.app/",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 14928,
+    "truncated": true,
+    "fullScale": 1.1,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:35:29.109Z",
+    "problems": []
+  },
+  "bikeme-usgc/mobile": {
+    "name": "BikeMe",
+    "url": "https://bikeme-usgc.vercel.app/",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 28897,
+    "truncated": true,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:35:46.247Z",
+    "problems": []
+  },
+  "healthy-thorne-magnesium-glycinate/desktop": {
+    "name": "Healthy: thorne-magnesium-glycinate",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-magnesium-glycinate",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 4323,
+    "truncated": false,
+    "fullScale": 1.49,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:35:53.884Z",
+    "problems": []
+  },
+  "healthy-thorne-magnesium-glycinate/mobile": {
+    "name": "Healthy: thorne-magnesium-glycinate",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-magnesium-glycinate",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6651,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:36:02.390Z",
+    "problems": []
+  },
+  "healthy-thorne-creatine-stick-packs/desktop": {
+    "name": "Healthy: thorne-creatine-stick-packs",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-creatine-stick-packs",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 3896,
+    "truncated": false,
+    "fullScale": 1.57,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:36:10.123Z",
+    "problems": []
+  },
+  "healthy-thorne-creatine-stick-packs/mobile": {
+    "name": "Healthy: thorne-creatine-stick-packs",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-creatine-stick-packs",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6127,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:36:18.457Z",
+    "problems": []
+  },
+  "healthy-thorne-theanine/desktop": {
+    "name": "Healthy: thorne-theanine",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-theanine",
+    "device": "desktop",
+    "status": 200,
+    "fullHeightCssPx": 4003,
+    "truncated": false,
+    "fullScale": 1.55,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:36:26.178Z",
+    "problems": []
+  },
+  "healthy-thorne-theanine/mobile": {
+    "name": "Healthy: thorne-theanine",
+    "url": "https://www.getbrian.xyz/healthy/products/thorne-theanine",
+    "device": "mobile",
+    "status": 200,
+    "fullHeightCssPx": 6157,
+    "truncated": false,
+    "fullScale": 2,
+    "scale": 2,
+    "shotAt": "2026-10-13T12:36:34.609Z",
+    "problems": []
+  }
+}

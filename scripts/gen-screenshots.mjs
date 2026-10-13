@@ -84,7 +84,7 @@ if (!chrome) {
  * script exists to fix. Guarded by the count assertion below.
  */
 function readTargets() {
-  const src = readFileSync(path.join(root, "src", "app", "products-data.ts"), "utf8");
+  const src = readFileSync(path.join(root, "src", "app", "products-data.ts"), "utf8").replace(/\r\n/g, "\n");
   const body = src.slice(src.indexOf("export const products"));
   const out = [];
   for (const chunk of body.split(/\n  \{\n/).slice(1)) {
