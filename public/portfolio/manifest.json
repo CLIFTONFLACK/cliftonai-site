@@ -28,11 +28,11 @@
     "url": "https://flow.getbrian.xyz/",
     "device": "desktop",
     "status": 200,
-    "fullHeightCssPx": 900,
+    "fullHeightCssPx": 6276,
     "truncated": false,
-    "fullScale": 2,
+    "fullScale": 1.24,
     "scale": 2,
-    "shotAt": "2026-10-13T12:26:30.566Z",
+    "shotAt": "2026-10-13T15:21:47.560Z",
     "problems": []
   },
   "flow/mobile": {
@@ -40,11 +40,11 @@
     "url": "https://flow.getbrian.xyz/",
     "device": "mobile",
     "status": 200,
-    "fullHeightCssPx": 844,
-    "truncated": false,
+    "fullHeightCssPx": 10198,
+    "truncated": true,
     "fullScale": 2,
     "scale": 2,
-    "shotAt": "2026-10-13T12:26:36.336Z",
+    "shotAt": "2026-10-13T15:21:58.399Z",
     "problems": []
   },
   "crm/desktop": {
