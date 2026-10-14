@@ -66,8 +66,8 @@ export default function GetBrianCasePage() {
             />
             <p className="mt-3 text-sm leading-relaxed text-[var(--cf-ink-muted)]">
               <b className="text-[var(--cf-ink)]">ContentFlow.</b> A
-              plain-language-editable WordPress theme, AI content generator,
-              and feedback tool in one plugin. One settings hub, not four
+              plain-language-editable WordPress theme, a writer, a reviewer
+              and AI visibility in one plugin. One settings hub, not four
               logins that never talk to each other.
             </p>
           </div>

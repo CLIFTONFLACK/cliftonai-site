@@ -28,10 +28,10 @@
 
 :root {
   --paper: #ffffff;
-  --paper-panel: #f2f3f5;
+  --paper-panel: #f3f4f6;
   --paper-line: rgba(10, 29, 59, 0.14);
   --ink: #14172b;
-  --ink-muted: #5b6178;
+  --ink-muted: #454a64;
   --blue: #24497f;
   --blue-deep: #0a1d3b;
   --spark: #ba8b32;
@@ -70,10 +70,10 @@
 }
 :root[data-theme="light"] {
   --paper: #ffffff;
-  --paper-panel: #f2f3f5;
+  --paper-panel: #f3f4f6;
   --paper-line: rgba(10, 29, 59, 0.14);
   --ink: #14172b;
-  --ink-muted: #5b6178;
+  --ink-muted: #454a64;
   --blue: #24497f;
   --blue-deep: #0a1d3b;
   --spark: #ba8b32;
@@ -424,7 +424,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       </p>
       <div class="cover-meta">
         <span><b>Campaign line</b> &mdash; &ldquo;If you see Brian, get him.&rdquo;</span>
-        <span><b>Model</b> &mdash; &pound;1,000 build + 50% of current spend, ongoing</span>
+        <span><b>Model</b> &mdash; &pound;2,500 build + 50% of current spend for three years, then owned outright</span>
         <span><b>Market</b> &mdash; UK SMBs, initial launch</span>
       </div>
     </section>
@@ -530,8 +530,8 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
           <thead><tr><th>Say this</th><th>Not this</th></tr></thead>
           <tbody>
             <tr><td>Brian built them a CRM that actually understands licensed property.</td><td>Our platform leverages AI to deliver bespoke CRM solutions.</td></tr>
-            <tr><td>You pay Brian &pound;1,000 once. Then half what your old software cost you, every month.</td><td>Our pricing model unlocks significant cost synergies through AI-driven automation.</td></tr>
-            <tr><td>It's yours. No subscription to cancel, because there isn't one.</td><td>Enjoy seamless, frictionless ownership of your digital transformation journey.</td></tr>
+            <tr><td>You pay Brian &pound;2,500 once. Then half what your old software cost you, every month, for three years. After that it&rsquo;s yours.</td><td>Our pricing model unlocks significant cost synergies through AI-driven automation.</td></tr>
+            <tr><td>After three years it's yours. Nothing to cancel, because there's no subscription left.</td><td>Enjoy seamless, frictionless ownership of your digital transformation journey.</td></tr>
             <tr><td>Brian built it, Brian supports it. One phone number.</td><td>Our dedicated customer success team is here to support your enterprise needs.</td></tr>
           </tbody>
         </table>
@@ -575,8 +575,8 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
         apps and workflows that replace the CRM, project management,
         supply-chain, and marketing software small businesses currently
         rent. It's built around how the business actually works, it's
-        owned outright, and it costs &pound;1,000 to build plus half of
-        whatever the old subscriptions cost &mdash; forever.
+        owned outright after three years, and it costs &pound;2,500 to build
+        plus half of whatever the old subscriptions cost until then.
       </p>
     </section>
 
@@ -637,6 +637,21 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
           <div class="swatch" style="background:#14172B;"></div>
           <div><div class="swatch-name">Ink</div><div class="swatch-hex">#14172B</div></div>
           <div class="swatch-use">Body text and rules.</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#454A64;"></div>
+          <div><div class="swatch-name">Ink Muted</div><div class="swatch-hex">#454A64</div></div>
+          <div class="swatch-use">Secondary text, product names in the lockup. 8.7:1 on white.</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#6B7089;"></div>
+          <div><div class="swatch-name">Ink Subtle</div><div class="swatch-hex">#6B7089</div></div>
+          <div class="swatch-use">Small print and legal lines on white only: 4.9:1 on white, 4.4:1 on Panel, which fails AA.</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#F3F4F6;border:1px solid var(--border);"></div>
+          <div><div class="swatch-name">Panel</div><div class="swatch-hex">#F3F4F6</div></div>
+          <div class="swatch-use">Bands and panels. Corners on cards, inputs and panels are 10px; pills are fully round.</div>
         </div>
       </div>
 
@@ -870,7 +885,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
           <thead><tr><th>Week</th><th>Theme</th></tr></thead>
           <tbody>
             <tr><td>1</td><td>Teaser &mdash; &ldquo;Have you seen Brian?&rdquo; sightings, no explanation</td></tr>
-            <tr><td>2</td><td>Reveal &mdash; what Brian does, the &pound;1,000 + 50% offer explained plainly</td></tr>
+            <tr><td>2</td><td>Reveal &mdash; what Brian does, the &pound;2,500 + 50% offer explained plainly</td></tr>
             <tr><td>3</td><td>Proof &mdash; real case studies told as sightings</td></tr>
             <tr><td>4</td><td>Objections, worked-example pricing posts, direct &ldquo;get Brian&rdquo; CTA push</td></tr>
           </tbody>
@@ -883,7 +898,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       <div class="prompt">Write a LinkedIn post in Brian's voice: plain-spoken British, dry wit, no AI jargon (never "leverage," "seamless," "revolutionise"). Refer to Brian in the third person, like a real person, not a company. Topic: [case study / offer detail]. End with a single clear line, no hashtag stuffing &mdash; #GetBrian only. Under 150 words.</div>
 
       <span class="prompt-label">X / Twitter thread</span>
-      <div class="prompt">Write a 4-tweet thread as if recounting a real job Brian did. Tweet 1 is the hook (a specific, surprising number or before/after). Tweets 2-3 explain what happened in plain terms, no jargon. Tweet 4 is the offer: &pound;1,000 to build, half your old subscription cost after. Voice: dry, understated, British.</div>
+      <div class="prompt">Write a 4-tweet thread as if recounting a real job Brian did. Tweet 1 is the hook (a specific, surprising number or before/after). Tweets 2-3 explain what happened in plain terms, no jargon. Tweet 4 is the offer: &pound;2,500 to build, half your old subscription cost for three years, then it&rsquo;s theirs. Voice: dry, understated, British.</div>
 
       <span class="prompt-label">DM keyword auto-reply</span>
       <div class="prompt">Write a short DM reply Brian would send to someone who commented "[KEYWORD]" on a sighting post. Plain-spoken, no salesy exclamation marks, one clear next step (book a call / reply with their current monthly software spend). Under 40 words.</div>
@@ -907,7 +922,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       <h3 style="font-family:'Brian Display',sans-serif;font-size:1.05rem;margin:28px 0 10px;">Video prompts &mdash; faceless</h3>
 
       <span class="prompt-label">Screen-capture walkthrough</span>
-      <div class="prompt">Script a 30-second voiceover for a screen-recorded walkthrough comparing a client's old software stack to what Brian built. Plain-spoken British voice, dry humour, no jargon. Structure: (1) show the old, clunky multi-tab workflow, (2) show the new single-screen version, (3) state the price line: "&pound;1,000 to build, half the old subscription after." End on the tagline.</div>
+      <div class="prompt">Script a 30-second voiceover for a screen-recorded walkthrough comparing a client's old software stack to what Brian built. Plain-spoken British voice, dry humour, no jargon. Structure: (1) show the old, clunky multi-tab workflow, (2) show the new single-screen version, (3) state the price line: "&pound;2,500 to build, half the old subscription for three years, then it's yours." End on the tagline.</div>
 
       <span class="prompt-label">Kinetic-text bill teardown</span>
       <div class="prompt">Script a 15-second kinetic-typography video: individual subscription line items (CRM &pound;X, project tool &pound;Y, marketing tool &pound;Z) fly in and stack into a total, then get crossed out and replaced by a single smaller number in Brian Gold. No voiceover needed, on-screen text only, ink navy on white background, Space Grotesk-style bold type. No characters or figures &mdash; type and numbers only.</div>
@@ -918,7 +933,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       <h3 style="font-family:'Brian Display',sans-serif;font-size:1.05rem;margin:28px 0 10px;">Video prompts &mdash; presenter</h3>
 
       <span class="prompt-label">Contrarian hook</span>
-      <div class="prompt">Write a 30-second presenter script, contrarian-hook structure: open with a claim people expect ("everyone told this shop to buy a &pound;200/month CRM"), then flip it ("Brian built them one for a grand, and it's theirs"). Plain British voice, direct camera address, end on the tagline "If you see Brian, get him."</div>
+      <div class="prompt">Write a 30-second presenter script, contrarian-hook structure: open with a claim people expect ("everyone told this shop to buy a &pound;200/month CRM"), then flip it ("Brian built them one for two and a half grand, and in three years it's theirs"). Plain British voice, direct camera address, end on the tagline "If you see Brian, get him."</div>
 
       <span class="prompt-label">Storytime</span>
       <div class="prompt">Write a 45-second presenter script in storytime structure, told as if the presenter is recounting a real job Brian did for a client, like recounting it to a mate. Specific details (town, trade, the old tool's name), one clear "and here's the number" moment, dry understatement rather than hype.</div>
@@ -935,13 +950,13 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       </div>
       <p class="lede">
         One fixed fee to build it. Then half of whatever the client was
-        already paying, for as long as they use it. A profit-share track
+        already paying, for three years. After that the system is handed over and owned outright. A profit-share track
         exists for launch and growth work.
       </p>
 
       <div class="grid-3">
-        <div class="card"><h3>The build <span class="tag">&pound;1,000</span></h3><p>Fixed, one-off. Brian designs, builds, and ships the replacement system. The client owns it outright.</p></div>
-        <div class="card"><h3>Ongoing <span class="tag">50%</span></h3><p>Half of what the client paid before, billed monthly, for as long as they use it. Never more.</p></div>
+        <div class="card"><h3>The build <span class="tag">&pound;2,500</span></h3><p>Fixed, one-off (more for bigger projects). Brian designs, builds, and ships the replacement system. The client owns it outright.</p></div>
+        <div class="card"><h3>Ongoing <span class="tag">50%</span></h3><p>Half of what the client paid before, billed monthly, for three years. Never more. Then it stops and the client owns the system.</p></div>
         <div class="card"><h3>Profit share <span class="tag">by arrangement</span></h3><p>For launch or growth work, Brian can take a share of the upside instead of, or alongside, a fee.</p></div>
       </div>
 
@@ -951,10 +966,11 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
           <thead><tr><th>Line</th><th class="num">Amount</th></tr></thead>
           <tbody>
             <tr><td>Current software spend</td><td class="num">&pound;900 / month</td></tr>
-            <tr><td>Brian's build fee</td><td class="num">&pound;1,000 once</td></tr>
-            <tr><td>Brian's ongoing fee</td><td class="num">&pound;450 / month</td></tr>
-            <tr><td>Saved in year one</td><td class="num">&pound;4,400</td></tr>
-            <tr><td>Saved every year after</td><td class="num">&pound;5,400</td></tr>
+            <tr><td>Brian's build fee</td><td class="num">&pound;2,500 once</td></tr>
+            <tr><td>Brian's ongoing fee, years one to three</td><td class="num">&pound;450 / month</td></tr>
+            <tr><td>Saved in year one</td><td class="num">&pound;2,900</td></tr>
+            <tr><td>Saved in years two and three</td><td class="num">&pound;5,400 a year</td></tr>
+            <tr><td>Saved every year after handover</td><td class="num">&pound;10,800 a year</td></tr>
           </tbody>
         </table>
       </div>
@@ -967,7 +983,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       <h3 style="font-family:'Brian Display',sans-serif;font-size:1.05rem;margin:26px 0 10px;">Ad one-liners</h3>
       <div class="pill-list">
         <span class="pill">Half the bill. All the brain.</span>
-        <span class="pill">&pound;1,000 to build it. Half price to keep it.</span>
+        <span class="pill">&pound;2,500 to build it. Half price for three years. Then it&rsquo;s yours.</span>
         <span class="pill">Stop renting. Start owning.</span>
       </div>
     </section>
